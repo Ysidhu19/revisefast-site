@@ -9,94 +9,159 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* --- Reset & Base --- */
+/* --- Base Reset --- */
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f1f5f9; line-height:1.6; overflow-x:hidden; }
-
-/* --- Scroll Progress Bar --- */
-#progressBar { position: fixed; top:0; left:0; height:5px; background:#22c55e; width:0%; z-index:10000; transition: width 0.2s ease; }
+body { font-family:'Inter', sans-serif; background:#111; color:#f1f1f1; overflow-x:hidden; }
 
 /* --- Header --- */
-header { text-align:center; padding:25px 0; font-size:28px; font-weight:700; border-bottom:1px solid #1e293b; }
+header {
+  text-align:center;
+  font-size:28px;
+  font-weight:600;
+  padding:25px 0;
+  border-bottom:1px solid #1e1e1e;
+}
 
-/* --- Hero --- */
+/* --- Hero Section --- */
 .hero {
-  text-align:center; padding:100px 20px 80px;
-  background: linear-gradient(-45deg, #22c55e, #38bdf8, #7c3aed, #f472b6);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
+  text-align:center;
+  padding:120px 20px 100px;
+}
+.hero h1 {
+  font-size:48px;
+  font-weight:600;
+  line-height:1.2;
+  margin-bottom:20px;
+  transition: letter-spacing 0.3s ease;
+}
+.hero h1:hover {
+  letter-spacing:1px;
+}
+.hero p {
+  font-size:20px;
+  color:#d1d5db;
+  margin-bottom:40px;
+}
+.hero .btn {
+  background:#22c55e;
   color:#fff;
+  padding:16px 40px;
+  font-weight:600;
+  border-radius:12px;
+  text-decoration:none;
+  transition: all 0.3s ease, box-shadow 0.3s ease;
+  box-shadow:0 5px 20px rgba(0,0,0,0.3);
 }
-.hero h1 { font-size:48px; margin-bottom:15px; text-shadow: 1px 1px 6px rgba(0,0,0,0.4); }
-.hero p { font-size:20px; margin-bottom:30px; color:#e0f2fe; }
-
-/* Gradient Animation */
-@keyframes gradientShift {
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
+.hero .btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.6);
 }
 
-/* --- CTA Button --- */
-.btn {
-  position:relative; display:inline-block; padding:15px 35px; background:#22c55e; color:black;
-  font-weight:700; border-radius:10px; text-decoration:none; transition: all 0.3s ease;
-  box-shadow:0 4px 15px rgba(0,0,0,0.3);
+/* --- Sections --- */
+.section-title {
+  text-align:center;
+  font-size:32px;
+  font-weight:600;
+  margin:60px 0 40px;
+  color:#22c55e;
 }
-.btn:hover { transform: scale(1.08); box-shadow:0 8px 25px rgba(0,0,0,0.5); background:#16a34a; }
-.btn::after {
-  content:""; position:absolute; top:-5px; left:-5px; width:calc(100%+10px); height:calc(100%+10px);
-  border-radius:10px; background: rgba(34,197,94,0.3); z-index:-1; opacity:0; transition: opacity 0.3s, transform 0.3s;
+
+/* --- Features / Cards --- */
+.features {
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:40px;
+  padding:0 20px 80px;
 }
-.btn:hover::after { opacity:1; transform:scale(1.2); }
-
-/* --- Section Titles --- */
-.section-title { text-align:center; font-size:32px; margin:50px 0 30px; color:#22c55e; }
-
-/* --- Cards Container --- */
-.features, .how-it-works, .social-proof { display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:25px; padding:0 20px 60px; position:relative; }
-
-/* --- Cards --- */
 .card {
-  background: linear-gradient(145deg, #1e293b, #273549);
-  padding:25px; border-radius:15px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.3);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  background:#1c1c1c;
+  padding:30px;
+  border-radius:16px;
+  max-width:300px;
+  text-align:center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.card:hover { transform: translateY(-8px) scale(1.02); box-shadow:0 12px 25px rgba(0,0,0,0.4); }
-.card h3 { font-size:24px; margin-bottom:10px; color:#22c55e; }
-.card p { color:#cbd5e1; font-size:16px; }
+.card:hover {
+  transform:translateY(-10px);
+  box-shadow:0 15px 35px rgba(0,0,0,0.5);
+}
+.card h3 { font-size:24px; margin-bottom:12px; color:#22c55e; }
+.card p { font-size:16px; color:#d1d5db; }
 
 /* --- Fade-in Animation --- */
-.fade-in { opacity:0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
-.fade-in.visible { opacity:1; transform: translateY(0); }
+.fade-in {
+  opacity:0;
+  transform:translateY(25px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+.fade-in.visible {
+  opacity:1;
+  transform:translateY(0);
+}
 
-/* --- Modal --- */
-.modal { display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background: rgba(0,0,0,0.6); backdrop-filter:blur(5px); transition:opacity 0.3s ease; }
-.modal-content { background-color:#1e293b; margin:50px auto; padding:20px; border-radius:12px; max-width:700px; width:90%; height:80%; display:flex; flex-direction:column; }
+/* --- CTA / Modal --- */
+.modal {
+  display:none;
+  position:fixed;
+  z-index:1000;
+  left:0; top:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(5px);
+}
+.modal-content {
+  background:#1c1c1c;
+  margin:50px auto;
+  padding:20px;
+  border-radius:16px;
+  max-width:700px;
+  width:90%;
+  height:80%;
+  display:flex;
+  flex-direction:column;
+  transform:translateY(-30px);
+  opacity:0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+.modal.show .modal-content {
+  transform:translateY(0);
+  opacity:1;
+}
 .modal iframe { flex:1; border:none; border-radius:8px; }
-.close-btn { align-self:flex-end; font-size:24px; font-weight:bold; color:#22c55e; cursor:pointer; margin-bottom:10px; }
-
-/* --- Floating Shapes --- */
-.features span, .how-it-works span { position:absolute; font-size:50px; opacity:0.05; }
+.close-btn {
+  align-self:flex-end;
+  font-size:24px;
+  font-weight:bold;
+  color:#22c55e;
+  cursor:pointer;
+  margin-bottom:10px;
+}
 
 /* --- CTA Section --- */
-.cta-section { text-align:center; padding:60px 20px; background: linear-gradient(135deg,#38bdf8,#22c55e); }
-.cta-section p { font-size:22px; margin-bottom:20px; color:#fff; }
-.cta-section a { font-size:18px; }
+.cta-section { text-align:center; padding:60px 20px; }
+.cta-section p { font-size:22px; margin-bottom:20px; }
+.cta-section .btn { font-size:18px; }
 
 /* --- Footer --- */
-footer { text-align:center; padding:25px 0; font-size:14px; color:#94a3b8; border-top:1px solid #1e293b; }
+footer {
+  text-align:center;
+  padding:25px 0;
+  font-size:14px;
+  color:#94a3b8;
+  border-top:1px solid #1e1e1e;
+}
 
 /* --- Responsive --- */
-@media(max-width:600px){ .hero h1{font-size:36px;} .hero p{font-size:18px;} .cta-section p{font-size:20px;} }
+@media(max-width:600px){
+  .hero h1 { font-size:36px; }
+  .hero p { font-size:18px; }
+  .cta-section p { font-size:20px; }
+}
 </style>
 </head>
 
 <body>
-
-<!-- Scroll Progress -->
-<div id="progressBar"></div>
 
 <header>ReviseFast</header>
 
@@ -110,38 +175,40 @@ footer { text-align:center; padding:25px 0; font-size:14px; color:#94a3b8; borde
 <!-- Features -->
 <h2 class="section-title">Features</h2>
 <section class="features">
-  <span style="top:-10px; left:10px;">⚡</span>
-  <span style="top:30px; right:20px;">📚</span>
-  <span style="bottom:0; left:50%;">🔥</span>
-
-  <div class="card fade-in"><h3>⚡ Fast Learning</h3><p>Get straight to the point with quick explanations.</p></div>
-  <div class="card fade-in"><h3>📚 All Subjects</h3><p>Maths, Science, English and more.</p></div>
-  <div class="card fade-in"><h3>🔥 Daily Streaks</h3><p>Stay consistent and improve every day.</p></div>
+  <div class="card fade-in">
+    <h3>Fast Learning</h3>
+    <p>Get straight to the point with concise explanations.</p>
+  </div>
+  <div class="card fade-in">
+    <h3>All Subjects</h3>
+    <p>Maths, Science, English, and more.</p>
+  </div>
+  <div class="card fade-in">
+    <h3>Daily Streaks</h3>
+    <p>Stay consistent and boost your grades every day.</p>
+  </div>
 </section>
 
 <!-- How It Works -->
 <h2 class="section-title">How it Works</h2>
-<section class="how-it-works">
-  <span style="top:10px; left:20px;">🎓</span>
-  <span style="bottom:20px; right:50px;">📖</span>
-
-  <div class="card fade-in"><h3>1️⃣ Watch</h3><p>Scroll short 60-second explanations.</p></div>
-  <div class="card fade-in"><h3>2️⃣ Understand</h3><p>Simple breakdowns that actually make sense.</p></div>
-  <div class="card fade-in"><h3>3️⃣ Improve</h3><p>Revise daily and boost your grades fast.</p></div>
-</section>
-
-<!-- Early Access Section -->
-<h2 class="section-title">Join Early Access</h2>
-<section class="social-proof">
-  <p>Be among the first students to try ReviseFast and shape the way we deliver revision tips!</p>
-  <div class="testimonial card fade-in">🔹 Get early access to all subjects</div>
-  <div class="testimonial card fade-in">🔹 Help improve the app with your feedback</div>
-  <div class="testimonial card fade-in">🔹 See tips and tricks before anyone else</div>
+<section class="features">
+  <div class="card fade-in">
+    <h3>1️⃣ Watch</h3>
+    <p>Scroll short 60-second explanations.</p>
+  </div>
+  <div class="card fade-in">
+    <h3>2️⃣ Understand</h3>
+    <p>Simple breakdowns that actually make sense.</p>
+  </div>
+  <div class="card fade-in">
+    <h3>3️⃣ Improve</h3>
+    <p>Revise daily and boost your grades fast.</p>
+  </div>
 </section>
 
 <!-- CTA Section -->
 <section class="cta-section">
-  <p>Don’t miss out – join early access now!</p>
+  <p>Be among the first students to try ReviseFast and shape the way we deliver revision tips!</p>
   <a href="#" class="btn" id="openModal">Join Free Early Access</a>
 </section>
 
@@ -161,19 +228,14 @@ footer { text-align:center; padding:25px 0; font-size:14px; color:#94a3b8; borde
 const faders = document.querySelectorAll('.fade-in');
 const appearOptions = { threshold:0.1, rootMargin:"0px 0px -50px 0px" };
 const appearOnScroll = new IntersectionObserver(function(entries, observer){
-  entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+  entries.forEach(entry => { 
+    if(entry.isIntersecting){ 
+      entry.target.classList.add('visible'); 
+      observer.unobserve(entry.target); 
+    } 
+  });
 }, appearOptions);
 faders.forEach(fader => appearOnScroll.observe(fader));
-</script>
-
-<!-- JS: Scroll Progress -->
-<script>
-window.addEventListener('scroll', ()=>{
-  const scrollTop = document.documentElement.scrollTop;
-  const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-  const scrollPercent = (scrollTop/scrollHeight)*100;
-  document.getElementById('progressBar').style.width = scrollPercent + "%";
-});
 </script>
 
 <!-- JS: Modal -->
@@ -182,9 +244,23 @@ const modal = document.getElementById('earlyAccessModal');
 const openBtns = document.querySelectorAll('#openModal');
 const closeBtn = modal.querySelector('.close-btn');
 
-openBtns.forEach(btn => btn.addEventListener('click',(e)=>{e.preventDefault(); modal.style.display='block';}));
-closeBtn.addEventListener('click',()=>{modal.style.display='none';});
-window.addEventListener('click',(e)=>{if(e.target===modal) modal.style.display='none';});
+openBtns.forEach(btn => btn.addEventListener('click', (e)=>{
+  e.preventDefault();
+  modal.style.display='block';
+  modal.classList.add('show');
+}));
+
+closeBtn.addEventListener('click', ()=>{
+  modal.classList.remove('show');
+  setTimeout(()=>modal.style.display='none', 400);
+});
+
+window.addEventListener('click', (e)=>{
+  if(e.target===modal){
+    modal.classList.remove('show');
+    setTimeout(()=>modal.style.display='none', 400);
+  }
+});
 </script>
 
 </body>
