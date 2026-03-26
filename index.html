@@ -14,7 +14,7 @@ header { text-align: center; padding: 25px 0; font-size: 28px; font-weight: bold
 
 /* --- Hero --- */
 .hero { text-align: center; padding: 100px 20px 80px; background: linear-gradient(135deg, #22c55e, #38bdf8); color: #fff; }
-.hero h1 { font-size: 50px; margin-bottom: 15px; text-shadow: 1px 1px 6px rgba(0,0,0,0.4); }
+.hero h1 { font-size: 44px; margin-bottom: 15px; text-shadow: 1px 1px 6px rgba(0,0,0,0.4); }
 .hero p { font-size: 20px; margin-bottom: 30px; color: #e0f2fe; }
 .btn { display: inline-block; padding: 15px 35px; background: #22c55e; color: black; font-weight: bold; border-radius: 10px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
 .btn:hover { transform: scale(1.05); box-shadow: 0 6px 25px rgba(0,0,0,0.5); background: #16a34a; }
@@ -40,9 +40,34 @@ header { text-align: center; padding: 25px 0; font-size: 28px; font-weight: bold
 .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
 .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-/* --- Social Proof --- */
+/* --- Modal Styles --- */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0; top: 0; 
+  width: 100%; height: 100%; 
+  overflow: auto; 
+  background: rgba(0,0,0,0.7);
+  transition: opacity 0.3s ease;
+}
+.modal-content {
+  background-color: #1e293b; 
+  margin: 50px auto; 
+  padding: 20px; 
+  border-radius: 12px; 
+  max-width: 700px; 
+  width: 90%; 
+  height: 80%; 
+  display: flex; 
+  flex-direction: column;
+}
+.modal iframe { flex: 1; border: none; border-radius: 8px; }
+.close-btn { align-self: flex-end; font-size: 24px; font-weight: bold; color: #22c55e; cursor: pointer; margin-bottom: 10px; }
+
+/* --- Social Proof / Early Access --- */
 .social-proof p { font-size: 18px; color: #cbd5e1; text-align: center; }
-.social-proof .testimonial { background: #1e293b; padding: 20px; border-radius: 12px; font-style: italic; }
+.social-proof .testimonial { background: #1e293b; padding: 20px; border-radius: 12px; font-style: normal; }
 
 /* --- CTA Section --- */
 .cta-section { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #38bdf8, #22c55e); }
@@ -66,9 +91,9 @@ footer { text-align: center; padding: 25px 0; font-size: 14px; color: #94a3b8; b
 
 <!-- Hero -->
 <section class="hero">
-  <h1>Your daily revision simplified.</h1>
+  <h1>Revise Smarter, Not Harder</h1>
   <p>Quick, simple revision tips from students like you.</p>
-  <a href="https://forms.gle/Rahzk9gm3n5jFTDh9" target="_blank" class="btn">Join Free Early Access</a>
+  <a href="#" class="btn" id="openModal">Join Free Early Access</a>
 </section>
 
 <!-- Features -->
@@ -91,32 +116,32 @@ footer { text-align: center; padding: 25px 0; font-size: 14px; color: #94a3b8; b
 <h2 class="section-title">Join Early Access</h2>
 <section class="social-proof">
   <p>Be among the first students to try ReviseFast and shape the way we deliver revision tips!</p>
-  <div class="testimonial card fade-in">
-    🔹 Get early access to all subjects
-  </div>
-  <div class="testimonial card fade-in">
-    🔹 Help improve the app with your feedback
-  </div>
-  <div class="testimonial card fade-in">
-    🔹 See tips and tricks before anyone else
-  </div>
+  <div class="testimonial card fade-in">🔹 Get early access to all subjects</div>
+  <div class="testimonial card fade-in">🔹 Help improve the app with your feedback</div>
+  <div class="testimonial card fade-in">🔹 See tips and tricks before anyone else</div>
 </section>
 
 <!-- CTA Section -->
 <section class="cta-section">
   <p>Don’t miss out – join early access now!</p>
-  <a href="https://forms.gle/Rahzk9gm3n5jFTDh9" target="_blank" class="btn">Join Free Early Access</a>
+  <a href="#" class="btn" id="openModal">Join Free Early Access</a>
 </section>
 
 <!-- Footer -->
 <footer>© 2026 ReviseFast. All rights reserved.</footer>
 
-<!-- Scroll Fade-in JS -->
+<!-- Modal -->
+<div id="earlyAccessModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <iframe src="https://forms.gle/Rahzk9gm3n5jFTDh9" title="Join Early Access"></iframe>
+  </div>
+</div>
+
+<!-- Fade-in JS -->
 <script>
 const faders = document.querySelectorAll('.fade-in');
-
 const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
-
 const appearOnScroll = new IntersectionObserver(function(entries, observer){
   entries.forEach(entry => {
     if(entry.isIntersecting){
@@ -125,8 +150,29 @@ const appearOnScroll = new IntersectionObserver(function(entries, observer){
     }
   });
 }, appearOptions);
-
 faders.forEach(fader => appearOnScroll.observe(fader));
+</script>
+
+<!-- Modal JS -->
+<script>
+const modal = document.getElementById('earlyAccessModal');
+const openBtns = document.querySelectorAll('#openModal');
+const closeBtn = modal.querySelector('.close-btn');
+
+openBtns.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    modal.style.display = 'block';
+  });
+});
+
+closeBtn.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target === modal) modal.style.display = 'none';
+});
 </script>
 
 </body>
