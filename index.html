@@ -67,21 +67,23 @@ header {
   position:relative;
   z-index:2;
 }
-.hero .btn {
-  background:#22c55e;
+
+/* --- Premium Button --- */
+.btn {
+  background: linear-gradient(135deg, #0f5132, #166534);
   color:#fff;
   padding:16px 40px;
   font-weight:600;
-  border-radius:12px;
+  border-radius:999px; /* Pill shape */
   text-decoration:none;
-  transition: all 0.3s ease, box-shadow 0.3s ease;
-  box-shadow:0 5px 20px rgba(0,0,0,0.3);
+  transition: all 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
   position:relative;
   z-index:2;
 }
-.hero .btn:hover {
+.btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.6);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
 }
 
 /* --- Sections --- */
@@ -168,7 +170,6 @@ header {
 /* --- CTA Section --- */
 .cta-section { text-align:center; padding:60px 20px; }
 .cta-section p { font-size:22px; margin-bottom:20px; }
-.cta-section .btn { font-size:18px; }
 
 /* --- Footer --- */
 footer {
