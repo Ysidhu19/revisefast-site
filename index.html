@@ -5,110 +5,79 @@
 <title>ReviseFast</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Fonts for premium feel -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- Fonts for a premium feel -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 /* --- Reset & Base --- */
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Inter', sans-serif; background:#0f1115; color:#f1f1f1; overflow-x:hidden; }
+body { font-family:'Inter', sans-serif; background:#0f1115; color:#f5f5f5; overflow-x:hidden; }
 
-/* --- Header / Logo --- */
+/* --- Header --- */
 header {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  letter-spacing: 1.8px;
-  font-size: 32px;
-  text-align: center;
-  padding: 25px 0;
-  color: #f1f1f1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
+  font-family:'Montserrat', sans-serif;
+  font-weight:600;
+  font-size:32px;
+  text-align:center;
+  padding:40px 0;
+  letter-spacing:1.5px;
+  color:#f5f5f5;
 }
-.logo-highlight { color: #22c55e; font-weight:700; }
-.logo-icon { font-size:28px; color:#22c55e; }
 
 /* --- Hero Section --- */
 .hero {
   position:relative;
   text-align:center;
-  padding:150px 20px 120px;
+  padding:160px 20px 120px;
   background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
+  background-color: rgba(0,0,0,0.5);
   background-blend-mode: overlay;
-  background-color: rgba(0,0,0,0.6);
-  color:#f1f1f1;
-  overflow:hidden;
+  color:#f5f5f5;
 }
-.hero::after {
-  content:"";
-  position:absolute;
-  top:0; left:0; width:100%; height:100%;
-  background: radial-gradient(circle at center, rgba(34,197,94,0.15), transparent 70%);
-  z-index:0;
-}
-.hero h1, .hero p, .hero .btn { position:relative; z-index:1; }
-.hero h1 { font-size:50px; font-weight:700; line-height:1.2; margin-bottom:25px; }
-.hero p { font-size:20px; color:#cbd5e1; margin-bottom:50px; max-width:650px; margin-left:auto; margin-right:auto; }
+.hero h1 { font-size:50px; font-weight:700; margin-bottom:20px; line-height:1.2; }
+.hero p { font-size:20px; color:#cbd5e1; max-width:600px; margin:0 auto 50px; }
 
-/* --- Premium Button --- */
+/* --- Premium CTA Button --- */
 .btn {
-  background: linear-gradient(135deg, #0f5132, #166534);
+  background: linear-gradient(135deg, #1e3a2b, #22c55e);
   color:#fff;
-  padding:16px 45px;
+  padding:16px 50px;
   font-weight:600;
   border-radius:999px;
   text-decoration:none;
+  font-size:18px;
   transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  box-shadow:0 6px 20px rgba(0,0,0,0.3);
 }
-.btn:hover { transform: scale(1.05); box-shadow:0 12px 30px rgba(0,0,0,0.35); }
+.btn:hover { transform:scale(1.05); box-shadow:0 12px 30px rgba(0,0,0,0.4); }
 
-/* --- Section Titles --- */
+/* --- Sections & Titles --- */
 .section-title { text-align:center; font-size:34px; font-weight:600; margin:80px 0 40px; color:#22c55e; }
-
-/* --- Features / Cards --- */
 .features { display:flex; justify-content:center; flex-wrap:wrap; gap:40px; padding:0 20px 80px; }
 .card {
-  background:#1c1c1c;
+  background: rgba(255,255,255,0.03);
   padding:35px;
   border-radius:16px;
   max-width:300px;
   text-align:center;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
-.card:hover { transform:translateY(-12px); box-shadow:0 20px 40px rgba(0,0,0,0.5); }
+.card:hover { transform:translateY(-10px); box-shadow:0 20px 40px rgba(0,0,0,0.4); }
 .card h3 { font-size:24px; margin-bottom:12px; color:#22c55e; }
-.card p { font-size:16px; color:#a1a1a1; line-height:1.5; }
+.card p { font-size:16px; color:#cbd5e1; line-height:1.5; }
 
 /* --- Fade-in Animation --- */
-.fade-in { opacity:0; transform:translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.fade-in { opacity:0; transform:translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
 .fade-in.visible { opacity:1; transform:translateY(0); }
 
-/* --- Modal --- */
-.modal { display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.65); backdrop-filter:blur(6px); }
-.modal-content {
-  background:#1c1c1c;
-  margin:60px auto;
-  padding:25px;
-  border-radius:18px;
-  max-width:750px;
-  width:90%;
-  height:80%;
-  display:flex;
-  flex-direction:column;
-  transform:translateY(-30px);
-  opacity:0;
-  transition: transform 0.5s ease, opacity 0.5s ease;
+/* --- Form Section --- */
+.form-section { display:flex; justify-content:center; padding:60px 20px; }
+.form-card {
+  width:100%; max-width:700px; padding:40px;
+  background: rgba(255,255,255,0.03); border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
 }
-.modal.show .modal-content { transform:translateY(0); opacity:1; }
-.modal iframe { flex:1; border:none; border-radius:10px; }
-.close-btn { align-self:flex-end; font-size:26px; font-weight:bold; color:#22c55e; cursor:pointer; margin-bottom:12px; }
-
-/* --- CTA Section --- */
-.cta-section { text-align:center; padding:60px 20px; }
-.cta-section p { font-size:22px; margin-bottom:20px; color:#a1a1a1; }
+.form-card iframe { width:100%; height:600px; border:none; border-radius:12px; }
 
 /* --- Footer --- */
 footer { text-align:center; padding:25px 0; font-size:14px; color:#6b7280; border-top:1px solid #1e1e1e; }
@@ -117,23 +86,21 @@ footer { text-align:center; padding:25px 0; font-size:14px; color:#6b7280; borde
 @media(max-width:600px){
   .hero h1 { font-size:38px; }
   .hero p { font-size:18px; }
-  .cta-section p { font-size:20px; }
+  .card { max-width:90%; }
+  .form-card { padding:20px; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- Header with logo -->
-<header>
-  <span class="logo-icon">🔥</span><span class="logo-highlight">R</span>eviseFast
-</header>
+<header>ReviseFast</header>
 
 <!-- Hero -->
 <section class="hero">
   <h1>Revise Smarter. Learn Faster.</h1>
   <p>Quick, effective revision tips from students like you.</p>
-  <a href="#" class="btn" id="openModal">Join Free Early Access</a>
+  <a href="#form" class="btn">Join Free Early Access</a>
 </section>
 
 <!-- Features -->
@@ -141,15 +108,15 @@ footer { text-align:center; padding:25px 0; font-size:14px; color:#6b7280; borde
 <section class="features">
   <div class="card fade-in">
     <h3>⚡ Fast Learning</h3>
-    <p>Get straight to the point with concise explanations, no fluff.</p>
+    <p>Concise explanations with no unnecessary fluff.</p>
   </div>
   <div class="card fade-in">
     <h3>📚 All Subjects</h3>
-    <p>Maths, Science, English, and more — all in one place.</p>
+    <p>Maths, Science, English and more in one place.</p>
   </div>
   <div class="card fade-in">
     <h3>🔥 Daily Streaks</h3>
-    <p>Stay consistent, build habits, and improve your grades over time.</p>
+    <p>Build habits and improve your grades consistently.</p>
   </div>
 </section>
 
@@ -158,41 +125,34 @@ footer { text-align:center; padding:25px 0; font-size:14px; color:#6b7280; borde
 <section class="features">
   <div class="card fade-in">
     <h3>1️⃣ Watch</h3>
-    <p>Scroll short 60-second explanations made for quick understanding.</p>
+    <p>Scroll through short 60-second explanations.</p>
   </div>
   <div class="card fade-in">
     <h3>2️⃣ Understand</h3>
-    <p>Simple breakdowns that actually make sense, no confusion.</p>
+    <p>Simple breakdowns that actually make sense.</p>
   </div>
   <div class="card fade-in">
     <h3>3️⃣ Improve</h3>
-    <p>Revise daily and see your knowledge grow consistently.</p>
+    <p>Revise daily and boost your grades effectively.</p>
   </div>
 </section>
 
-<!-- CTA Section -->
-<section class="cta-section">
-  <p>Be among the first students to try ReviseFast and shape the way we deliver revision tips!</p>
-  <a href="#" class="btn" id="openModal">Join Free Early Access</a>
+<!-- Form -->
+<h2 class="section-title" id="form">Join Early Access</h2>
+<section class="form-section">
+  <div class="form-card fade-in">
+    <iframe src="https://forms.gle/Rahzk9gm3n5jFTDh9" title="Join Early Access Form"></iframe>
+  </div>
 </section>
 
-<!-- Footer -->
 <footer>© 2026 ReviseFast. All rights reserved.</footer>
 
-<!-- Modal -->
-<div id="earlyAccessModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn">&times;</span>
-    <iframe src="https://forms.gle/Rahzk9gm3n5jFTDh9" title="Join Early Access"></iframe>
-  </div>
-</div>
-
-<!-- JS: Fade-in on scroll -->
+<!-- Fade-in JS -->
 <script>
 const faders = document.querySelectorAll('.fade-in');
 const appearOptions = { threshold:0.1, rootMargin:"0px 0px -50px 0px" };
 const appearOnScroll = new IntersectionObserver((entries)=>{
-  entries.forEach((entry)=>{
+  entries.forEach(entry=>{
     const index = Array.from(faders).indexOf(entry.target);
     if(entry.isIntersecting){
       entry.target.style.transitionDelay = `${index*0.15}s`;
@@ -204,31 +164,6 @@ const appearOnScroll = new IntersectionObserver((entries)=>{
   });
 }, appearOptions);
 faders.forEach(fader=>appearOnScroll.observe(fader));
-</script>
-
-<!-- JS: Modal -->
-<script>
-const modal = document.getElementById('earlyAccessModal');
-const openBtns = document.querySelectorAll('#openModal');
-const closeBtn = modal.querySelector('.close-btn');
-
-openBtns.forEach(btn=>btn.addEventListener('click',(e)=>{
-  e.preventDefault();
-  modal.style.display='block';
-  modal.classList.add('show');
-}));
-
-closeBtn.addEventListener('click',()=>{
-  modal.classList.remove('show');
-  setTimeout(()=>modal.style.display='none',400);
-});
-
-window.addEventListener('click',(e)=>{
-  if(e.target===modal){
-    modal.classList.remove('show');
-    setTimeout(()=>modal.style.display='none',400);
-  }
-});
 </script>
 
 </body>
