@@ -120,7 +120,7 @@ header {
 .fade-in {
   opacity:0;
   transform:translateY(25px);
-  transition: opacity 1s ease, transform 1s ease;
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 .fade-in.visible {
   opacity:1;
@@ -254,18 +254,28 @@ footer {
   </div>
 </div>
 
-<!-- JS: Fade-in -->
+<!-- JS: Staggered Fade-in -->
 <script>
 const faders = document.querySelectorAll('.fade-in');
-const appearOptions = { threshold:0.1, rootMargin:"0px 0px -50px 0px" };
-const appearOnScroll = new IntersectionObserver(function(entries, observer){
-  entries.forEach(entry => { 
-    if(entry.isIntersecting){ 
-      entry.target.classList.add('visible'); 
-      observer.unobserve(entry.target); 
-    } 
+
+const appearOptions = {
+  threshold: 0.1,
+  rootMargin: "0px 0px -50px 0px"
+};
+
+const appearOnScroll = new IntersectionObserver(function(entries) {
+  entries.forEach(entry => {
+    const index = Array.from(faders).indexOf(entry.target);
+    if(entry.isIntersecting){
+      entry.target.style.transitionDelay = `${index * 0.15}s`;
+      entry.target.classList.add('visible');
+    } else {
+      entry.target.classList.remove('visible');
+      entry.target.style.transitionDelay = '0s';
+    }
   });
 }, appearOptions);
+
 faders.forEach(fader => appearOnScroll.observe(fader));
 </script>
 
