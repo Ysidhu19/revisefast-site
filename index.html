@@ -4,88 +4,86 @@
 <meta charset="UTF-8">
 <title>ReviseFast</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Inter Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
 /* --- Reset & Base --- */
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: 'Arial', sans-serif; background: #111827; color: #f1f5f9; line-height: 1.6; }
+body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f1f5f9; line-height:1.6; overflow-x:hidden; }
 
 /* --- Scroll Progress Bar --- */
-#progressBar {
-  position: fixed; top:0; left:0;
-  height: 5px; background: #22c55e; width:0%; z-index:10000;
-  transition: width 0.2s ease;
-}
+#progressBar { position: fixed; top:0; left:0; height:5px; background:#22c55e; width:0%; z-index:10000; transition: width 0.2s ease; }
 
 /* --- Header --- */
-header { text-align: center; padding: 25px 0; font-size: 28px; font-weight: bold; border-bottom: 1px solid #1e293b; }
+header { text-align:center; padding:25px 0; font-size:28px; font-weight:700; border-bottom:1px solid #1e293b; }
 
 /* --- Hero --- */
-.hero { text-align: center; padding: 100px 20px 80px; background: linear-gradient(135deg, #22c55e, #38bdf8); color: #fff; }
-.hero h1 { font-size: 44px; margin-bottom: 15px; text-shadow: 1px 1px 6px rgba(0,0,0,0.4); }
-.hero p { font-size: 20px; margin-bottom: 30px; color: #e0f2fe; }
+.hero {
+  text-align:center; padding:100px 20px 80px;
+  background: linear-gradient(-45deg, #22c55e, #38bdf8, #7c3aed, #f472b6);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color:#fff;
+}
+.hero h1 { font-size:48px; margin-bottom:15px; text-shadow: 1px 1px 6px rgba(0,0,0,0.4); }
+.hero p { font-size:20px; margin-bottom:30px; color:#e0f2fe; }
+
+/* Gradient Animation */
+@keyframes gradientShift {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
 
 /* --- CTA Button --- */
 .btn {
-  position: relative;
-  display: inline-block;
-  padding: 15px 35px;
-  background: #22c55e;
-  color: black;
-  font-weight: bold;
-  border-radius: 10px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  position:relative; display:inline-block; padding:15px 35px; background:#22c55e; color:black;
+  font-weight:700; border-radius:10px; text-decoration:none; transition: all 0.3s ease;
+  box-shadow:0 4px 15px rgba(0,0,0,0.3);
 }
-.btn:hover { transform: scale(1.05); box-shadow: 0 6px 25px rgba(0,0,0,0.5); background: #16a34a; }
+.btn:hover { transform: scale(1.08); box-shadow:0 8px 25px rgba(0,0,0,0.5); background:#16a34a; }
 .btn::after {
-  content: "";
-  position: absolute; top:-5px; left:-5px;
-  width: calc(100% + 10px); height: calc(100% + 10px);
-  border-radius: 10px;
-  background: rgba(34,197,94,0.3);
-  z-index: -1; opacity: 0; transition: opacity 0.3s, transform 0.3s;
+  content:""; position:absolute; top:-5px; left:-5px; width:calc(100%+10px); height:calc(100%+10px);
+  border-radius:10px; background: rgba(34,197,94,0.3); z-index:-1; opacity:0; transition: opacity 0.3s, transform 0.3s;
 }
-.btn:hover::after { opacity:1; transform: scale(1.2); }
+.btn:hover::after { opacity:1; transform:scale(1.2); }
 
 /* --- Section Titles --- */
-.section-title { text-align: center; font-size: 32px; margin: 50px 0 30px; color: #22c55e; }
+.section-title { text-align:center; font-size:32px; margin:50px 0 30px; color:#22c55e; }
 
 /* --- Cards Container --- */
-.features, .how-it-works, .social-proof { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:25px; padding: 0 20px 60px; position: relative; }
-
-/* --- Individual Sections Background --- */
-.features { background: #111827; padding: 40px 20px 60px; }
-.how-it-works { background: #1e293b; padding: 40px 20px 60px; }
-.social-proof { background: #0f172a; padding: 40px 20px 60px; }
+.features, .how-it-works, .social-proof { display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:25px; padding:0 20px 60px; position:relative; }
 
 /* --- Cards --- */
-.card { background: linear-gradient(145deg, #1e293b, #273549); padding: 25px; border-radius: 15px; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-.card:hover { transform: translateY(-7px); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-.card h3 { font-size: 24px; margin-bottom: 10px; color: #22c55e; }
-.card p { color: #cbd5e1; font-size: 16px; }
+.card {
+  background: linear-gradient(145deg, #1e293b, #273549);
+  padding:25px; border-radius:15px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.3);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.card:hover { transform: translateY(-8px) scale(1.02); box-shadow:0 12px 25px rgba(0,0,0,0.4); }
+.card h3 { font-size:24px; margin-bottom:10px; color:#22c55e; }
+.card p { color:#cbd5e1; font-size:16px; }
 
 /* --- Fade-in Animation --- */
 .fade-in { opacity:0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
 .fade-in.visible { opacity:1; transform: translateY(0); }
 
-/* --- Modal Styles --- */
-.modal { display:none; position: fixed; z-index:1000; left:0; top:0; width:100%; height:100%; overflow:auto; background: rgba(0,0,0,0.7); transition: opacity 0.3s ease; }
-.modal-content { background-color: #1e293b; margin: 50px auto; padding: 20px; border-radius:12px; max-width:700px; width:90%; height:80%; display:flex; flex-direction:column; }
+/* --- Modal --- */
+.modal { display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background: rgba(0,0,0,0.6); backdrop-filter:blur(5px); transition:opacity 0.3s ease; }
+.modal-content { background-color:#1e293b; margin:50px auto; padding:20px; border-radius:12px; max-width:700px; width:90%; height:80%; display:flex; flex-direction:column; }
 .modal iframe { flex:1; border:none; border-radius:8px; }
 .close-btn { align-self:flex-end; font-size:24px; font-weight:bold; color:#22c55e; cursor:pointer; margin-bottom:10px; }
 
-/* --- Social Proof / Early Access --- */
-.social-proof p { font-size:18px; color:#cbd5e1; text-align:center; }
-.social-proof .testimonial { background:#1e293b; padding:20px; border-radius:12px; font-style: normal; }
+/* --- Floating Shapes --- */
+.features span, .how-it-works span { position:absolute; font-size:50px; opacity:0.05; }
 
 /* --- CTA Section --- */
-.cta-section { text-align:center; padding:60px 20px; background: linear-gradient(135deg, #38bdf8, #22c55e); }
+.cta-section { text-align:center; padding:60px 20px; background: linear-gradient(135deg,#38bdf8,#22c55e); }
 .cta-section p { font-size:22px; margin-bottom:20px; color:#fff; }
 .cta-section a { font-size:18px; }
-
-/* --- Floating Icons --- */
-.features span, .how-it-works span { position:absolute; font-size:50px; opacity:0.08; }
 
 /* --- Footer --- */
 footer { text-align:center; padding:25px 0; font-size:14px; color:#94a3b8; border-top:1px solid #1e293b; }
@@ -94,6 +92,7 @@ footer { text-align:center; padding:25px 0; font-size:14px; color:#94a3b8; borde
 @media(max-width:600px){ .hero h1{font-size:36px;} .hero p{font-size:18px;} .cta-section p{font-size:20px;} }
 </style>
 </head>
+
 <body>
 
 <!-- Scroll Progress -->
@@ -103,8 +102,8 @@ footer { text-align:center; padding:25px 0; font-size:14px; color:#94a3b8; borde
 
 <!-- Hero -->
 <section class="hero">
-  <h1>Revise Smarter, Not Harder</h1>
-  <p>Quick, simple revision tips from students like you.</p>
+  <h1>Revise Smarter. Learn Faster.</h1>
+  <p>Quick, effective revision tips from students like you.</p>
   <a href="#" class="btn" id="openModal">Join Free Early Access</a>
 </section>
 
@@ -157,46 +156,35 @@ footer { text-align:center; padding:25px 0; font-size:14px; color:#94a3b8; borde
   </div>
 </div>
 
-<!-- Fade-in JS -->
+<!-- JS: Fade-in -->
 <script>
 const faders = document.querySelectorAll('.fade-in');
-const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+const appearOptions = { threshold:0.1, rootMargin:"0px 0px -50px 0px" };
 const appearOnScroll = new IntersectionObserver(function(entries, observer){
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    }
-  });
+  entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
 }, appearOptions);
 faders.forEach(fader => appearOnScroll.observe(fader));
 </script>
 
-<!-- Scroll Progress JS -->
+<!-- JS: Scroll Progress -->
 <script>
-window.addEventListener('scroll', () => {
+window.addEventListener('scroll', ()=>{
   const scrollTop = document.documentElement.scrollTop;
   const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-  const scrollPercent = (scrollTop / scrollHeight) * 100;
+  const scrollPercent = (scrollTop/scrollHeight)*100;
   document.getElementById('progressBar').style.width = scrollPercent + "%";
 });
 </script>
 
-<!-- Modal JS -->
+<!-- JS: Modal -->
 <script>
 const modal = document.getElementById('earlyAccessModal');
 const openBtns = document.querySelectorAll('#openModal');
 const closeBtn = modal.querySelector('.close-btn');
 
-openBtns.forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal.style.display = 'block';
-  });
-});
-
-closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
-window.addEventListener('click', (e) => { if(e.target === modal) modal.style.display = 'none'; });
+openBtns.forEach(btn => btn.addEventListener('click',(e)=>{e.preventDefault(); modal.style.display='block';}));
+closeBtn.addEventListener('click',()=>{modal.style.display='none';});
+window.addEventListener('click',(e)=>{if(e.target===modal) modal.style.display='none';});
 </script>
 
 </body>
