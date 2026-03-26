@@ -5,11 +5,11 @@
 <title>ReviseFast</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Inter Font -->
+<!-- Inter Font for modern luxury feel -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* --- Base Reset --- */
+/* --- Reset & Base --- */
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Inter', sans-serif; background:#0f1115; color:#f1f1f1; overflow-x:hidden; }
 
@@ -26,22 +26,39 @@ header {
 .hero {
   position:relative;
   text-align:center;
-  padding:120px 20px 100px;
-  background: linear-gradient(135deg, #111, #1a1a1a);
+  padding:150px 20px 120px;
+  background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
+  background-blend-mode: overlay;
+  background-color: rgba(0,0,0,0.6);
+  color:#f1f1f1;
+  overflow:hidden;
+}
+
+.hero::after {
+  content:"";
+  position:absolute;
+  top:0; left:0; width:100%; height:100%;
+  background: radial-gradient(circle at center, rgba(34,197,94,0.2), transparent 70%);
+  z-index:0;
+}
+
+.hero h1, .hero p, .hero .btn {
+  position:relative;
+  z-index:1;
 }
 
 .hero h1 {
-  font-size:48px;
+  font-size:50px;
   font-weight:700;
   line-height:1.2;
-  margin-bottom:20px;
+  margin-bottom:25px;
 }
 
 .hero p {
   font-size:20px;
-  color:#a1a1a1;
-  margin-bottom:40px;
-  max-width:600px;
+  color:#cbd5e1;
+  margin-bottom:50px;
+  max-width:650px;
   margin-left:auto;
   margin-right:auto;
 }
@@ -50,22 +67,22 @@ header {
 .btn {
   background: linear-gradient(135deg, #0f5132, #166534);
   color:#fff;
-  padding:16px 40px;
+  padding:16px 45px;
   font-weight:600;
-  border-radius:999px; /* pill shape */
+  border-radius:999px;
   text-decoration:none;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
 }
 .btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
 
-/* --- Sections --- */
+/* --- Section Titles --- */
 .section-title {
   text-align:center;
-  font-size:32px;
+  font-size:34px;
   font-weight:600;
   margin:80px 0 40px;
   color:#22c55e;
@@ -81,23 +98,23 @@ header {
 }
 .card {
   background:#1c1c1c;
-  padding:30px;
+  padding:35px;
   border-radius:16px;
   max-width:300px;
   text-align:center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 .card:hover {
-  transform:translateY(-10px);
-  box-shadow:0 15px 35px rgba(0,0,0,0.5);
+  transform:translateY(-12px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.5);
 }
 .card h3 { font-size:24px; margin-bottom:12px; color:#22c55e; }
-.card p { font-size:16px; color:#a1a1a1; }
+.card p { font-size:16px; color:#a1a1a1; line-height:1.5; }
 
 /* --- Fade-in Animation --- */
 .fade-in {
   opacity:0;
-  transform:translateY(25px);
+  transform:translateY(30px);
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
 .fade-in.visible {
@@ -112,35 +129,35 @@ header {
   z-index:1000;
   left:0; top:0;
   width:100%; height:100%;
-  background:rgba(0,0,0,0.6);
-  backdrop-filter:blur(5px);
+  background:rgba(0,0,0,0.65);
+  backdrop-filter:blur(6px);
 }
 .modal-content {
   background:#1c1c1c;
-  margin:50px auto;
-  padding:20px;
-  border-radius:16px;
-  max-width:700px;
+  margin:60px auto;
+  padding:25px;
+  border-radius:18px;
+  max-width:750px;
   width:90%;
   height:80%;
   display:flex;
   flex-direction:column;
   transform:translateY(-30px);
   opacity:0;
-  transition: transform 0.4s ease, opacity 0.4s ease;
+  transition: transform 0.5s ease, opacity 0.5s ease;
 }
 .modal.show .modal-content {
   transform:translateY(0);
   opacity:1;
 }
-.modal iframe { flex:1; border:none; border-radius:8px; }
+.modal iframe { flex:1; border:none; border-radius:10px; }
 .close-btn {
   align-self:flex-end;
-  font-size:24px;
+  font-size:26px;
   font-weight:bold;
   color:#22c55e;
   cursor:pointer;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 
 /* --- CTA Section --- */
@@ -158,7 +175,7 @@ footer {
 
 /* --- Responsive --- */
 @media(max-width:600px){
-  .hero h1 { font-size:36px; }
+  .hero h1 { font-size:38px; }
   .hero p { font-size:18px; }
   .cta-section p { font-size:20px; }
 }
@@ -180,33 +197,33 @@ footer {
 <h2 class="section-title">Features</h2>
 <section class="features">
   <div class="card fade-in">
-    <h3>Fast Learning</h3>
-    <p>Get straight to the point with concise explanations.</p>
+    <h3>⚡ Fast Learning</h3>
+    <p>Get straight to the point with concise explanations, no fluff.</p>
   </div>
   <div class="card fade-in">
-    <h3>All Subjects</h3>
-    <p>Maths, Science, English, and more.</p>
+    <h3>📚 All Subjects</h3>
+    <p>Maths, Science, English, and more — all in one place.</p>
   </div>
   <div class="card fade-in">
-    <h3>Daily Streaks</h3>
-    <p>Stay consistent and boost your grades every day.</p>
+    <h3>🔥 Daily Streaks</h3>
+    <p>Stay consistent, build habits, and improve your grades over time.</p>
   </div>
 </section>
 
 <!-- How It Works -->
-<h2 class="section-title">How it Works</h2>
+<h2 class="section-title">How It Works</h2>
 <section class="features">
   <div class="card fade-in">
     <h3>1️⃣ Watch</h3>
-    <p>Scroll short 60-second explanations.</p>
+    <p>Scroll short 60-second explanations made for quick understanding.</p>
   </div>
   <div class="card fade-in">
     <h3>2️⃣ Understand</h3>
-    <p>Simple breakdowns that actually make sense.</p>
+    <p>Simple breakdowns that actually make sense, no confusion.</p>
   </div>
   <div class="card fade-in">
     <h3>3️⃣ Improve</h3>
-    <p>Revise daily and boost your grades fast.</p>
+    <p>Revise daily and see your knowledge grow consistently.</p>
   </div>
 </section>
 
