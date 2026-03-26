@@ -1,167 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>ReviseFast</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
+<meta charset="UTF-8">
+<title>ReviseFast</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+/* --- Reset & Base --- */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Arial', sans-serif; background: #111827; color: #f1f5f9; line-height: 1.6; }
 
-    body {
-      font-family: 'Arial', sans-serif;
-      background: #111827;
-      color: white;
-      line-height: 1.6;
-    }
+/* --- Header --- */
+header { text-align: center; padding: 25px 0; font-size: 28px; font-weight: bold; border-bottom: 1px solid #1e293b; }
 
-    header {
-      text-align: center;
-      padding: 25px 0;
-      font-size: 28px;
-      font-weight: bold;
-      border-bottom: 1px solid #1e293b;
-    }
+/* --- Hero --- */
+.hero { text-align: center; padding: 100px 20px 80px; background: linear-gradient(135deg, #22c55e, #38bdf8); color: #fff; }
+.hero h1 { font-size: 50px; margin-bottom: 15px; text-shadow: 1px 1px 6px rgba(0,0,0,0.4); }
+.hero p { font-size: 20px; margin-bottom: 30px; color: #e0f2fe; }
+.btn { display: inline-block; padding: 15px 35px; background: #22c55e; color: black; font-weight: bold; border-radius: 10px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+.btn:hover { transform: scale(1.05); box-shadow: 0 6px 25px rgba(0,0,0,0.5); background: #16a34a; }
 
-    /* Hero */
-    .hero {
-      text-align: center;
-      padding: 80px 20px 60px;
-      background: linear-gradient(135deg, #22c55e, #0f172a);
-      color: #fff;
-    }
+/* --- Section Titles --- */
+.section-title { text-align: center; font-size: 32px; margin: 50px 0 30px; color: #22c55e; }
 
-    .hero h1 {
-      font-size: 48px;
-      margin-bottom: 15px;
-      color: #fff;
-      text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-    }
+/* --- Cards Container --- */
+.features, .how-it-works, .social-proof { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; padding: 0 20px 60px; }
 
-    .hero p {
-      font-size: 20px;
-      color: #e0f2fe;
-      margin-bottom: 30px;
-    }
+/* --- Individual Sections Background --- */
+.features { background: #111827; padding: 40px 20px 60px; }
+.how-it-works { background: #1e293b; padding: 40px 20px 60px; }
+.social-proof { background: #0f172a; padding: 40px 20px 60px; }
 
-    .btn {
-      display: inline-block;
-      padding: 15px 30px;
-      background: #22c55e;
-      color: black;
-      font-weight: bold;
-      border-radius: 10px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
+/* --- Cards --- */
+.card { background: linear-gradient(145deg, #1e293b, #273549); padding: 25px; border-radius: 15px; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+.card:hover { transform: translateY(-7px); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+.card h3 { font-size: 24px; margin-bottom: 10px; color: #22c55e; }
+.card p { color: #cbd5e1; font-size: 16px; }
 
-    .btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-      background: #16a34a;
-    }
+/* --- Social Proof --- */
+.social-proof p { font-size: 18px; color: #cbd5e1; text-align: center; }
+.social-proof .testimonial { background: #1e293b; padding: 20px; border-radius: 12px; font-style: italic; }
 
-    /* Section titles */
-    .section-title {
-      text-align: center;
-      font-size: 32px;
-      margin: 50px 0 30px;
-      color: #22c55e;
-    }
+/* --- CTA Section --- */
+.cta-section { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #38bdf8, #22c55e); }
+.cta-section p { font-size: 22px; margin-bottom: 20px; color: #fff; }
+.cta-section a { font-size: 18px; }
 
-    /* Cards container */
-    .features, .how-it-works {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-      padding: 0 20px 60px;
-    }
+/* --- Footer --- */
+footer { text-align: center; padding: 25px 0; font-size: 14px; color: #94a3b8; border-top: 1px solid #1e293b; }
 
-    .features { background: #111827; padding: 40px 20px 60px; }
-    .how-it-works { background: #1e293b; padding: 40px 20px 60px; }
-
-    .card {
-      background: linear-gradient(145deg, #1f2937, #111827);
-      padding: 25px;
-      border-radius: 15px;
-      transition: transform 0.3s, box-shadow 0.3s;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-
-    .card:hover {
-      transform: translateY(-7px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    }
-
-    .card h3 {
-      font-size: 24px;
-      margin-bottom: 10px;
-      color: #22c55e;
-    }
-
-    .card p {
-      color: #cbd5e1;
-      font-size: 16px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px 0;
-      font-size: 14px;
-      color: #94a3b8;
-      border-top: 1px solid #1e293b;
-    }
-
-    @media(max-width: 600px) {
-      .hero h1 { font-size: 36px; }
-      .hero p { font-size: 18px; }
-    }
-  </style>
+/* --- Responsive --- */
+@media(max-width: 600px) {
+  .hero h1 { font-size: 36px; }
+  .hero p { font-size: 18px; }
+  .cta-section p { font-size: 20px; }
+}
+</style>
 </head>
 <body>
 
 <header>ReviseFast</header>
 
+<!-- Hero -->
 <section class="hero">
-  <h1>Understand Any Topic in 60 Seconds</h1>
-  <p>Short, simple revision tips from students like you.</p>
-  <a href="https://forms.gle/Rahzk9gm3n5jFTDh9" target="_blank" class="btn">
-    Join Free Early Access
-  </a>
+  <h1>Master Any Topic in 60 Seconds</h1>
+  <p>Quick, simple revision tips from students like you.</p>
+  <a href="https://forms.gle/Rahzk9gm3n5jFTDh9" target="_blank" class="btn">Join Free Early Access</a>
 </section>
 
+<!-- Features -->
 <h2 class="section-title">Features</h2>
 <section class="features">
-  <div class="card">
-    <h3>⚡ Fast Learning</h3>
-    <p>Get straight to the point with quick explanations.</p>
-  </div>
-  <div class="card">
-    <h3>📚 All Subjects</h3>
-    <p>Maths, Science, English and more.</p>
-  </div>
-  <div class="card">
-    <h3>🔥 Daily Streaks</h3>
-    <p>Stay consistent and improve every day.</p>
-  </div>
+  <div class="card"><h3>⚡ Fast Learning</h3><p>Get straight to the point with quick explanations.</p></div>
+  <div class="card"><h3>📚 All Subjects</h3><p>Maths, Science, English and more.</p></div>
+  <div class="card"><h3>🔥 Daily Streaks</h3><p>Stay consistent and improve every day.</p></div>
 </section>
 
+<!-- How It Works -->
 <h2 class="section-title">How it Works</h2>
 <section class="how-it-works">
-  <div class="card">
-    <h3>1️⃣ Watch</h3>
-    <p>Scroll short 60-second explanations.</p>
-  </div>
-  <div class="card">
-    <h3>2️⃣ Understand</h3>
-    <p>Simple breakdowns that actually make sense.</p>
-  </div>
-  <div class="card">
-    <h3>3️⃣ Improve</h3>
-    <p>Revise daily and boost your grades fast.</p>
-  </div>
+  <div class="card"><h3>1️⃣ Watch</h3><p>Scroll short 60-second explanations.</p></div>
+  <div class="card"><h3>2️⃣ Understand</h3><p>Simple breakdowns that actually make sense.</p></div>
+  <div class="card"><h3>3️⃣ Improve</h3><p>Revise daily and boost your grades fast.</p></div>
 </section>
 
+<!-- Social Proof -->
+<h2 class="section-title">Students Love Us</h2>
+<section class="social-proof">
+  <p>Join 500+ students already improving their grades!</p>
+  <div class="testimonial card">“ReviseFast made my revision so much easier!” – Sarah, Year 12</div>
+  <div class="testimonial card">“I can finally understand tricky topics in minutes.” – Liam, GCSE</div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <p>Don’t miss out – join early access now!</p>
+  <a href="https://forms.gle/Rahzk9gm3n5jFTDh9" target="_blank" class="btn">Join Free Early Access</a>
+</section>
+
+<!-- Footer -->
 <footer>© 2026 ReviseFast. All rights reserved.</footer>
 
 </body>
