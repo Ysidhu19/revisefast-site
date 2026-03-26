@@ -36,6 +36,10 @@ header { text-align: center; padding: 25px 0; font-size: 28px; font-weight: bold
 .card h3 { font-size: 24px; margin-bottom: 10px; color: #22c55e; }
 .card p { color: #cbd5e1; font-size: 16px; }
 
+/* --- Fade-in Animation --- */
+.fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
 /* --- Social Proof --- */
 .social-proof p { font-size: 18px; color: #cbd5e1; text-align: center; }
 .social-proof .testimonial { background: #1e293b; padding: 20px; border-radius: 12px; font-style: italic; }
@@ -70,25 +74,25 @@ footer { text-align: center; padding: 25px 0; font-size: 14px; color: #94a3b8; b
 <!-- Features -->
 <h2 class="section-title">Features</h2>
 <section class="features">
-  <div class="card"><h3>⚡ Fast Learning</h3><p>Get straight to the point with quick explanations.</p></div>
-  <div class="card"><h3>📚 All Subjects</h3><p>Maths, Science, English and more.</p></div>
-  <div class="card"><h3>🔥 Daily Streaks</h3><p>Stay consistent and improve every day.</p></div>
+  <div class="card fade-in"><h3>⚡ Fast Learning</h3><p>Get straight to the point with quick explanations.</p></div>
+  <div class="card fade-in"><h3>📚 All Subjects</h3><p>Maths, Science, English and more.</p></div>
+  <div class="card fade-in"><h3>🔥 Daily Streaks</h3><p>Stay consistent and improve every day.</p></div>
 </section>
 
 <!-- How It Works -->
 <h2 class="section-title">How it Works</h2>
 <section class="how-it-works">
-  <div class="card"><h3>1️⃣ Watch</h3><p>Scroll short 60-second explanations.</p></div>
-  <div class="card"><h3>2️⃣ Understand</h3><p>Simple breakdowns that actually make sense.</p></div>
-  <div class="card"><h3>3️⃣ Improve</h3><p>Revise daily and boost your grades fast.</p></div>
+  <div class="card fade-in"><h3>1️⃣ Watch</h3><p>Scroll short 60-second explanations.</p></div>
+  <div class="card fade-in"><h3>2️⃣ Understand</h3><p>Simple breakdowns that actually make sense.</p></div>
+  <div class="card fade-in"><h3>3️⃣ Improve</h3><p>Revise daily and boost your grades fast.</p></div>
 </section>
 
 <!-- Social Proof -->
 <h2 class="section-title">Students Love Us</h2>
 <section class="social-proof">
   <p>Join 500+ students already improving their grades!</p>
-  <div class="testimonial card">“ReviseFast made my revision so much easier!” – Sarah, Year 12</div>
-  <div class="testimonial card">“I can finally understand tricky topics in minutes.” – Liam, GCSE</div>
+  <div class="testimonial card fade-in">“ReviseFast made my revision so much easier!” – Sarah, Year 12</div>
+  <div class="testimonial card fade-in">“I can finally understand tricky topics in minutes.” – Liam, GCSE</div>
 </section>
 
 <!-- CTA Section -->
@@ -99,6 +103,24 @@ footer { text-align: center; padding: 25px 0; font-size: 14px; color: #94a3b8; b
 
 <!-- Footer -->
 <footer>© 2026 ReviseFast. All rights reserved.</footer>
+
+<!-- Scroll Fade-in JS -->
+<script>
+const faders = document.querySelectorAll('.fade-in');
+
+const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+
+const appearOnScroll = new IntersectionObserver(function(entries, observer){
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, appearOptions);
+
+faders.forEach(fader => appearOnScroll.observe(fader));
+</script>
 
 </body>
 </html>
