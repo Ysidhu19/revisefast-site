@@ -1,289 +1,745 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>ReviseFast</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ReviseFast — Revise Smarter, Not Harder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Inter', sans-serif; background:#0f1115; color:#f5f5f5; }
+    :root {
+      --bg: #0b0c10;
+      --surface: #13141a;
+      --surface2: #1c1d26;
+      --border: #2a2b38;
+      --accent: #c8f135;
+      --accent-dim: #a8d020;
+      --text: #f0f0f0;
+      --muted: #8a8b9a;
+      --white: #ffffff;
+    }
 
-/* Header */
-header {
-  font-family:'Montserrat', sans-serif;
-  font-weight:600;
-  font-size:28px;
-  text-align:center;
-  padding:30px 0;
-  letter-spacing:1.5px;
-}
+    html { scroll-behavior: smooth; }
 
-/* Hero */
-.hero {
-  text-align:center;
-  padding:160px 20px 120px;
-  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)),
-  url('https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
-}
-.hero h1 {
-  font-size:48px;
-  max-width:800px;
-  margin:0 auto 20px;
-  line-height:1.2;
-}
-.hero p {
-  font-size:20px;
-  color:#cbd5e1;
-  max-width:600px;
-  margin:0 auto 40px;
-}
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
 
-/* Button */
-.btn {
-  background: linear-gradient(135deg, #1e3a2b, #22c55e);
-  padding:16px 50px;
-  border-radius:999px;
-  color:#fff;
-  border:none;
-  cursor:pointer;
-  font-weight:600;
-  transition:0.3s;
-}
-.btn:hover { transform:scale(1.05); }
-.btn:active { transform:scale(0.97); }
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-/* Section */
-.section-title {
-  text-align:center;
-  font-size:32px;
-  margin:80px 0 40px;
-  color:#22c55e;
-}
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(11, 12, 16, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
 
-.features {
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:40px;
-  padding:0 20px 80px;
-}
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.5px;
+    }
 
-.card {
-  background: rgba(255,255,255,0.03);
-  padding:35px;
-  border-radius:16px;
-  max-width:300px;
-  text-align:center;
-  transition:0.4s;
-}
-.card:hover {
-  transform:translateY(-10px);
-  box-shadow:0 20px 40px rgba(0,0,0,0.4);
-}
+    .logo span { color: var(--accent); }
 
-/* Fade */
-.fade-in {
-  opacity:0;
-  transform:translateY(20px);
-  transition:0.8s;
-}
-.fade-in.visible {
-  opacity:1;
-  transform:translateY(0);
-}
+    .nav-cta {
+      background: var(--accent);
+      color: #0b0c10;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      text-decoration: none;
+    }
+    .nav-cta:hover { background: var(--accent-dim); transform: translateY(-1px); }
 
-/* Modal */
-.modal {
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.75);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  opacity:0;
-  pointer-events:none;
-  transition:0.3s;
-}
-.modal.show {
-  opacity:1;
-  pointer-events:auto;
-}
-.modal-content {
-  background: rgba(255,255,255,0.04);
-  padding:40px;
-  border-radius:20px;
-  width:90%;
-  max-width:500px;
-  transform:translateY(30px);
-  transition:0.4s;
-}
-.modal.show .modal-content {
-  transform:translateY(0);
-}
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+    }
 
-.modal-close {
-  float:right;
-  cursor:pointer;
-  font-size:22px;
-}
+    /* Glow blob behind hero text */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(200, 241, 53, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
 
-/* Form */
-form {
-  display:flex;
-  flex-direction:column;
-  gap:15px;
-}
-input {
-  padding:16px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.03);
-  color:#fff;
-}
-input:focus { border:1px solid #22c55e; }
+    .hero > * { position: relative; z-index: 1; }
 
-/* Footer */
-footer {
-  text-align:center;
-  padding:25px;
-  color:#6b7280;
-}
-</style>
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 32px;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .badge-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -1.5px;
+      color: var(--white);
+      max-width: 800px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 40px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .hero-form {
+      display: flex;
+      gap: 10px;
+      animation: fadeUp 0.6s 0.3s ease both;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero-form input[type="email"] {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--text);
+      width: 280px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .hero-form input[type="email"]::placeholder { color: var(--muted); }
+    .hero-form input[type="email"]:focus { border-color: var(--accent); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0b0c10;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 28px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--accent-dim);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(200, 241, 53, 0.25);
+    }
+
+    .hero-note {
+      margin-top: 14px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+
+    .social-proof {
+      margin-top: 56px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: fadeUp 0.6s 0.5s ease both;
+    }
+
+    .avatars {
+      display: flex;
+    }
+    .avatars span {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      margin-left: -8px;
+    }
+    .avatars span:first-child { margin-left: 0; }
+    .av1 { background: #3b82f6; }
+    .av2 { background: #8b5cf6; }
+    .av3 { background: #ec4899; }
+    .av4 { background: #f59e0b; }
+
+    .proof-text { font-size: 0.88rem; color: var(--muted); }
+    .proof-text strong { color: var(--text); }
+
+    /* ── SECTION BASE ── */
+    section { padding: 100px 24px; position: relative; z-index: 1; }
+    .container { max-width: 1060px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 540px;
+    }
+
+    /* ── WHY SECTION ── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 56px;
+    }
+
+    .why-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .why-card:hover {
+      border-color: rgba(200, 241, 53, 0.4);
+      transform: translateY(-3px);
+    }
+
+    .why-icon {
+      font-size: 2rem;
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .why-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .why-card p { font-size: 0.95rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── HOW IT WORKS ── */
+    .how-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0;
+      margin-top: 56px;
+    }
+
+    .step {
+      padding: 32px;
+      position: relative;
+    }
+
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 1px; height: 60px;
+      background: var(--border);
+    }
+
+    .step-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      color: rgba(200, 241, 53, 0.15);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .step h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .step p { font-size: 0.9rem; color: var(--muted); }
+
+    /* ── FAQ ── */
+    .faq-list {
+      margin-top: 56px;
+      max-width: 680px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-q {
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 22px 0;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .faq-q .chevron {
+      color: var(--muted);
+      font-size: 1.2rem;
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .chevron { transform: rotate(45deg); color: var(--accent); }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.3s;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-a {
+      max-height: 200px;
+      padding-bottom: 20px;
+    }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      text-align: center;
+      padding: 100px 24px;
+    }
+
+    .cta-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 64px 48px;
+      max-width: 640px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: 50%;
+      transform: translateX(-50%);
+      width: 400px; height: 300px;
+      background: radial-gradient(ellipse, rgba(200, 241, 53, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-box h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.6px;
+      color: var(--white);
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .cta-box p {
+      color: var(--muted);
+      margin-bottom: 36px;
+      font-size: 1rem;
+      position: relative;
+    }
+
+    .cta-form {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .cta-form input[type="email"] {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--text);
+      width: 260px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .cta-form input[type="email"]::placeholder { color: var(--muted); }
+    .cta-form input[type="email"]:focus { border-color: var(--accent); }
+
+    /* ── SUCCESS MESSAGE ── */
+    .success-msg {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .success-msg.visible { display: flex; }
+
+    .success-icon {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: rgba(200, 241, 53, 0.15);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .success-msg h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      color: var(--white);
+    }
+
+    .success-msg p { color: var(--muted); font-size: 0.95rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer .logo { font-size: 1.1rem; }
+    footer p { font-size: 0.82rem; color: var(--muted); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .hero-form { flex-direction: column; align-items: stretch; }
+      .hero-form input[type="email"] { width: 100%; }
+      .step:not(:last-child)::after { display: none; }
+      .cta-box { padding: 40px 24px; }
+      .cta-form { flex-direction: column; align-items: stretch; }
+      .cta-form input[type="email"] { width: 100%; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
 </head>
-
 <body>
 
-<header>ReviseFast</header>
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Revise<span>Fast</span></div>
+    <a href="#cta" class="nav-cta">Get Early Access</a>
+  </nav>
 
-<section class="hero">
-  <h1>Stop wasting hours revising. Learn what actually matters.</h1>
-  <p>Short, simple explanations designed to help you understand topics faster — without the stress.</p>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="badge"><span class="badge-dot"></span> Early Access — Limited Spots</div>
+    <h1>Revise smarter.<br>Score <em>higher.</em></h1>
+    <p class="hero-sub">Short, focused explanations built around your exams. No fluff, no filler — just the things that actually get you marks.</p>
 
-  <button class="btn" id="openModal">Get Early Access</button>
-
-  <p style="margin-top:15px; color:#6b7280; font-size:14px;">
-    Built for students. No spam. Just better revision.
-  </p>
-</section>
-
-<h2 class="section-title">Why ReviseFast</h2>
-<section class="features">
-  <div class="card fade-in">
-    <h3>⚡ Fast Understanding</h3>
-    <p>Grasp key concepts quickly without wasting time.</p>
-  </div>
-  <div class="card fade-in">
-    <h3>📚 Exam-Focused</h3>
-    <p>Only what you actually need to know for exams.</p>
-  </div>
-  <div class="card fade-in">
-    <h3>🔥 Stay Consistent</h3>
-    <p>Build daily revision habits that improve results.</p>
-  </div>
-</section>
-
-<section style="text-align:center; padding:80px 20px;">
-  <p style="color:#cbd5e1; margin-bottom:20px;">
-    Get early access before the full launch.
-  </p>
-  <button class="btn" id="openModal2">Get Early Access</button>
-</section>
-
-<!-- Modal -->
-<div class="modal" id="modal">
-  <div class="modal-content">
-
-    <span class="modal-close" id="closeModal">&times;</span>
-
-    <div id="formContainer">
-      <h2>Get Early Access</h2>
-      <p style="color:#cbd5e1; margin-bottom:20px;">
-        Get early access before the full launch.
-      </p>
-
-      <form id="earlyForm">
-        <input type="text" placeholder="Your name" id="name" required>
-        <input type="email" placeholder="Your email" id="email" required>
-        <button type="submit" class="btn">Get Early Access</button>
-      </form>
-
-      <p style="font-size:13px; color:#6b7280; margin-top:10px;">
-        Takes 10 seconds. No spam.
-      </p>
+    <div class="hero-form" id="hero-form">
+      <input type="email" id="hero-email" placeholder="your@email.com" autocomplete="email"/>
+      <button class="btn-primary" onclick="handleSignup('hero')">Get Early Access →</button>
     </div>
-
-    <div id="successMessage" style="display:none; text-align:center;">
-      <h2>You're in 🎉</h2>
-      <p style="color:#cbd5e1;">We'll let you know when we launch.</p>
+    <div class="success-msg" id="hero-success">
+      <div class="success-icon">🎉</div>
+      <h3>You're in!</h3>
+      <p>We'll email you the moment we launch.</p>
     </div>
+    <p class="hero-note">Free for early access users. No spam, ever.</p>
 
-  </div>
-</div>
+    <div class="social-proof">
+      <div class="avatars">
+        <span class="av1">👩‍🎓</span>
+        <span class="av2">👨‍🎓</span>
+        <span class="av3">👩‍🎓</span>
+        <span class="av4">👨‍🎓</span>
+      </div>
+      <span class="proof-text"><strong>240+ students</strong> already on the waitlist</span>
+    </div>
+  </section>
 
-<footer>© 2026 ReviseFast</footer>
+  <!-- WHY -->
+  <section>
+    <div class="container">
+      <p class="section-label reveal">Why ReviseFast</p>
+      <h2 class="section-title reveal">Built for the way<br>students actually learn</h2>
+      <p class="section-sub reveal">Stop wading through textbooks. ReviseFast gets you to the point — fast.</p>
+      <div class="why-grid">
+        <div class="why-card reveal">
+          <span class="why-icon">⚡</span>
+          <h3>Fast Understanding</h3>
+          <p>Every topic broken down into 5-minute reads. Understand the key ideas quickly so you spend less time confused and more time confident.</p>
+        </div>
+        <div class="why-card reveal">
+          <span class="why-icon">🎯</span>
+          <h3>Exam-Focused</h3>
+          <p>No textbook padding. Every explanation is written with the exam mark scheme in mind — so you only learn what actually earns marks.</p>
+        </div>
+        <div class="why-card reveal">
+          <span class="why-icon">🔥</span>
+          <h3>Stay Consistent</h3>
+          <p>Short daily sessions beat marathon cramming every time. ReviseFast is designed to fit into your routine and actually stick.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<script>
-/* Fade-in */
-const faders = document.querySelectorAll('.fade-in');
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add('visible');
-    } else {
-      entry.target.classList.remove('visible');
+  <!-- HOW IT WORKS -->
+  <section class="how-section">
+    <div class="container">
+      <p class="section-label reveal">How It Works</p>
+      <h2 class="section-title reveal">Up and revising in<br>under a minute</h2>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">01</div>
+          <h3>Pick a topic</h3>
+          <p>Choose from any subject or exam board. We've got you covered across GCSE and A-Level.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">02</div>
+          <h3>Read the summary</h3>
+          <p>Clear, concise explanations written by students who've actually sat the exams.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">03</div>
+          <h3>Test yourself</h3>
+          <p>Quick questions after each topic so you know exactly what you've actually understood.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section style="background: var(--surface); border-top: 1px solid var(--border);">
+    <div class="container">
+      <p class="section-label reveal">FAQ</p>
+      <h2 class="section-title reveal">Common questions</h2>
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Is ReviseFast free? <span class="chevron">+</span>
+          </button>
+          <div class="faq-a">Yes — early access users get full free access. We'll always have a free tier, with optional premium features in the future.</div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Which subjects and exam boards do you cover? <span class="chevron">+</span>
+          </button>
+          <div class="faq-a">We're launching with GCSE and A-Level core subjects (Maths, Sciences, English, History) across AQA, Edexcel, and OCR. More subjects are being added every week.</div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            When is ReviseFast launching? <span class="chevron">+</span>
+          </button>
+          <div class="faq-a">We're targeting a launch before the 2026 exam season. Everyone on the waitlist will be the first to know — and first to get access.</div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            How is this different from other revision apps? <span class="chevron">+</span>
+          </button>
+          <div class="faq-a">Most revision tools are just digital versions of textbooks. ReviseFast is built around concise, exam-focused summaries and quick self-testing — designed to fit into short sessions so you actually stay consistent.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="cta-section" id="cta">
+    <div class="cta-box">
+      <h2>Ready to revise smarter?</h2>
+      <p>Join 240+ students already on the waitlist. Free for early access.</p>
+      <div class="cta-form" id="cta-form">
+        <input type="email" id="cta-email" placeholder="your@email.com" autocomplete="email"/>
+        <button class="btn-primary" onclick="handleSignup('cta')">Get Early Access →</button>
+      </div>
+      <div class="success-msg" id="cta-success">
+        <div class="success-icon">🎉</div>
+        <h3>You're in!</h3>
+        <p>We'll email you the moment we launch.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo">Revise<span>Fast</span></div>
+    <p>© 2026 ReviseFast. Built for students.</p>
+  </footer>
+
+  <script>
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── FAQ toggle ──
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
     }
-  });
-});
-faders.forEach(el=>observer.observe(el));
 
-/* Modal */
-const modal = document.getElementById('modal');
-const openBtns = document.querySelectorAll('#openModal, #openModal2');
-const closeBtn = document.getElementById('closeModal');
+    // ── Signup handler ──
+    function handleSignup(source) {
+      const emailInput = document.getElementById(source + '-email');
+      const form = document.getElementById(source + '-form');
+      const success = document.getElementById(source + '-success');
 
-openBtns.forEach(btn=>{
-  btn.onclick = ()=>{
-    modal.classList.add('show');
-    document.body.style.overflow='hidden';
-  }
-});
+      if (!emailInput) return;
 
-closeBtn.onclick = ()=>{
-  modal.classList.remove('show');
-  document.body.style.overflow='auto';
-};
+      const email = emailInput.value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-window.onclick = (e)=>{
-  if(e.target===modal){
-    modal.classList.remove('show');
-    document.body.style.overflow='auto';
-  }
-};
+      if (!emailRegex.test(email)) {
+        emailInput.style.borderColor = '#ef4444';
+        emailInput.placeholder = 'Please enter a valid email';
+        setTimeout(() => {
+          emailInput.style.borderColor = '';
+          emailInput.placeholder = 'your@email.com';
+        }, 2000);
+        return;
+      }
 
-/* Form Submit */
-document.getElementById('earlyForm').addEventListener('submit', function(e){
-  e.preventDefault();
+      // ── Replace this fetch() with your own form backend / Formspree / EmailJS ──
+      // Example Formspree: fetch('https://formspree.io/f/YOUR_ID', { method:'POST', body: JSON.stringify({email}), headers:{'Content-Type':'application/json'} })
 
-  const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSeBmPBUpkNn1v9ld23CvepqZGsa5FYLsF98PQAqYN0iw312Dw/formResponse";
+      form.style.display = 'none';
+      success.classList.add('visible');
+    }
 
-  const data = new FormData();
-  data.append("entry.1681045096", document.getElementById('name').value);
-  data.append("entry.87245831", document.getElementById('email').value);
-
-  fetch(formURL, {
-    method: "POST",
-    mode: "no-cors",
-    body: data
-  });
-
-  document.getElementById('formContainer').style.display='none';
-  document.getElementById('successMessage').style.display='block';
-});
-</script>
-
+    // Allow pressing Enter in email inputs
+    document.querySelectorAll('input[type="email"]').forEach(input => {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const source = input.id.replace('-email', '');
+          handleSignup(source);
+        }
+      });
+    });
+  </script>
 </body>
 </html>
