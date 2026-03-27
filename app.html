@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ReviseFast — GCSE English</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f7f4ee; --bg2:#efeae0; --bg3:#e8e1d4;
+      --ink:#1c1917; --ink-mid:#44403c; --ink-light:#78716c;
+      --gold:#b5893a; --gold-lt:#d4a853; --gold-bg:#fdf3e0;
+      --border:#ddd5c4; --white:#ffffff;
+      --green:#16a34a; --green-bg:#f0fdf4;
+      --red:#dc2626; --red-bg:#fef2f2;
+      --sidebar:220px;
+    }
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg); color:var(--ink);
+      font-family:'Plus Jakarta Sans',sans-serif;
+      font-size:16px; line-height:1.65; overflow-x:hidden;
+      min-height:100vh;
+    }
+
+    /* ── PAPER LINES ── */
+    body::before{
+      content:''; position:fixed; inset:0;
+      background-image:repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(181,137,58,0.08) 31px,rgba(181,137,58,0.08) 32px);
+      pointer-events:none; z-index:0;
+    }
+
+    /* ── VIEWS ── */
+    .view{display:none; position:relative; z-index:1}
+    .view.active{display:block}
+
+    /* ═══════════════════════════
+       ONBOARDING
+    ═══════════════════════════ */
+    #view-onboarding{
+      min-height:100vh; display:none;
+      align-items:center; justify-content:center;
+      padding:40px 24px;
+    }
+    #view-onboarding.active{display:flex}
+
+    .ob-card{
+      background:var(--white); border:1px solid var(--border);
+      border-radius:24px; padding:48px 40px;
+      max-width:480px; width:100%;
+      box-shadow:0 24px 64px rgba(28,25,23,0.1);
+    }
+    .ob-logo{
+      font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:800;
+      color:var(--ink); margin-bottom:28px;
+    }
+    .ob-logo span{color:var(--gold)}
+    .ob-card h2{
+      font-family:'Playfair Display',serif; font-size:1.9rem; font-weight:800;
+      color:var(--ink); margin-bottom:8px; line-height:1.2;
+    }
+    .ob-card p{color:var(--ink-light); font-size:0.95rem; margin-bottom:32px}
+
+    .field-label{font-size:0.82rem; font-weight:700; color:var(--ink-mid); margin-bottom:8px; display:block}
+    .ob-input{
+      width:100%; background:var(--bg); border:1.5px solid var(--border);
+      border-radius:10px; padding:14px 16px;
+      font-family:'Plus Jakarta Sans',sans-serif; font-size:1rem; color:var(--ink);
+      outline:none; margin-bottom:20px;
+      transition:border-color 0.2s, box-shadow 0.2s;
+    }
+    .ob-input:focus{border-color:var(--gold); box-shadow:0 0 0 3px rgba(181,137,58,0.12)}
+    .ob-input::placeholder{color:var(--ink-light)}
+
+    .board-options{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:28px}
+    .board-btn{
+      background:var(--bg); border:1.5px solid var(--border); border-radius:12px;
+      padding:14px; text-align:center; cursor:pointer;
+      font-family:'Plus Jakarta Sans',sans-serif; font-weight:600; font-size:0.92rem;
+      color:var(--ink-mid); transition:all 0.2s;
+    }
+    .board-btn:hover{border-color:var(--gold); color:var(--ink)}
+    .board-btn.selected{
+      border-color:var(--gold); background:var(--gold-bg); color:var(--gold);
+    }
+    .board-btn .board-sub{font-size:0.75rem; color:var(--ink-light); font-weight:400; margin-top:3px}
+
+    .btn-full{
+      width:100%; background:var(--ink); color:var(--bg);
+      border:none; border-radius:12px; padding:16px;
+      font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:1rem;
+      cursor:pointer; transition:background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-full:hover{background:var(--gold); transform:translateY(-2px); box-shadow:0 8px 24px rgba(181,137,58,0.25)}
+
+    /* ═══════════════════════════
+       MAIN LAYOUT
+    ═══════════════════════════ */
+    #view-app{display:none}
+    #view-app.active{display:flex; min-height:100vh}
+
+    /* SIDEBAR */
+    .sidebar{
+      width:var(--sidebar); flex-shrink:0;
+      background:var(--ink); height:100vh; position:sticky; top:0;
+      display:flex; flex-direction:column; padding:28px 20px;
+      z-index:10;
+    }
+    .sidebar-logo{
+      font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:800;
+      color:var(--white); margin-bottom:36px; padding-bottom:24px;
+      border-bottom:1px solid rgba(255,255,255,0.1);
+    }
+    .sidebar-logo span{color:var(--gold)}
+
+    .nav-group-label{
+      font-size:0.68rem; font-weight:700; letter-spacing:2px;
+      text-transform:uppercase; color:rgba(255,255,255,0.3);
+      margin-bottom:10px; margin-top:20px; padding-left:12px;
+    }
+    .nav-item{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px; border-radius:10px;
+      font-size:0.88rem; font-weight:600; color:rgba(255,255,255,0.55);
+      cursor:pointer; transition:all 0.2s; margin-bottom:2px;
+      border:none; background:none; width:100%; text-align:left;
+    }
+    .nav-item:hover{background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.85)}
+    .nav-item.active{background:rgba(181,137,58,0.15); color:var(--gold)}
+    .nav-item .nav-icon{font-size:1rem; width:20px; text-align:center}
+
+    .sidebar-bottom{margin-top:auto}
+    .user-chip{
+      display:flex; align-items:center; gap:10px;
+      padding:12px; border-radius:12px;
+      background:rgba(255,255,255,0.06);
+    }
+    .user-avatar{
+      width:36px; height:36px; border-radius:50%;
+      background:linear-gradient(135deg,var(--gold),var(--gold-lt));
+      display:flex; align-items:center; justify-content:center;
+      font-size:0.9rem; font-weight:700; color:var(--ink); flex-shrink:0;
+    }
+    .user-name{font-size:0.85rem; font-weight:600; color:var(--white)}
+    .user-board{font-size:0.75rem; color:rgba(255,255,255,0.4)}
+
+    /* MAIN CONTENT */
+    .main-content{flex:1; overflow-y:auto; min-height:100vh}
+
+    .page{display:none; padding:40px 48px; max-width:960px}
+    .page.active{display:block}
+
+    /* ═══════════════════════════
+       DASHBOARD PAGE
+    ═══════════════════════════ */
+    .dash-header{margin-bottom:36px}
+    .dash-greeting{
+      font-family:'Playfair Display',serif; font-size:2rem; font-weight:800;
+      color:var(--ink); margin-bottom:6px;
+    }
+    .dash-greeting em{font-style:italic; color:var(--gold)}
+    .dash-sub{color:var(--ink-light); font-size:0.95rem}
+
+    .stats-row{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:36px}
+    .stat-card{
+      background:var(--white); border:1px solid var(--border);
+      border-radius:16px; padding:22px 24px;
+      display:flex; align-items:center; gap:16px;
+    }
+    .stat-icon{
+      width:48px; height:48px; border-radius:12px;
+      background:var(--gold-bg); display:flex; align-items:center;
+      justify-content:center; font-size:1.3rem; flex-shrink:0;
+    }
+    .stat-val{
+      font-family:'Playfair Display',serif; font-size:1.7rem;
+      font-weight:800; color:var(--ink); line-height:1;
+    }
+    .stat-label{font-size:0.8rem; color:var(--ink-light); margin-top:3px}
+
+    .tier-bar-wrap{
+      background:var(--white); border:1px solid var(--border);
+      border-radius:16px; padding:22px 24px; margin-bottom:36px;
+    }
+    .tier-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px}
+    .tier-badge{
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:0.82rem; font-weight:700; color:var(--gold);
+      background:var(--gold-bg); border:1px solid rgba(181,137,58,0.3);
+      padding:4px 12px; border-radius:999px;
+    }
+    .tier-next{font-size:0.82rem; color:var(--ink-light)}
+    .xp-bar{height:8px; background:var(--bg2); border-radius:999px; overflow:hidden}
+    .xp-fill{
+      height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-lt));
+      border-radius:999px; transition:width 0.8s ease;
+    }
+
+    .section-heading{
+      font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:800;
+      color:var(--ink); margin-bottom:20px;
+    }
+
+    .topics-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:40px}
+    .topic-card{
+      background:var(--white); border:1px solid var(--border);
+      border-radius:16px; padding:24px; cursor:pointer;
+      transition:box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+      position:relative; overflow:hidden;
+    }
+    .topic-card::before{
+      content:''; position:absolute; top:0;left:0;right:0; height:3px;
+      background:linear-gradient(90deg,var(--gold),var(--gold-lt));
+      opacity:0; transition:opacity 0.2s;
+    }
+    .topic-card:hover{box-shadow:0 12px 36px rgba(28,25,23,0.1); transform:translateY(-3px)}
+    .topic-card:hover::before{opacity:1}
+    .topic-card.completed{border-color:rgba(22,163,74,0.3); background:var(--green-bg)}
+    .topic-card.completed::before{opacity:1; background:linear-gradient(90deg,#16a34a,#22c55e)}
+
+    .tc-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px}
+    .tc-board{
+      font-size:0.7rem; font-weight:700; letter-spacing:1.5px;
+      text-transform:uppercase; color:var(--gold);
+      background:var(--gold-bg); padding:3px 10px; border-radius:999px;
+    }
+    .tc-board.edexcel{color:#7c3aed; background:#f5f3ff}
+    .tc-check{color:var(--green); font-size:1.1rem}
+    .tc-title{
+      font-family:'Playfair Display',serif; font-size:1.05rem;
+      font-weight:700; color:var(--ink); margin-bottom:8px;
+    }
+    .tc-desc{font-size:0.85rem; color:var(--ink-light); line-height:1.6; margin-bottom:16px}
+    .tc-footer{display:flex; align-items:center; justify-content:space-between}
+    .tc-meta{display:flex; align-items:center; gap:14px}
+    .tc-tag{font-size:0.75rem; color:var(--ink-light)}
+    .tc-xp{
+      font-size:0.78rem; font-weight:700; color:var(--gold);
+      background:var(--gold-bg); padding:3px 10px; border-radius:999px;
+    }
+
+    /* ═══════════════════════════
+       TOPIC PAGE
+    ═══════════════════════════ */
+    .topic-header{
+      background:var(--white); border:1px solid var(--border);
+      border-radius:20px; padding:32px; margin-bottom:28px;
+    }
+    .back-btn{
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:0.85rem; font-weight:600; color:var(--ink-light);
+      cursor:pointer; border:none; background:none; margin-bottom:20px;
+      transition:color 0.2s; padding:0;
+    }
+    .back-btn:hover{color:var(--ink)}
+    .topic-eyebrow{
+      font-size:0.72rem; font-weight:700; letter-spacing:2px;
+      text-transform:uppercase; color:var(--gold); margin-bottom:10px;
+    }
+    .topic-title{
+      font-family:'Playfair Display',serif; font-size:2rem;
+      font-weight:800; color:var(--ink); margin-bottom:12px; line-height:1.2;
+    }
+    .topic-meta-row{display:flex; align-items:center; gap:16px; flex-wrap:wrap}
+    .tmeta{font-size:0.82rem; color:var(--ink-light); display:flex; align-items:center; gap:5px}
+
+    .content-card{
+      background:var(--white); border:1px solid var(--border);
+      border-radius:20px; padding:36px; margin-bottom:20px;
+    }
+    .content-card h3{
+      font-family:'Playfair Display',serif; font-size:1.25rem; font-weight:700;
+      color:var(--ink); margin-bottom:16px;
+    }
+    .content-card p{font-size:0.97rem; color:var(--ink-mid); line-height:1.8; margin-bottom:14px}
+    .content-card p:last-child{margin-bottom:0}
+
+    .key-points{
+      background:var(--gold-bg); border:1px solid rgba(181,137,58,0.25);
+      border-radius:14px; padding:24px; margin:20px 0;
+    }
+    .key-points h4{
+      font-family:'Playfair Display',serif; font-size:1rem; font-weight:700;
+      color:var(--gold); margin-bottom:14px; display:flex; align-items:center; gap:8px;
+    }
+    .key-points ul{list-style:none; display:flex; flex-direction:column; gap:10px}
+    .key-points li{
+      font-size:0.93rem; color:var(--ink-mid); line-height:1.6;
+      display:flex; gap:10px; align-items:flex-start;
+    }
+    .key-points li::before{
+      content:'→'; color:var(--gold); font-weight:700; flex-shrink:0; margin-top:2px;
+    }
+
+    .technique-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin:20px 0}
+    .technique{
+      background:var(--bg); border:1px solid var(--border);
+      border-radius:12px; padding:18px;
+    }
+    .technique strong{
+      font-family:'Playfair Display',serif; font-size:0.97rem;
+      font-weight:700; color:var(--ink); display:block; margin-bottom:6px;
+    }
+    .technique span{font-size:0.87rem; color:var(--ink-mid); line-height:1.6}
+
+    .example-box{
+      background:var(--ink); border-radius:14px; padding:24px; margin:20px 0;
+    }
+    .example-box .ex-label{
+      font-size:0.72rem; font-weight:700; letter-spacing:2px;
+      text-transform:uppercase; color:var(--gold); margin-bottom:10px;
+    }
+    .example-box p{
+      font-size:0.95rem; color:rgba(247,244,238,0.85); line-height:1.8;
+      font-style:italic; margin:0;
+    }
+    .example-box .ex-note{
+      margin-top:12px; font-size:0.82rem; color:rgba(247,244,238,0.5);
+      font-style:normal;
+    }
+
+    .start-quiz-btn{
+      width:100%; background:var(--ink); color:var(--bg);
+      border:none; border-radius:14px; padding:18px;
+      font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:1rem;
+      cursor:pointer; transition:background 0.2s, transform 0.15s, box-shadow 0.2s;
+      margin-top:8px;
+    }
+    .start-quiz-btn:hover{background:var(--gold); transform:translateY(-2px); box-shadow:0 8px 24px rgba(181,137,58,0.25)}
+
+    /* ═══════════════════════════
+       QUIZ PAGE
+    ═══════════════════════════ */
+    .quiz-progress-bar{
+      height:5px; background:var(--bg2); border-radius:999px;
+      margin-bottom:32px; overflow:hidden;
+    }
+    .quiz-progress-fill{
+      height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-lt));
+      border-radius:999px; transition:width 0.4s ease;
+    }
+    .quiz-card{
+      background:var(--white); border:1px solid var(--border);
+      border-radius:20px; padding:36px;
+    }
+    .quiz-num{
+      font-size:0.78rem; font-weight:700; letter-spacing:2px;
+      text-transform:uppercase; color:var(--ink-light); margin-bottom:12px;
+    }
+    .quiz-q{
+      font-family:'Playfair Display',serif; font-size:1.35rem; font-weight:700;
+      color:var(--ink); margin-bottom:28px; line-height:1.4;
+    }
+    .quiz-options{display:flex; flex-direction:column; gap:12px; margin-bottom:24px}
+    .quiz-option{
+      background:var(--bg); border:1.5px solid var(--border); border-radius:12px;
+      padding:16px 20px; cursor:pointer; text-align:left;
+      font-family:'Plus Jakarta Sans',sans-serif; font-size:0.95rem; font-weight:500;
+      color:var(--ink); transition:all 0.2s; width:100%;
+      display:flex; align-items:center; gap:14px;
+    }
+    .quiz-option:hover:not(:disabled){border-color:var(--gold); background:var(--gold-bg)}
+    .quiz-option.correct{border-color:var(--green); background:var(--green-bg); color:var(--green)}
+    .quiz-option.wrong{border-color:var(--red); background:var(--red-bg); color:var(--red)}
+    .quiz-option:disabled{cursor:default}
+    .opt-letter{
+      width:28px; height:28px; border-radius:50%;
+      background:var(--border); display:flex; align-items:center; justify-content:center;
+      font-size:0.8rem; font-weight:700; color:var(--ink-mid); flex-shrink:0;
+      transition:all 0.2s;
+    }
+    .quiz-option.correct .opt-letter{background:var(--green); color:var(--white)}
+    .quiz-option.wrong .opt-letter{background:var(--red); color:var(--white)}
+
+    .quiz-feedback{
+      border-radius:12px; padding:16px 20px; margin-top:16px; display:none;
+    }
+    .quiz-feedback.correct{background:var(--green-bg); border:1px solid rgba(22,163,74,0.25)}
+    .quiz-feedback.wrong{background:var(--red-bg); border:1px solid rgba(220,38,38,0.2)}
+    .quiz-feedback.show{display:block}
+    .qf-title{font-weight:700; font-size:0.9rem; margin-bottom:4px}
+    .quiz-feedback.correct .qf-title{color:var(--green)}
+    .quiz-feedback.wrong .qf-title{color:var(--red)}
+    .qf-body{font-size:0.87rem; color:var(--ink-mid); line-height:1.6}
+
+    .quiz-next-btn{
+      width:100%; background:var(--ink); color:var(--bg); border:none;
+      border-radius:12px; padding:16px; font-family:'Plus Jakarta Sans',sans-serif;
+      font-weight:700; font-size:0.97rem; cursor:pointer; margin-top:16px;
+      transition:background 0.2s, transform 0.15s; display:none;
+    }
+    .quiz-next-btn.show{display:block}
+    .quiz-next-btn:hover{background:var(--gold); transform:translateY(-1px)}
+
+    /* RESULTS */
+    .results-card{
+      background:var(--white); border:1px solid var(--border);
+      border-radius:20px; padding:48px; text-align:center;
+    }
+    .results-emoji{font-size:3.5rem; margin-bottom:20px}
+    .results-title{
+      font-family:'Playfair Display',serif; font-size:2rem; font-weight:800;
+      color:var(--ink); margin-bottom:10px;
+    }
+    .results-sub{color:var(--ink-light); margin-bottom:32px}
+    .results-stats{
+      display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px;
+    }
+    .rs{
+      background:var(--bg); border:1px solid var(--border);
+      border-radius:14px; padding:20px;
+    }
+    .rs-val{
+      font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:800;
+      color:var(--ink);
+    }
+    .rs-label{font-size:0.8rem; color:var(--ink-light); margin-top:4px}
+    .xp-earned{
+      display:inline-flex; align-items:center; gap:8px;
+      background:var(--gold-bg); border:1px solid rgba(181,137,58,0.3);
+      color:var(--gold); font-weight:700; font-size:1rem;
+      padding:10px 24px; border-radius:999px; margin-bottom:28px;
+      animation:popIn 0.4s ease both;
+    }
+    @keyframes popIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+
+    /* ═══════════════════════════
+       LEADERBOARD PAGE
+    ═══════════════════════════ */
+    .lb-header{
+      background:var(--ink); border-radius:20px; padding:32px;
+      margin-bottom:28px; position:relative; overflow:hidden;
+    }
+    .lb-header::before{
+      content:'🏆'; position:absolute; right:32px; top:50%;
+      transform:translateY(-50%); font-size:5rem; opacity:0.08;
+    }
+    .lb-header h2{
+      font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:800;
+      color:var(--white); margin-bottom:6px;
+    }
+    .lb-header p{color:rgba(247,244,238,0.55); font-size:0.92rem}
+
+    .lb-note{
+      background:var(--gold-bg); border:1px solid rgba(181,137,58,0.25);
+      border-radius:12px; padding:14px 18px; font-size:0.85rem;
+      color:var(--ink-mid); margin-bottom:24px; display:flex; align-items:center; gap:10px;
+    }
+
+    .lb-table{
+      background:var(--white); border:1px solid var(--border);
+      border-radius:20px; overflow:hidden;
+    }
+    .lb-row{
+      display:grid; grid-template-columns:56px 1fr auto auto;
+      align-items:center; padding:16px 24px; border-bottom:1px solid var(--border);
+      transition:background 0.2s; gap:16px;
+    }
+    .lb-row:last-child{border-bottom:none}
+    .lb-row:hover{background:var(--bg)}
+    .lb-row.you{background:var(--gold-bg); border-left:3px solid var(--gold)}
+    .lb-row.you:hover{background:var(--gold-bg)}
+    .lb-rank{
+      font-family:'Playfair Display',serif; font-size:1.2rem;
+      font-weight:800; color:var(--ink-light); text-align:center;
+    }
+    .lb-rank.top1{color:#f59e0b}
+    .lb-rank.top2{color:#94a3b8}
+    .lb-rank.top3{color:#b45309}
+    .lb-info{display:flex; align-items:center; gap:12px}
+    .lb-avatar{
+      width:38px; height:38px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:0.95rem; font-weight:700; color:var(--white); flex-shrink:0;
+    }
+    .lb-name{font-weight:600; font-size:0.95rem; color:var(--ink)}
+    .lb-board{font-size:0.78rem; color:var(--ink-light)}
+    .lb-you-tag{
+      font-size:0.72rem; font-weight:700; letter-spacing:1px;
+      text-transform:uppercase; color:var(--gold); margin-left:6px;
+    }
+    .lb-xp{
+      font-family:'Playfair Display',serif; font-size:1.1rem;
+      font-weight:700; color:var(--ink); text-align:right;
+    }
+    .lb-xp-label{font-size:0.75rem; color:var(--ink-light); text-align:right}
+    .lb-tier{
+      font-size:0.75rem; font-weight:700; padding:3px 10px; border-radius:999px;
+    }
+    .tier-bronze{background:#fdf3e0; color:#b5893a}
+    .tier-silver{background:#f1f5f9; color:#64748b}
+    .tier-gold{background:#fffbeb; color:#d97706}
+    .tier-platinum{background:#f5f3ff; color:#7c3aed}
+
+    /* ═══════════════════════════
+       XP TOAST
+    ═══════════════════════════ */
+    .xp-toast{
+      position:fixed; bottom:32px; right:32px; z-index:999;
+      background:var(--ink); color:var(--white);
+      border-radius:14px; padding:16px 24px;
+      display:flex; align-items:center; gap:12px;
+      box-shadow:0 16px 48px rgba(28,25,23,0.3);
+      transform:translateY(100px); opacity:0;
+      transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .xp-toast.show{transform:translateY(0); opacity:1}
+    .xp-toast-icon{font-size:1.5rem}
+    .xp-toast-val{
+      font-family:'Playfair Display',serif; font-size:1.3rem;
+      font-weight:800; color:var(--gold);
+    }
+    .xp-toast-label{font-size:0.82rem; color:rgba(255,255,255,0.6); margin-top:1px}
+
+    /* ═══════════════════════════
+       RESPONSIVE
+    ═══════════════════════════ */
+    @media(max-width:768px){
+      .sidebar{display:none}
+      #view-app.active{flex-direction:column}
+      .main-content{min-height:auto}
+      .page{padding:24px 20px}
+      .topics-grid{grid-template-columns:1fr}
+      .stats-row{grid-template-columns:1fr}
+      .technique-grid{grid-template-columns:1fr}
+      .results-stats{grid-template-columns:repeat(3,1fr)}
+      .mobile-nav{display:flex}
+    }
+    .mobile-nav{
+      display:none; position:fixed; bottom:0; left:0; right:0;
+      background:var(--ink); border-top:1px solid rgba(255,255,255,0.1);
+      padding:8px 0 16px; z-index:50;
+      justify-content:space-around;
+    }
+    .mob-nav-item{
+      display:flex; flex-direction:column; align-items:center; gap:3px;
+      font-size:0.68rem; font-weight:600; color:rgba(255,255,255,0.45);
+      cursor:pointer; padding:6px 16px; border:none; background:none;
+      transition:color 0.2s;
+    }
+    .mob-nav-item.active{color:var(--gold)}
+    .mob-nav-item .mob-icon{font-size:1.2rem}
+  </style>
+</head>
+<body>
+
+<!-- ═══ ONBOARDING ═══ -->
+<div id="view-onboarding" class="view active">
+  <div class="ob-card">
+    <div class="ob-logo">Revise<span>Fast</span></div>
+    <h2>Let's get you set up</h2>
+    <p>We'll personalise your revision based on your exam board.</p>
+
+    <label class="field-label" for="ob-name">Your first name</label>
+    <input class="ob-input" type="text" id="ob-name" placeholder="e.g. Priya" autocomplete="given-name"/>
+
+    <label class="field-label">Your exam board</label>
+    <div class="board-options">
+      <div class="board-btn" data-board="AQA" onclick="selectBoard(this)">
+        AQA
+        <div class="board-sub">Most common</div>
+      </div>
+      <div class="board-btn" data-board="Edexcel" onclick="selectBoard(this)">
+        Edexcel
+        <div class="board-sub">Pearson</div>
+      </div>
+    </div>
+
+    <button class="btn-full" onclick="completeOnboarding()">Start Revising →</button>
+  </div>
+</div>
+
+<!-- ═══ MAIN APP ═══ -->
+<div id="view-app" class="view">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">Revise<span>Fast</span></div>
+
+    <div class="nav-group-label">Study</div>
+    <button class="nav-item active" data-page="dashboard" onclick="showPage('dashboard',this)">
+      <span class="nav-icon">📖</span> Dashboard
+    </button>
+    <button class="nav-item" data-page="topics" onclick="showPage('topics',this)">
+      <span class="nav-icon">📝</span> All Topics
+    </button>
+
+    <div class="nav-group-label">Compete</div>
+    <button class="nav-item" data-page="leaderboard" onclick="showPage('leaderboard',this)">
+      <span class="nav-icon">🏆</span> Leaderboard
+    </button>
+
+    <div class="sidebar-bottom">
+      <div class="user-chip">
+        <div class="user-avatar" id="sidebar-avatar">?</div>
+        <div>
+          <div class="user-name" id="sidebar-name">—</div>
+          <div class="user-board" id="sidebar-board">—</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="dash-header">
+        <h1 class="dash-greeting" id="dash-greeting">Good morning, <em>student</em></h1>
+        <p class="dash-sub">Pick up where you left off or start a new topic.</p>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon">⚡</div>
+          <div><div class="stat-val" id="stat-xp">0</div><div class="stat-label">Total XP</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🔥</div>
+          <div><div class="stat-val" id="stat-streak">0</div><div class="stat-label">Day streak</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div><div class="stat-val" id="stat-done">0</div><div class="stat-label">Topics done</div></div>
+        </div>
+      </div>
+
+      <div class="tier-bar-wrap">
+        <div class="tier-row">
+          <div class="tier-badge" id="tier-badge">🥉 Bronze</div>
+          <div class="tier-next" id="tier-next">200 XP to Silver</div>
+        </div>
+        <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+      </div>
+
+      <h2 class="section-heading">Continue Revising</h2>
+      <div class="topics-grid" id="topics-grid-dash"></div>
+    </div>
+
+    <!-- ALL TOPICS -->
+    <div class="page" id="page-topics">
+      <div class="dash-header">
+        <h1 class="dash-greeting">All <em>Topics</em></h1>
+        <p class="dash-sub">GCSE English Language & Literature — AQA and Edexcel</p>
+      </div>
+      <div class="topics-grid" id="topics-grid-all"></div>
+    </div>
+
+    <!-- TOPIC READER -->
+    <div class="page" id="page-topic">
+      <button class="back-btn" onclick="showPage('dashboard', document.querySelector('[data-page=dashboard]'))">← Back to Dashboard</button>
+      <div id="topic-content"></div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="page" id="page-quiz">
+      <button class="back-btn" onclick="showPage('topic', null); renderTopic(currentTopicId)">← Back to Topic</button>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-prog"></div></div>
+      <div id="quiz-content"></div>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div class="page" id="page-leaderboard">
+      <div class="lb-header">
+        <h2>Student Rankings</h2>
+        <p>GCSE English — updated as you complete topics</p>
+      </div>
+      <div class="lb-note">
+        ℹ️ Rankings are based on your device. Invite friends to share their scores and compare!
+      </div>
+      <div class="lb-table" id="lb-table"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav">
+  <button class="mob-nav-item active" onclick="showPage('dashboard',this)"><span class="mob-icon">📖</span>Home</button>
+  <button class="mob-nav-item" onclick="showPage('topics',this)"><span class="mob-icon">📝</span>Topics</button>
+  <button class="mob-nav-item" onclick="showPage('leaderboard',this)"><span class="mob-icon">🏆</span>Ranks</button>
+</nav>
+
+<!-- XP TOAST -->
+<div class="xp-toast" id="xp-toast">
+  <div class="xp-toast-icon">⚡</div>
+  <div>
+    <div class="xp-toast-val" id="toast-val">+50 XP</div>
+    <div class="xp-toast-label">Topic completed!</div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════
+const TOPICS = [
+  {
+    id:'aqa-lang-p1-reading',
+    board:'AQA', paper:'Language Paper 1',
+    title:'Reading Fiction — Language Analysis',
+    desc:'Master the art of analysing language in unseen fiction texts for Paper 1.',
+    duration:'8 min', xp:50,
+    content:{
+      intro:`Paper 1 Section A asks you to analyse an unseen fiction text — often a novel or short story. Questions build in difficulty from retrieval (Q1) through to extended analysis of structure (Q4). The key skill throughout is selecting precise evidence and explaining its effect on the reader.`,
+      sections:[
+        {
+          heading:'The Four Questions — What Examiners Want',
+          body:`Q1 (4 marks): List four things about a character/place/event. Pure retrieval — don't analyse, just find and copy. Q2 (8 marks): How does the writer use language? Focus on word choices, imagery, and sentence structure. Q3 (8 marks): How does the writer structure the text? Think about beginnings/endings, focus shifts, and narrative perspective. Q4 (20 marks): Evaluate the text — do you agree with a statement about it? Use a balanced argument with detailed evidence.`,
+          keyPoints:[
+            'Always quote before you analyse — evidence must come before comment',
+            'For Q2: zoom into individual word choices, not just general techniques',
+            'For Q3: think about WHAT the writer focuses on, not HOW they write',
+            'For Q4: agree AND disagree — "to some extent" is always a strong opener',
+          ]
+        },
+        {
+          heading:'Language Analysis Framework — P.E.E.L.',
+          body:`A reliable way to structure your answers is Point → Evidence → Effect → Link. But in practice the best answers blend these together rather than forcing a rigid structure. The most important thing is getting from evidence to effect quickly.`,
+          techniques:[
+            {name:'Metaphor', desc:'Directly equates two unlike things. Always ask: what does this comparison make the reader feel or understand?'},
+            {name:'Simile', desc:'Compares using "like" or "as". Often more gentle than a metaphor — think about why the writer chose not to use a direct comparison.'},
+            {name:'Personification', desc:'Gives human qualities to non-human things. Creates empathy or unease depending on context.'},
+            {name:'Semantic field', desc:'A cluster of words from the same area of meaning. Shows what mood or theme dominates a passage.'},
+          ],
+          example:{
+            label:'Strong Q2 Answer — Example',
+            text:`The writer uses the verb "clawed" to describe how the character grips the door. This violent, animalistic word suggests she is desperate — almost feral — in her need to escape, making the reader fear for her safety.`,
+            note:'Notice: specific word class identified → precise quote → layered effect on reader'
+          }
+        }
+      ]
+    },
+    quiz:[
+      {q:'In Question 2, what should you always include before analysing?',opts:['The writer\'s name','A direct quotation','Your own opinion','A dictionary definition'],ans:1,explain:'Evidence (a quote) must always come before analysis. You cannot explain an effect without first showing the exact words you\'re analysing.'},
+      {q:'Which technique directly equates two unlike things without using "like" or "as"?',opts:['Simile','Personification','Metaphor','Alliteration'],ans:2,explain:'A metaphor directly equates two things. A simile uses "like" or "as" to compare, making it a more indirect comparison.'},
+      {q:'Question 3 focuses on which aspect of the text?',opts:['Language techniques','Writer\'s viewpoint','Structural choices','Character development'],ans:2,explain:'Q3 asks how the writer structures the text — think about shifts in focus, perspective changes, and how the text is ordered.'},
+      {q:'What does "semantic field" mean?',opts:['The use of rhyme and rhythm','A cluster of words from the same area of meaning','Writing from a personal perspective','A description of a place'],ans:1,explain:'A semantic field is a group of words that share a common theme or association, e.g. words related to war, nature, or darkness clustering together.'},
+      {q:'Which sentence starter is recommended for Question 4?',opts:['"The writer uses..."','"\\"To some extent I agree\\""','"\\"The technique used is\\""','"\\"In conclusion\\"'],ans:1,explain:'"To some extent I agree" signals a balanced argument from the start, which is exactly what examiners want to see in Q4.'},
+    ]
+  },
+  {
+    id:'aqa-lang-p1-writing',
+    board:'AQA', paper:'Language Paper 1',
+    title:'Creative Writing — Crafting Your Response',
+    desc:'Learn how to write vivid, controlled creative pieces that score at the top band.',
+    duration:'9 min', xp:50,
+    content:{
+      intro:`Paper 1 Section B gives you a choice: describe a picture, or write a narrative using a title prompt. Both are marked the same way. Examiners aren't just looking for a good story — they want to see deliberate, crafted writing where every word feels chosen.`,
+      sections:[
+        {
+          heading:'What Examiners Actually Want to See',
+          body:`The marking criteria reward two things: Communication (your ideas, structure, tone) and Technical Accuracy (grammar, punctuation, vocabulary). Top-band answers show a writer who is in control — they create effects deliberately, vary their sentence structures, and maintain a consistent voice throughout.`,
+          keyPoints:[
+            '"Show, don\'t tell" — describe the effect of an emotion, not the emotion itself',
+            'Vary sentence length: short sentences create tension; longer ones build atmosphere',
+            'Your opening line is critical — begin mid-action or with a striking image',
+            'End with a callback to your opening for a satisfying, circular structure',
+          ]
+        },
+        {
+          heading:'Techniques That Elevate Your Writing',
+          body:`The best creative writers don't just list techniques — they weave them naturally into their prose. Practise using these until they feel instinctive.`,
+          techniques:[
+            {name:'Pathetic fallacy', desc:'Using weather or environment to reflect emotion. A storm isn\'t just rain — it mirrors the character\'s inner turmoil.'},
+            {name:'In medias res', desc:'Starting in the middle of the action. Immediately creates tension and pulls the reader in without a slow introduction.'},
+            {name:'Varied syntax', desc:'Mix long, flowing sentences with short, punchy ones. One word. Can do more than a paragraph.'},
+            {name:'Concrete sensory detail', desc:'Specific details are always better than vague ones. "The smell of burnt toast" beats "the kitchen smelled bad".'},
+          ],
+          example:{
+            label:'Opening Paragraph — High Band Example',
+            text:`The clock had stopped at 3:47. Nobody knew when — only that one morning the hands had frozen mid-sweep, and nobody had thought to fix it. Maya stood in the doorway, coat still on, and stared at the dusty face. Somewhere in the house, a tap dripped.`,
+            note:'Notice: immediate intrigue, sensory detail, circular potential, atmosphere established in four sentences'
+          }
+        }
+      ]
+    },
+    quiz:[
+      {q:'What does "in medias res" mean?',opts:['Writing in first person','Starting in the middle of the action','Using a flashback structure','Ending with a twist'],ans:1,explain:'"In medias res" is Latin for "into the middle of things" — it means beginning the story mid-action rather than with background information.'},
+      {q:'Which technique uses weather to reflect a character\'s emotions?',opts:['Personification','Metaphor','Pathetic fallacy','Foreshadowing'],ans:2,explain:'Pathetic fallacy is specifically the use of environment and weather to mirror the emotional state of characters or the mood of the scene.'},
+      {q:'Short sentences in creative writing are most effective for:',opts:['Building atmosphere slowly','Creating a sense of tension or shock','Introducing a character','Describing a setting in detail'],ans:1,explain:'Short, punchy sentences create pace and impact. They mimic the rhythm of a heartbeat speeding up, making the reader feel tension or surprise.'},
+      {q:'What is the "show, don\'t tell" principle?',opts:['Avoid using any adjectives','Never directly name emotions — describe their effects instead','Always write in third person','Use only short sentences'],ans:1,explain:'Instead of "she was scared", show the physical effects: "her hands shook and she pressed herself into the wall". This creates a more vivid, immersive experience.'},
+      {q:'Why is a circular structure effective?',opts:['It saves time in the exam','It shows the reader nothing has changed','It creates a sense of completion and deliberate craft','It is easier to plan'],ans:2,explain:'Returning to your opening image or idea at the end signals to the examiner that your writing is controlled and planned — a hallmark of top-band work.'},
+    ]
+  },
+  {
+    id:'aqa-lang-p2-reading',
+    board:'AQA', paper:'Language Paper 2',
+    title:'Reading Non-Fiction — Comparing Viewpoints',
+    desc:'Analyse and compare two non-fiction texts, focusing on how writers present their perspectives.',
+    duration:'10 min', xp:60,
+    content:{
+      intro:`Paper 2 Section A presents two non-fiction texts from different time periods. You'll be asked to summarise differences, analyse language, and compare how the writers present their viewpoints. The key word across all questions is "how" — it's never enough to say what a writer thinks; you must explain how the writing creates that impression.`,
+      sections:[
+        {
+          heading:'The Four Questions Explained',
+          body:`Q5 (4 marks): True/False statements about one source — just retrieve information. Q6 (8 marks): Summarise the differences in how two writers present a topic. Use both texts. Q7 (12 marks): How does the writer use language in Source A? Pure analysis, like Paper 1 Q2. Q8 (16 marks): Compare how both writers present their viewpoints. This is the big one.`,
+          keyPoints:[
+            'For Q6: focus on what each writer says, not how they say it',
+            'For Q8: always compare directly — use "whereas", "however", "in contrast"',
+            'Both texts must be used equally in Q6 and Q8',
+            'Avoid just summarising — the question is always about HOW the writer writes',
+          ]
+        },
+        {
+          heading:'Comparing Writers\' Viewpoints — Q8 Strategy',
+          body:`The highest-scoring Q8 answers weave between both texts throughout rather than writing about one then the other. Use comparative connectives to link your points and always focus on the methods the writers use to convey their viewpoints, not just what they think.`,
+          techniques:[
+            {name:'Comparative connectives', desc:'"Whereas", "in contrast", "similarly", "both writers" — these signal to the examiner you\'re directly comparing.'},
+            {name:'Writer\'s purpose', desc:'Always consider: is the writer trying to persuade, inform, describe, or argue? This shapes every language choice they make.'},
+            {name:'Rhetorical devices', desc:'Direct address ("you"), rhetorical questions, tricolon (list of 3), hyperbole — these are common in persuasive non-fiction.'},
+            {name:'Tone and register', desc:'Is the writer formal or informal? Angry or measured? Personal or detached? The tone often reveals the viewpoint as much as the words.'},
+          ],
+          example:{
+            label:'Q8 Comparative Paragraph — Example',
+            text:`Both writers present nature as overwhelming, yet their tones differ significantly. Source A's writer uses the metaphor "the sea devoured the coastline" to present nature as an aggressive, consuming force, creating a sense of helplessness in the reader. In contrast, Source B's writer describes waves as "gently rearranging the shore", the adverb "gently" softening the same process into something almost tender. This suggests that while Source A warns of nature's destructive power, Source B invites the reader to find beauty in it.`,
+            note:'Notice: both texts used, direct comparison made, language analysis included, effect on reader considered'
+          }
+        }
+      ]
+    },
+    quiz:[
+      {q:'In Paper 2 Q8, the best answers weave between both texts:',opts:['At the end only','Throughout each paragraph','In separate paragraphs','Only in the introduction'],ans:1,explain:'Top-band answers make direct comparisons throughout, rather than writing about one text then the other. Every paragraph should reference both sources.'},
+      {q:'Which word class is "gently" in "gently rearranging the shore"?',opts:['Adjective','Adverb','Verb','Noun'],ans:1,explain:'"Gently" modifies the verb "rearranging" — it tells us how the action is carried out, making it an adverb.'},
+      {q:'What is a tricolon?',opts:['A type of metaphor','A list of three items or phrases','A question without an answer','A contrast between two ideas'],ans:1,explain:'A tricolon is a rhetorical device where three parallel words, phrases, or clauses are used together. It creates rhythm and emphasis.'},
+      {q:'Question 6 asks you to summarise:',opts:['How writers use language','What writers think (their ideas/viewpoints)','The structure of both texts','The effect on the reader'],ans:1,explain:'Q6 focuses on the differences in what each writer says about a topic — their ideas and perspectives — not the techniques they use.'},
+      {q:'Which connective signals a direct comparison?',opts:['"Furthermore"','"In addition"','"Whereas"','"For example"'],ans:2,explain:'"Whereas" signals a direct contrast between two things, making it ideal for comparative writing. "Furthermore" and "in addition" just add more points.'},
+    ]
+  },
+  {
+    id:'aqa-lit-macbeth',
+    board:'AQA', paper:'Literature Paper 1',
+    title:'Macbeth — Key Themes & Quotations',
+    desc:'The essential themes, character analysis, and exam-ready quotations for Macbeth.',
+    duration:'12 min', xp:70,
+    content:{
+      intro:`Macbeth is one of Shakespeare's darkest tragedies, exploring ambition, guilt, and the corruption of power. In the exam you'll be given one extract and asked to write about it before exploring the theme across the whole play. Knowing your quotations by heart — and being able to analyse individual words — is essential.`,
+      sections:[
+        {
+          heading:'Core Themes You Must Know',
+          body:`Every Macbeth essay will touch on at least one of these themes. The best answers link them together — for example, showing how ambition leads to guilt, which causes paranoia.`,
+          keyPoints:[
+            'Ambition: Macbeth\'s "vaulting ambition" — desire for power overrides moral judgement',
+            'Guilt: Lady Macbeth\'s sleepwalking, Macbeth\'s dagger hallucination show guilt made physical',
+            'Appearance vs Reality: "Fair is foul and foul is fair" — nothing is as it seems',
+            'Fate vs Free Will: the witches prophecy but never force — Macbeth always chooses',
+            'Gender and Power: Lady Macbeth "unsex me here" — challenges 17th century gender norms',
+          ]
+        },
+        {
+          heading:'Essential Quotations — Analysed',
+          body:`Don't just memorise quotations — know what individual words mean and why Shakespeare chose them. Even in unseen passages you'll recognise patterns if you've studied the language closely.`,
+          techniques:[
+            {name:'"I am in blood / Stepped in so far"', desc:'The metaphor of wading through blood suggests Macbeth feels committed to evil — going back would be as hard as going forward.'},
+            {name:'"Out, damned spot!"', desc:'Lady Macbeth\'s imperative in her sleep reveals her guilt has become uncontrollable — the commanding tone she uses on others now turns on herself.'},
+            {name:'"Stars, hide your fires"', desc:'Macbeth asks nature to collude in his crime — linking to the theme of darkness and evil existing beneath a respectable surface.'},
+            {name:'"Unsex me here"', desc:'Lady Macbeth asks spirits to remove her femininity — reflecting the play\'s view that cruelty was seen as masculine, compassion as feminine.'},
+          ],
+          example:{
+            label:'Context You Should Reference',
+            text:`Macbeth was written for King James I, who was fascinated by witchcraft and wrote a book on demonology (Daemonologie, 1597). Shakespeare's inclusion of the witches directly appealed to his patron's interests and reflected genuine fears about the supernatural in Jacobean England.`,
+            note:'Weave context naturally into analysis — don\'t bolt it on at the end'
+          }
+        }
+      ]
+    },
+    quiz:[
+      {q:'What does Lady Macbeth mean by "unsex me here"?',opts:['She wants to become invisible','She asks spirits to remove her femininity so she can be ruthless','She is confused about her identity','She wants to disguise herself as a man'],ans:1,explain:'Lady Macbeth is asking dark spirits to remove qualities associated with femininity (compassion, mercy) so she can be as ruthless as she believes a man would be.'},
+      {q:'For whom was Macbeth written?',opts:['Queen Elizabeth I','The people of London','King James I','William Shakespeare\'s wife'],ans:2,explain:'Macbeth was written for King James I, who had a fascination with witchcraft and had written his own book on demonology (Daemonologie).'},
+      {q:'"Fair is foul and foul is fair" is an example of:',opts:['Alliteration','Chiasmus — a reversal of words','A simile','Personification'],ans:1,explain:'This is chiasmus — a rhetorical device where words are reversed to create a mirror structure. It also introduces the theme of appearance vs reality.'},
+      {q:'Which theme does "I am in blood stepped in so far" most clearly represent?',opts:['Fate','Ambition turning to guilt and entrapment','The supernatural','Gender and power'],ans:1,explain:'The metaphor of wading through blood suggests Macbeth feels trapped by his own actions — he has committed so much evil that turning back feels impossible.'},
+      {q:'What does Macbeth\'s dagger hallucination represent?',opts:['He is a skilled swordsman','His growing mental instability and guilt before the murder','The witches\' power over him','Lady Macbeth\'s influence'],ans:1,explain:'The dagger hallucination reveals Macbeth\'s psyche cracking under the weight of his planned crime. Shakespeare shows guilt appearing before the act — foreshadowing the mental torment to come.'},
+    ]
+  },
+  {
+    id:'edexcel-lang-p1',
+    board:'Edexcel', paper:'Language Paper 1',
+    title:'Reading Fiction — Edexcel Paper 1',
+    desc:'How to approach the Edexcel unseen fiction paper and earn marks across all questions.',
+    duration:'9 min', xp:55,
+    content:{
+      intro:`Edexcel Paper 1 focuses on fiction texts from the 19th, 20th, or 21st century. Unlike AQA, Edexcel questions have a slightly different structure, but the core skills — close reading, language analysis, and inference — remain the same. Understanding the mark scheme is key.`,
+      sections:[
+        {
+          heading:'The Edexcel Paper 1 Question Structure',
+          body:`Section A (Reading) contains four questions based on one or two fiction extracts. Q1 (5 marks): Retrieval — find information and begin to infer. Q2 (10 marks): Language analysis — how does the writer use language to present a character/place? Q3 (10 marks): Language and structure — how does the writer create effects? Q4 (20 marks): A longer question asking you to explore the text in depth, often focused on a theme.`,
+          keyPoints:[
+            'Edexcel rewards "perceptive" reading — go beyond the obvious interpretation',
+            'Always consider narrative perspective: who is telling the story and why does it matter?',
+            'For Q3: think about word order, repetition, contrast, and where detail is placed',
+            'For Q4: use the whole text, not just one section',
+          ]
+        },
+        {
+          heading:'What "Perceptive" Analysis Looks Like',
+          body:`Edexcel examiners use the word "perceptive" to describe the best answers. This means going beyond surface-level observations to explore deeper, sometimes ambiguous meanings. Never settle for the first thing a technique makes you think — ask "what else could this suggest?"`,
+          techniques:[
+            {name:'Narrative voice', desc:'First person creates intimacy but also unreliability. Third person can be omniscient or limited. Always comment on the effect of perspective.'},
+            {name:'Contrast', desc:'Placing opposites close together creates tension and draws the reader\'s attention. Ask: what is being contrasted and why?'},
+            {name:'Repetition', desc:'A repeated word or phrase builds emphasis. Ask: is it to stress importance, create rhythm, or show obsession?'},
+            {name:'Sentence structure', desc:'A sentence fragment. Just one word can shock. Long, winding sentences that trail and spiral and seem to never quite reach their point can create anxiety.'},
+          ],
+          example:{
+            label:'Perceptive Analysis — Example',
+            text:`The writer's repeated use of "still" — "still waiting", "still hoping", "still there" — creates an overwhelming sense of stasis. Rather than simply suggesting the character hasn't moved, the accumulation implies something more unsettling: that she is incapable of moving on, frozen in a moment the rest of the world has forgotten.`,
+            note:'Notice how this goes beyond "repetition creates emphasis" to explore a more nuanced, psychological effect'
+          }
+        }
+      ]
+    },
+    quiz:[
+      {q:'What does Edexcel mean when it rewards "perceptive" analysis?',opts:['Writing very long answers','Going beyond the obvious to explore deeper or ambiguous meanings','Using lots of technical terminology','Quoting frequently'],ans:1,explain:'"Perceptive" means seeing beyond the surface. Examiners want you to explore what else a technique might suggest — not just the most obvious interpretation.'},
+      {q:'A first-person narrator is described as "unreliable" because:',opts:['They are confused','They only share their own limited perspective, which may be biased or incomplete','They use too many opinions','They speak directly to the reader'],ans:1,explain:'A first-person narrator can only share what they know, see, and feel — and they may consciously or unconsciously distort events. This unreliability is often used deliberately by writers.'},
+      {q:'A "sentence fragment" in fiction is most often used to:',opts:['Show the character is uneducated','Create a sense of shock, pause, or emphasis','Link two ideas together','Describe a setting'],ans:1,explain:'Sentence fragments deliberately break grammatical rules for effect. A one-word sentence like "Silence." creates a sudden pause that a full sentence cannot replicate.'},
+      {q:'For Edexcel Q4, you should use:',opts:['Only the first paragraph of the text','The whole text','Only the part you found most interesting','One or two quotations at most'],ans:1,explain:'Q4 is a whole-text question. Examiners reward students who can draw on evidence from across the entire extract, showing a wider understanding of how the text works.'},
+      {q:'What does analysing narrative perspective mean?',opts:['Describing the plot','Identifying the theme','Commenting on who tells the story and why that choice matters','Counting the characters'],ans:2,explain:'Narrative perspective refers to the viewpoint from which a story is told. Commenting on whether it\'s first or third person, and why the writer chose that perspective, shows sophisticated analysis.'},
+    ]
+  },
+  {
+    id:'edexcel-lang-p2',
+    board:'Edexcel', paper:'Language Paper 2',
+    title:'Non-Fiction & Transactional Writing',
+    desc:'Analyse non-fiction texts and produce your own purposeful, audience-aware writing.',
+    duration:'10 min', xp:60,
+    content:{
+      intro:`Edexcel Paper 2 has two sections: reading non-fiction texts and producing transactional writing. Transactional writing means writing with a specific purpose and audience — a speech, article, letter, or review. The key difference from creative writing is that your own voice and argument matter more than narrative craft.`,
+      sections:[
+        {
+          heading:'Reading Non-Fiction — What to Focus On',
+          body:`Edexcel Paper 2 reading questions ask you to analyse language and structure across non-fiction texts. The skills are similar to AQA, but the texts tend to be more explicitly persuasive — opinion columns, travel writing, speeches. Always focus on the writer's purpose and how their language choices serve that purpose.`,
+          keyPoints:[
+            'Identify the writer\'s purpose first: persuade, inform, argue, describe, advise?',
+            'Rhetorical questions engage the reader and pre-empt objections',
+            'Look for direct address ("you") — it makes the reader feel personally involved',
+            'Hyperbole (exaggeration) is common in persuasion — ask why the writer chose to exaggerate',
+          ]
+        },
+        {
+          heading:'Transactional Writing — Formats and Features',
+          body:`When writing transactionally, you must adapt your form, register, and content to the specific audience and purpose given. Examiners reward writing that genuinely sounds like the right format — a speech should sound like it was meant to be spoken, an article should feel like it belongs in a newspaper.`,
+          techniques:[
+            {name:'Speech', desc:'Use rhetorical questions, inclusive language ("we"), direct address, and a strong, memorable conclusion. Varies between formal and emotive.'},
+            {name:'Article/column', desc:'Use a headline, subheadings, a clear argument, anecdotal evidence, and a journalistic tone. Can be opinionated.'},
+            {name:'Letter', desc:'Formal letter structure (address, date, salutation). Adjust tone based on the recipient — formal for authority figures, warmer for peers.'},
+            {name:'Review', desc:'Balance description with evaluation. Use specific examples to support your judgement. A clear recommendation at the end is expected.'},
+          ],
+          example:{
+            label:'Speech Opening — High Band Example',
+            text:`Every single day, students across this country sit in classrooms, surrounded by books they didn't choose, studying texts that weren't written for them, and wondering — quietly, privately — whether they belong here at all. Today, I want to talk about why that needs to change.`,
+            note:'Notice: direct address, rhetorical question implied, emotive language, clear argument signalled immediately'
+          }
+        }
+      ]
+    },
+    quiz:[
+      {q:'What does "transactional writing" mean?',opts:['Writing a story with a twist','Writing for a specific purpose and audience (speech, article, letter, review)','Writing about a transaction or business deal','Writing in a formal register only'],ans:1,explain:'Transactional writing is functional — it\'s produced to achieve a specific purpose for a specific audience. The format, tone, and content must all be tailored accordingly.'},
+      {q:'In a persuasive speech, "direct address" means:',opts:['Talking about other people','Using "you" to speak directly to the audience','Stating your opinion clearly','Giving the date and location at the start'],ans:1,explain:'Direct address ("you", "we") creates a personal connection with the audience, making them feel the message is specifically for them.'},
+      {q:'Hyperbole is:',opts:['A subtle understatement','Deliberate exaggeration for effect','A type of metaphor','A sentence without a main verb'],ans:1,explain:'Hyperbole is extreme exaggeration used for emphasis or dramatic effect. In persuasion, it\'s used to stress the severity of a problem or the importance of a solution.'},
+      {q:'Which feature is most important to include in a formal letter?',opts:['A catchy headline','Correct salutation and address format','Rhetorical questions','Short punchy sentences'],ans:1,explain:'A formal letter must follow the correct structural conventions — recipient\'s address, date, appropriate salutation (Dear Sir/Madam or Dear [Name]) — to show awareness of the format.'},
+      {q:'What should a review always include at the end?',opts:['A summary of the plot','A quotation from the text','A clear recommendation or verdict','An apology'],ans:2,explain:'A review\'s purpose is to help the reader decide whether to engage with something. A clear recommendation (whether to see it, read it, visit it) is expected as a conclusion.'},
+    ]
+  },
+];
+
+const TIERS = [
+  {name:'🥉 Bronze',   min:0,    max:199,  cls:'tier-bronze'},
+  {name:'🥈 Silver',   min:200,  max:499,  cls:'tier-silver'},
+  {name:'🥇 Gold',     min:500,  max:999,  cls:'tier-gold'},
+  {name:'💎 Platinum', min:1000, max:Infinity, cls:'tier-platinum'},
+];
+
+const SEEDED_STUDENTS = [
+  {name:'Priya S.',  board:'AQA',     xp:420, avatar:'#6366f1'},
+  {name:'Marcus T.', board:'Edexcel', xp:390, avatar:'#7c3aed'},
+  {name:'Aisha M.',  board:'AQA',     xp:310, avatar:'#ec4899'},
+  {name:'James R.',  board:'Edexcel', xp:270, avatar:'#0ea5e9'},
+  {name:'Chloe W.',  board:'AQA',     xp:240, avatar:'#10b981'},
+  {name:'Dev P.',    board:'Edexcel', xp:180, avatar:'#f59e0b'},
+  {name:'Sophie L.', board:'AQA',     xp:120, avatar:'#ef4444'},
+  {name:'Tom B.',    board:'AQA',     xp:80,  avatar:'#8b5cf6'},
+];
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let state = {
+  name:'', board:'', xp:0, streak:0,
+  lastVisit:'', completed:[], // array of topic ids
+};
+let selectedBoard = '';
+let currentTopicId = '';
+let quizState = {};
+
+function loadState(){
+  const s = localStorage.getItem('rf_state');
+  if(s) state = JSON.parse(s);
+}
+function saveState(){
+  localStorage.setItem('rf_state', JSON.stringify(state));
+}
+
+// ═══════════════════════════════════════
+// ONBOARDING
+// ═══════════════════════════════════════
+function selectBoard(el){
+  document.querySelectorAll('.board-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedBoard = el.dataset.board;
+}
+
+function completeOnboarding(){
+  const name = document.getElementById('ob-name').value.trim();
+  if(!name){ alert('Please enter your name'); return; }
+  if(!selectedBoard){ alert('Please select an exam board'); return; }
+  state.name = name;
+  state.board = selectedBoard;
+  checkStreak();
+  saveState();
+  launchApp();
+}
+
+function checkStreak(){
+  const today = new Date().toDateString();
+  if(state.lastVisit === today) return;
+  const yesterday = new Date(Date.now()-86400000).toDateString();
+  if(state.lastVisit === yesterday) state.streak += 1;
+  else if(state.lastVisit !== '') state.streak = 1;
+  else state.streak = 1;
+  state.lastVisit = today;
+}
+
+// ═══════════════════════════════════════
+// APP LAUNCH
+// ═══════════════════════════════════════
+function launchApp(){
+  document.getElementById('view-onboarding').classList.remove('active');
+  document.getElementById('view-app').classList.add('active');
+  populateSidebar();
+  renderDashboard();
+  renderTopicsPage();
+  renderLeaderboard();
+  showPage('dashboard', document.querySelector('[data-page=dashboard]'));
+}
+
+function populateSidebar(){
+  const init = state.name.charAt(0).toUpperCase();
+  document.getElementById('sidebar-avatar').textContent = init;
+  document.getElementById('sidebar-name').textContent = state.name;
+  document.getElementById('sidebar-board').textContent = state.board + ' · GCSE English';
+}
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+function showPage(id, navEl){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  // sidebar
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const sideEl = document.querySelector(`.nav-item[data-page="${id}"]`);
+  if(sideEl) sideEl.classList.add('active');
+  // mobile nav
+  document.querySelectorAll('.mob-nav-item').forEach(n=>n.classList.remove('active'));
+  if(navEl && navEl.classList.contains('mob-nav-item')) navEl.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════
+// TIER UTILS
+// ═══════════════════════════════════════
+function getTier(xp){
+  return TIERS.find(t=>xp>=t.min && xp<=t.max);
+}
+function getNextTier(xp){
+  const idx = TIERS.findIndex(t=>xp>=t.min && xp<=t.max);
+  return TIERS[idx+1] || null;
+}
+function tierProgress(xp){
+  const tier = getTier(xp);
+  if(tier.max === Infinity) return 100;
+  const next = getNextTier(xp);
+  const range = next.min - tier.min;
+  const progress = xp - tier.min;
+  return Math.min(100, Math.round((progress/range)*100));
+}
+
+// ═══════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════
+function renderDashboard(){
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+  document.getElementById('dash-greeting').innerHTML = `${greeting}, <em>${state.name}</em>`;
+  updateStats();
+  renderTopicGrid('topics-grid-dash', 4);
+}
+
+function updateStats(){
+  document.getElementById('stat-xp').textContent = state.xp;
+  document.getElementById('stat-streak').textContent = state.streak;
+  document.getElementById('stat-done').textContent = state.completed.length;
+
+  const tier = getTier(state.xp);
+  const next = getNextTier(state.xp);
+  document.getElementById('tier-badge').textContent = tier.name;
+  document.getElementById('tier-next').textContent = next
+    ? `${next.min - state.xp} XP to ${next.name.split(' ')[1]}`
+    : '✨ Maximum rank achieved!';
+  document.getElementById('xp-fill').style.width = tierProgress(state.xp) + '%';
+}
+
+function renderTopicGrid(containerId, limit){
+  const container = document.getElementById(containerId);
+  const topics = limit ? TOPICS.slice(0, limit) : TOPICS;
+  container.innerHTML = topics.map(t=>{
+    const done = state.completed.includes(t.id);
+    const boardClass = t.board === 'Edexcel' ? 'edexcel' : '';
+    return `<div class="topic-card ${done?'completed':''}" onclick="openTopic('${t.id}')">
+      <div class="tc-top">
+        <span class="tc-board ${boardClass}">${t.board}</span>
+        ${done ? '<span class="tc-check">✓</span>' : ''}
+      </div>
+      <div class="tc-title">${t.title}</div>
+      <div class="tc-desc">${t.desc}</div>
+      <div class="tc-footer">
+        <div class="tc-meta">
+          <span class="tc-tag">📄 ${t.paper}</span>
+          <span class="tc-tag">⏱ ${t.duration}</span>
+        </div>
+        <span class="tc-xp">+${t.xp} XP</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// TOPICS PAGE
+// ═══════════════════════════════════════
+function renderTopicsPage(){
+  renderTopicGrid('topics-grid-all', 0);
+}
+
+// ═══════════════════════════════════════
+// TOPIC READER
+// ═══════════════════════════════════════
+function openTopic(id){
+  currentTopicId = id;
+  renderTopic(id);
+  showPage('topic', null);
+}
+
+function renderTopic(id){
+  const t = TOPICS.find(x=>x.id===id);
+  if(!t) return;
+  const done = state.completed.includes(id);
+  const c = t.content;
+
+  let sectionsHTML = c.sections.map(s=>{
+    let html = `<div class="content-card">
+      <h3>${s.heading}</h3>
+      <p>${s.body}</p>`;
+
+    if(s.keyPoints){
+      html += `<div class="key-points"><h4>📌 Key Points</h4><ul>
+        ${s.keyPoints.map(p=>`<li>${p}</li>`).join('')}
+      </ul></div>`;
+    }
+    if(s.techniques){
+      html += `<div class="technique-grid">
+        ${s.techniques.map(t=>`<div class="technique"><strong>${t.name}</strong><span>${t.desc}</span></div>`).join('')}
+      </div>`;
+    }
+    if(s.example){
+      html += `<div class="example-box">
+        <div class="ex-label">${s.example.label}</div>
+        <p>${s.example.text}</p>
+        <div class="ex-note">${s.example.note}</div>
+      </div>`;
+    }
+    html += `</div>`;
+    return html;
+  }).join('');
+
+  document.getElementById('topic-content').innerHTML = `
+    <div class="topic-header">
+      <div class="topic-eyebrow">${t.board} · ${t.paper}</div>
+      <div class="topic-title">${t.title}</div>
+      <div class="topic-meta-row">
+        <span class="tmeta">⏱ ${t.duration}</span>
+        <span class="tmeta">⚡ +${t.xp} XP</span>
+        ${done ? '<span class="tmeta" style="color:var(--green)">✓ Completed</span>' : ''}
+      </div>
+    </div>
+    <div class="content-card"><p>${c.intro}</p></div>
+    ${sectionsHTML}
+    <div class="content-card">
+      <h3>${done ? 'Retake the Quiz' : 'Ready to test yourself?'}</h3>
+      <p>${done ? 'You\'ve already completed this topic. You won\'t earn XP again, but you can retake the quiz to sharpen your knowledge.' : 'Complete the quiz to earn your XP and mark this topic as done.'}</p>
+      <button class="start-quiz-btn" onclick="startQuiz('${id}')">Start Quiz — ${t.quiz.length} questions →</button>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════
+function startQuiz(id){
+  const t = TOPICS.find(x=>x.id===id);
+  currentTopicId = id;
+  quizState = { topic:t, current:0, score:0, answered:false };
+  showPage('quiz', null);
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const { topic, current } = quizState;
+  const q = topic.quiz[current];
+  const pct = (current / topic.quiz.length) * 100;
+  document.getElementById('quiz-prog').style.width = pct + '%';
+
+  const letters = ['A','B','C','D'];
+  document.getElementById('quiz-content').innerHTML = `
+    <div class="quiz-card">
+      <div class="quiz-num">Question ${current+1} of ${topic.quiz.length}</div>
+      <div class="quiz-q">${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((o,i)=>`
+          <button class="quiz-option" onclick="selectAnswer(${i})" id="opt-${i}">
+            <span class="opt-letter">${letters[i]}</span> ${o}
+          </button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="quiz-feedback"></div>
+      <button class="quiz-next-btn" id="quiz-next" onclick="nextQuestion()">
+        ${current+1 < topic.quiz.length ? 'Next Question →' : 'See Results →'}
+      </button>
+    </div>
+  `;
+  quizState.answered = false;
+}
+
+function selectAnswer(idx){
+  if(quizState.answered) return;
+  quizState.answered = true;
+  const q = quizState.topic.quiz[quizState.current];
+  const correct = idx === q.ans;
+  if(correct) quizState.score++;
+
+  document.querySelectorAll('.quiz-option').forEach((btn,i)=>{
+    btn.disabled = true;
+    if(i === q.ans) btn.classList.add('correct');
+    else if(i === idx && !correct) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('quiz-feedback');
+  fb.className = `quiz-feedback ${correct?'correct':'wrong'} show`;
+  fb.innerHTML = `<div class="qf-title">${correct ? '✓ Correct!' : '✗ Not quite'}</div>
+    <div class="qf-body">${q.explain}</div>`;
+
+  document.getElementById('quiz-next').classList.add('show');
+}
+
+function nextQuestion(){
+  quizState.current++;
+  if(quizState.current >= quizState.topic.quiz.length){
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults(){
+  const { topic, score } = quizState;
+  const total = topic.quiz.length;
+  const pct = Math.round((score/total)*100);
+  const alreadyDone = state.completed.includes(topic.id);
+  const xpEarned = alreadyDone ? 0 : topic.xp;
+
+  if(!alreadyDone){
+    state.xp += xpEarned;
+    state.completed.push(topic.id);
+    saveState();
+    updateStats();
+    renderTopicGrid('topics-grid-dash', 4);
+    renderTopicGrid('topics-grid-all', 0);
+    renderLeaderboard();
+    setTimeout(()=>showXpToast(xpEarned, 'Topic completed!'), 400);
+  }
+
+  document.getElementById('quiz-prog').style.width = '100%';
+
+  const emoji = pct >= 80 ? '🎉' : pct >= 60 ? '👍' : '📖';
+  const msg = pct >= 80 ? 'Excellent work!' : pct >= 60 ? 'Good effort — keep going!' : 'Review the topic and try again.';
+
+  document.getElementById('quiz-content').innerHTML = `
+    <div class="results-card">
+      <div class="results-emoji">${emoji}</div>
+      <div class="results-title">${msg}</div>
+      <div class="results-sub">You got ${score} out of ${total} correct</div>
+      ${xpEarned > 0 ? `<div class="xp-earned">⚡ +${xpEarned} XP earned</div>` : '<div class="xp-earned" style="background:var(--bg2);border-color:var(--border);color:var(--ink-light)">Already completed — no XP this time</div>'}
+      <div class="results-stats">
+        <div class="rs"><div class="rs-val">${score}/${total}</div><div class="rs-label">Score</div></div>
+        <div class="rs"><div class="rs-val">${pct}%</div><div class="rs-label">Percentage</div></div>
+        <div class="rs"><div class="rs-val">${state.xp}</div><div class="rs-label">Total XP</div></div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn-full" style="flex:1" onclick="showPage('dashboard',document.querySelector('[data-page=dashboard]'))">Back to Dashboard</button>
+        <button class="btn-full" style="flex:1;background:var(--bg2);color:var(--ink);border:1px solid var(--border)" onclick="startQuiz('${topic.id}')">Retake Quiz</button>
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════
+// LEADERBOARD
+// ═══════════════════════════════════════
+function renderLeaderboard(){
+  const all = [
+    ...SEEDED_STUDENTS,
+    {name: state.name, board: state.board, xp: state.xp, avatar:'#b5893a', isYou:true}
+  ].sort((a,b)=>b.xp-a.xp);
+
+  const rankEmojis = ['🥇','🥈','🥉'];
+
+  document.getElementById('lb-table').innerHTML = all.map((s,i)=>{
+    const tier = getTier(s.xp);
+    const init = s.name.charAt(0).toUpperCase();
+    const rankDisplay = i < 3 ? `<span style="font-size:1.4rem">${rankEmojis[i]}</span>` : `<span class="lb-rank">${i+1}</span>`;
+    return `<div class="lb-row ${s.isYou?'you':''}">
+      <div style="text-align:center">${rankDisplay}</div>
+      <div class="lb-info">
+        <div class="lb-avatar" style="background:${s.avatar}">${init}</div>
+        <div>
+          <div class="lb-name">${s.name}${s.isYou?'<span class="lb-you-tag">YOU</span>':''}</div>
+          <div class="lb-board">${s.board} · GCSE English</div>
+        </div>
+      </div>
+      <div><div class="lb-xp">${s.xp.toLocaleString()}</div><div class="lb-xp-label">XP</div></div>
+      <div><span class="lb-tier ${tier.cls}">${tier.name}</span></div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// XP TOAST
+// ═══════════════════════════════════════
+function showXpToast(amount, label){
+  const toast = document.getElementById('xp-toast');
+  document.getElementById('toast-val').textContent = `+${amount} XP`;
+  toast.querySelector('.xp-toast-label').textContent = label;
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'), 3200);
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+loadState();
+if(state.name && state.board){
+  checkStreak();
+  saveState();
+  launchApp();
+}
+</script>
+</body>
+</html>
