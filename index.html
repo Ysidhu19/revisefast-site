@@ -736,7 +736,78 @@
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           const source = input.id.replace('-email', '');
-          handleSignup(source);
+          <!-- ONLY SHOWING SCRIPT SECTION YOU NEED TO REPLACE -->
+
+<script>
+  // ── Scroll reveal ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── FAQ toggle ──
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // ── Signup handler (NOW CONNECTED) ──
+  function handleSignup(source) {
+    const emailInput = document.getElementById(source + '-email');
+    const form = document.getElementById(source + '-form');
+    const success = document.getElementById(source + '-success');
+
+    if (!emailInput) return;
+
+    const email = emailInput.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // ❌ validation
+    if (!emailRegex.test(email)) {
+      emailInput.style.borderColor = '#ef4444';
+      emailInput.placeholder = 'Please enter a valid email';
+      setTimeout(() => {
+        emailInput.style.borderColor = '';
+        emailInput.placeholder = 'your@email.com';
+      }, 2000);
+      return;
+    }
+
+    // ✅ GOOGLE FORMS SEND
+    const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSeBmPBUpkNn1v9ld23CvepqZGsa5FYLsF98PQAqYN0iw312Dw/formResponse";
+
+    const data = new FormData();
+    data.append("entry.87245831", email);
+
+    fetch(formURL, {
+      method: "POST",
+      mode: "no-cors",
+      body: data
+    });
+
+    // ✅ UI SUCCESS (same as before)
+    form.style.display = 'none';
+    success.classList.add('visible');
+  }
+
+  // Allow pressing Enter
+  document.querySelectorAll('input[type="email"]').forEach(input => {
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const source = input.id.replace('-email', '');
+        handleSignup(source);
+      }
+    });
+  });
+</script>;
         }
       });
     });
