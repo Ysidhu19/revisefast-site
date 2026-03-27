@@ -4,71 +4,150 @@
 <meta charset="UTF-8">
 <title>ReviseFast</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
-/* --- Base --- */
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Inter', sans-serif; background:#0f1115; color:#f5f5f5; overflow-x:hidden; }
+body { font-family:'Inter', sans-serif; background:#0f1115; color:#f5f5f5; }
 
-/* --- Header --- */
-header { font-family:'Montserrat', sans-serif; font-weight:600; font-size:32px; text-align:center; padding:40px 0; letter-spacing:1.5px; }
-
-/* --- Hero --- */
-.hero {
-  position:relative; text-align:center; padding:160px 20px 120px;
-  background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
-  background-color: rgba(0,0,0,0.5); background-blend-mode: overlay;
+/* Header */
+header {
+  font-family:'Montserrat', sans-serif;
+  font-weight:600;
+  font-size:32px;
+  text-align:center;
+  padding:40px 0;
+  letter-spacing:1.5px;
 }
-.hero h1 { font-size:50px; font-weight:700; margin-bottom:20px; line-height:1.2; }
-.hero p { font-size:20px; color:#cbd5e1; max-width:600px; margin:0 auto 50px; }
 
-/* --- Button --- */
+/* Hero */
+.hero {
+  text-align:center;
+  padding:160px 20px 120px;
+  background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
+  background-color: rgba(0,0,0,0.5);
+  background-blend-mode: overlay;
+}
+.hero h1 { font-size:50px; margin-bottom:20px; }
+.hero p { font-size:20px; color:#cbd5e1; margin-bottom:50px; }
+
+/* Button */
 .btn {
   background: linear-gradient(135deg, #1e3a2b, #22c55e);
-  color:#fff; padding:16px 50px; font-weight:600; border-radius:999px; text-decoration:none;
-  font-size:18px; transition: all 0.3s ease; box-shadow:0 6px 20px rgba(0,0,0,0.3); cursor:pointer;
+  padding:16px 50px;
+  border-radius:999px;
+  color:#fff;
+  border:none;
+  cursor:pointer;
+  transition:0.3s;
 }
-.btn:hover { transform:scale(1.05); box-shadow:0 12px 30px rgba(0,0,0,0.4); }
+.btn:hover { transform:scale(1.05); }
+.btn:active { transform:scale(0.97); }
 
-/* --- Sections --- */
-.section-title { text-align:center; font-size:34px; font-weight:600; margin:80px 0 40px; color:#22c55e; }
-.features { display:flex; justify-content:center; flex-wrap:wrap; gap:40px; padding:0 20px 80px; }
+/* Sections */
+.section-title {
+  text-align:center;
+  font-size:34px;
+  margin:80px 0 40px;
+  color:#22c55e;
+}
+
+.features {
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:40px;
+  padding:0 20px 80px;
+}
+
 .card {
-  background: rgba(255,255,255,0.03); padding:35px; border-radius:16px; max-width:300px; text-align:center;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  background: rgba(255,255,255,0.03);
+  padding:35px;
+  border-radius:16px;
+  max-width:300px;
+  text-align:center;
+  transition:0.4s;
 }
-.card:hover { transform:translateY(-10px); box-shadow:0 20px 40px rgba(0,0,0,0.4); }
-.card h3 { font-size:24px; margin-bottom:12px; color:#22c55e; }
-.card p { font-size:16px; color:#cbd5e1; line-height:1.5; }
+.card:hover {
+  transform:translateY(-10px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.4);
+}
 
-/* --- Fade-in Animation --- */
-.fade-in { opacity:0; transform:translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
-.fade-in.visible { opacity:1; transform:translateY(0); }
+/* Fade */
+.fade-in {
+  opacity:0;
+  transform:translateY(20px);
+  transition:0.8s;
+}
+.fade-in.visible {
+  opacity:1;
+  transform:translateY(0);
+}
 
-/* --- Modal (Form) --- */
+/* Modal */
 .modal {
-  display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7);
-  justify-content:center; align-items:center; z-index:1000;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.7);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  pointer-events:none;
+  transition:0.3s;
 }
+
+.modal.show {
+  opacity:1;
+  pointer-events:auto;
+}
+
 .modal-content {
-  background: rgba(255,255,255,0.03); border-radius:20px; padding:40px; max-width:700px; width:90%;
-  box-shadow:0 10px 40px rgba(0,0,0,0.4); position:relative;
+  background: rgba(255,255,255,0.03);
+  padding:40px;
+  border-radius:20px;
+  width:90%;
+  max-width:500px;
+  transform:translateY(30px);
+  transition:0.4s;
 }
+
+.modal.show .modal-content {
+  transform:translateY(0);
+}
+
 .modal-close {
-  position:absolute; top:20px; right:20px; font-size:24px; color:#cbd5e1; cursor:pointer; transition:0.3s;
+  float:right;
+  cursor:pointer;
+  font-size:22px;
 }
-.modal-close:hover { color:#22c55e; }
-.modal iframe { width:100%; height:600px; border:none; border-radius:12px; }
 
-/* --- Footer --- */
-footer { text-align:center; padding:25px 0; font-size:14px; color:#6b7280; border-top:1px solid #1e1e1e; }
+/* Form */
+form {
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
 
-/* --- Responsive --- */
-@media(max-width:600px){
-  .hero h1 { font-size:38px; }
-  .hero p { font-size:18px; }
-  .card { max-width:90%; }
-  .modal-content { padding:20px; }
+input {
+  padding:16px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color:#fff;
+}
+
+input:focus {
+  border:1px solid #22c55e;
+}
+
+/* Footer */
+footer {
+  text-align:center;
+  padding:25px;
+  color:#6b7280;
 }
 </style>
 </head>
@@ -77,83 +156,110 @@ footer { text-align:center; padding:25px 0; font-size:14px; color:#6b7280; borde
 
 <header>ReviseFast</header>
 
-<!-- Hero -->
 <section class="hero">
   <h1>Revise Smarter. Learn Faster.</h1>
   <p>Quick, effective revision tips from students like you.</p>
-  <button class="btn" id="openModal">Join Free Early Access</button>
+  <button class="btn" id="openModal">Join Early Access</button>
 </section>
 
-<!-- Features -->
 <h2 class="section-title">Features</h2>
 <section class="features">
-  <div class="card fade-in">
-    <h3>⚡ Fast Learning</h3>
-    <p>Concise explanations with no unnecessary fluff.</p>
-  </div>
-  <div class="card fade-in">
-    <h3>📚 All Subjects</h3>
-    <p>Maths, Science, English and more in one place.</p>
-  </div>
-  <div class="card fade-in">
-    <h3>🔥 Daily Streaks</h3>
-    <p>Build habits and improve your grades consistently.</p>
-  </div>
+  <div class="card fade-in">Fast Learning</div>
+  <div class="card fade-in">All Subjects</div>
+  <div class="card fade-in">Daily Streaks</div>
 </section>
 
-<!-- How It Works -->
-<h2 class="section-title">How It Works</h2>
-<section class="features">
-  <div class="card fade-in">
-    <h3>1️⃣ Watch</h3>
-    <p>Scroll through short 60-second explanations.</p>
-  </div>
-  <div class="card fade-in">
-    <h3>2️⃣ Understand</h3>
-    <p>Simple breakdowns that actually make sense.</p>
-  </div>
-  <div class="card fade-in">
-    <h3>3️⃣ Improve</h3>
-    <p>Revise daily and boost your grades effectively.</p>
-  </div>
+<section style="text-align:center; padding:80px 20px;">
+  <p style="color:#cbd5e1; margin-bottom:20px;">Get early access before everyone else.</p>
+  <button class="btn" id="openModal2">Join Early Access</button>
 </section>
 
-<!-- Modal / Form -->
+<!-- Modal -->
 <div class="modal" id="modal">
   <div class="modal-content">
+
     <span class="modal-close" id="closeModal">&times;</span>
-    <iframe src="https://forms.gle/Rahzk9gm3n5jFTDh9" title="Join Early Access Form"></iframe>
+
+    <div id="formContainer">
+      <h2>Join Early Access</h2>
+      <p style="color:#cbd5e1; margin-bottom:20px;">
+        Be one of the first to experience ReviseFast.
+      </p>
+
+      <form id="earlyForm">
+        <input type="text" placeholder="Your name" id="name" required>
+        <input type="email" placeholder="Your email" id="email" required>
+        <button type="submit" class="btn">Get Early Access</button>
+      </form>
+    </div>
+
+    <div id="successMessage" style="display:none; text-align:center;">
+      <h2>You're in 🎉</h2>
+      <p style="color:#cbd5e1;">We'll let you know when we launch.</p>
+    </div>
+
   </div>
 </div>
 
-<footer>© 2026 ReviseFast. All rights reserved.</footer>
+<footer>© 2026 ReviseFast</footer>
 
-<!-- Fade-in JS -->
 <script>
+/* Fade-in */
 const faders = document.querySelectorAll('.fade-in');
-const appearOptions = { threshold:0.1, rootMargin:"0px 0px -50px 0px" };
-const appearOnScroll = new IntersectionObserver((entries)=>{
+const observer = new IntersectionObserver(entries=>{
   entries.forEach(entry=>{
-    const index = Array.from(faders).indexOf(entry.target);
     if(entry.isIntersecting){
-      entry.target.style.transitionDelay = `${index*0.15}s`;
       entry.target.classList.add('visible');
     } else {
       entry.target.classList.remove('visible');
-      entry.target.style.transitionDelay = '0s';
     }
   });
-}, appearOptions);
-faders.forEach(fader=>appearOnScroll.observe(fader));
+});
+faders.forEach(el=>observer.observe(el));
 
-// --- Modal Logic ---
+/* Modal */
 const modal = document.getElementById('modal');
-const openBtn = document.getElementById('openModal');
+const openBtns = document.querySelectorAll('#openModal, #openModal2');
 const closeBtn = document.getElementById('closeModal');
 
-openBtn.addEventListener('click', ()=>{ modal.style.display='flex'; });
-closeBtn.addEventListener('click', ()=>{ modal.style.display='none'; });
-window.addEventListener('click', (e)=>{ if(e.target==modal) modal.style.display='none'; });
+openBtns.forEach(btn=>{
+  btn.onclick = ()=>{
+    modal.classList.add('show');
+    document.body.style.overflow='hidden';
+  }
+});
+
+closeBtn.onclick = ()=>{
+  modal.classList.remove('show');
+  document.body.style.overflow='auto';
+};
+
+window.onclick = (e)=>{
+  if(e.target===modal){
+    modal.classList.remove('show');
+    document.body.style.overflow='auto';
+  }
+};
+
+/* FORM SUBMIT (YOUR REAL FORM CONNECTED) */
+document.getElementById('earlyForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSeBmPBUpkNn1v9ld23CvepqZGsa5FYLsF98PQAqYN0iw312Dw/formResponse";
+
+  const data = new FormData();
+  data.append("entry.1681045096", document.getElementById('name').value);
+  data.append("entry.87245831", document.getElementById('email').value);
+
+  fetch(formURL, {
+    method: "POST",
+    mode: "no-cors",
+    body: data
+  });
+
+  document.getElementById('formContainer').style.display='none';
+  document.getElementById('successMessage').style.display='block';
+});
 </script>
 
 </body>
