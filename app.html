@@ -682,6 +682,7 @@ body{
   color:var(--ink-mid);margin-bottom:18px;
 }
 .papers-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:920px){.papers-grid{grid-template-columns:1fr}}
 .papers-card{
   background:var(--surface);border:1px solid var(--border);
   border-radius:var(--rxl);overflow:hidden;box-shadow:var(--sh-sm);
@@ -2302,59 +2303,148 @@ const SEEDED_STUDENTS = [
 
 const PAPERS_DATA = [
   {
-    subject:'English', icon:'📚', hdrClass:'eng',
+    subject:'English Language', icon:'📚', hdrClass:'eng',
     groups:[
-      {board:'AQA', name:'GCSE English Language', papers:[
-        {name:'Paper 1 — Reading Fiction & Creative Writing',
-         paper:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20language%20paper%201&start=0',
-         ms:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20language%20paper%201%20mark%20scheme&start=0'},
-        {name:'Paper 2 — Reading Non-Fiction & Writing Viewpoints',
-         paper:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20language%20paper%202&start=0',
-         ms:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20language%20paper%202%20mark%20scheme&start=0'},
-      ]},
-      {board:'AQA', name:'GCSE English Literature', papers:[
-        {name:'Paper 1 — Shakespeare & 19th Century Novel',
-         paper:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20literature%20paper%201&start=0',
-         ms:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20literature%20paper%201%20mark%20scheme&start=0'},
-        {name:'Paper 2 — Modern Texts, Poetry & Unseen',
-         paper:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20literature%20paper%202&start=0',
-         ms:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20literature%20paper%202%20mark%20scheme&start=0'},
-      ]},
-      {board:'Edexcel', name:'GCSE English Language', papers:[
-        {name:'Paper 1 — Fiction & Imaginative Writing',
-         paper:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/english-language-2015.coursematerials.html#filterQuery=category:Pearson-UK:Category%2FPast-papers-and-mark-schemes',
-         ms:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/english-language-2015.coursematerials.html'},
-        {name:'Paper 2 — Non-Fiction & Transactional Writing',
-         paper:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/english-language-2015.coursematerials.html#filterQuery=category:Pearson-UK:Category%2FPast-papers-and-mark-schemes',
-         ms:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/english-language-2015.coursematerials.html'},
-      ]},
+      {
+        board:'AQA', name:'GCSE English Language',
+        papers:[
+          {
+            name:'Paper 1 — Creative Reading & Writing (June 2023)',
+            paper:'https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-87001-QP-JUN23-CR.PDF',
+            ms:'https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-87001-MS-JUN23.PDF'
+          },
+          {
+            name:'Paper 2 — Writers\' Viewpoints & Perspectives (June 2023)',
+            paper:'https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-87002-QP-JUN23.PDF',
+            ms:'https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-87002-MS-JUN23.PDF'
+          },
+        ]
+      },
+      {
+        board:'Edexcel', name:'GCSE English Language',
+        papers:[
+          {
+            name:'Paper 1 — Fiction & Imaginative Writing (June 2023)',
+            paper:'https://pmt.physicsandmathstutor.com/download/English-Language/GCSE/Past-Papers/Edexcel/Paper-1/QP/June%202023%20QP.pdf',
+            ms:'https://pmt.physicsandmathstutor.com/download/English-Language/GCSE/Past-Papers/Edexcel/Paper-1/MS/June%202023%20MS.pdf'
+          },
+          {
+            name:'Paper 2 — Non-Fiction & Transactional Writing (June 2023)',
+            paper:'https://pmt.physicsandmathstutor.com/download/English-Language/GCSE/Past-Papers/Edexcel/Paper-2/QP/June%202023%20QP.pdf',
+            ms:'https://pmt.physicsandmathstutor.com/download/English-Language/GCSE/Past-Papers/Edexcel/Paper-2/MS/June%202023%20MS.pdf'
+          },
+        ]
+      },
     ]
   },
   {
-    subject:'Maths', icon:'📐', hdrClass:'mth',
+    subject:'English Literature', icon:'📖', hdrClass:'eng',
     groups:[
-      {board:'AQA', name:'GCSE Mathematics', papers:[
-        {name:'Paper 1 — Non-Calculator',
-         paper:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=mathematics%20paper%201%20non-calculator&start=0',
-         ms:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=mathematics%20paper%201%20mark%20scheme&start=0'},
-        {name:'Paper 2 — Calculator',
-         paper:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=mathematics%20paper%202%20calculator&start=0',
-         ms:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=mathematics%20paper%202%20mark%20scheme&start=0'},
-        {name:'Paper 3 — Calculator',
-         paper:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=mathematics%20paper%203%20calculator&start=0',
-         ms:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=mathematics%20paper%203%20mark%20scheme&start=0'},
-      ]},
-      {board:'Edexcel', name:'GCSE Mathematics', papers:[
-        {name:'Paper 1 — Non-Calculator',
-         paper:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.coursematerials.html#filterQuery=category:Pearson-UK:Category%2FPast-papers-and-mark-schemes',
-         ms:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.coursematerials.html'},
-        {name:'Paper 2 — Calculator',
-         paper:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.coursematerials.html#filterQuery=category:Pearson-UK:Category%2FPast-papers-and-mark-schemes',
-         ms:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.coursematerials.html'},
-        {name:'Paper 3 — Calculator',
-         paper:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.coursematerials.html#filterQuery=category:Pearson-UK:Category%2FPast-papers-and-mark-schemes',
-         ms:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.coursematerials.html'},
-      ]},
+      {
+        board:'AQA', name:'GCSE English Literature',
+        papers:[
+          {
+            name:'Paper 1 — Shakespeare & 19th Century Novel (June 2023)',
+            paper:'https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-87021-QP-JUN23.PDF',
+            ms:'https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-87021-MS-JUN23.PDF'
+          },
+          {
+            name:'Paper 2 — Modern Texts, Poetry & Unseen (June 2023)',
+            paper:'https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-87022-QP-JUN23-CR.PDF',
+            ms:'https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-87022-MS-JUN23.PDF'
+          },
+        ]
+      },
+    ]
+  },
+  {
+    subject:'Mathematics (Higher)', icon:'📐', hdrClass:'mth',
+    groups:[
+      {
+        board:'AQA', name:'GCSE Mathematics — Higher Tier',
+        papers:[
+          {
+            name:'Paper 1 — Non-Calculator (June 2023)',
+            paper:'https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-83001H-QP-JUN23.PDF',
+            ms:'https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-83001H-MS-JUN23.PDF'
+          },
+          {
+            name:'Paper 2 — Calculator (June 2023)',
+            paper:'https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-83002H-QP-JUN23.PDF',
+            ms:'https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-83002H-MS-JUN23.PDF'
+          },
+          {
+            name:'Paper 3 — Calculator (June 2023)',
+            paper:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/AQA/Higher/Paper-3/QP/June%202023%20QP.pdf',
+            ms:'https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-83003H-MS-JUN23.PDF'
+          },
+        ]
+      },
+      {
+        board:'Edexcel', name:'GCSE Mathematics — Higher Tier',
+        papers:[
+          {
+            name:'Paper 1 — Non-Calculator (June 2023)',
+            paper:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/Edexcel/Higher/Paper-1/QP/June%202023%20QP.pdf',
+            ms:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/Edexcel/Higher/Paper-1/MS/June%202023%20MS.pdf'
+          },
+          {
+            name:'Paper 2 — Calculator (June 2023)',
+            paper:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/Edexcel/Higher/Paper-2/QP/June%202023%20QP.pdf',
+            ms:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/Edexcel/Higher/Paper-2/MS/June%202023%20MS.pdf'
+          },
+          {
+            name:'Paper 3 — Calculator (June 2023)',
+            paper:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/Edexcel/Higher/Paper-3/QP/June%202023%20QP.pdf',
+            ms:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/Edexcel/Higher/Paper-3/MS/June%202023%20MS.pdf'
+          },
+        ]
+      },
+    ]
+  },
+  {
+    subject:'Mathematics (Foundation)', icon:'📐', hdrClass:'mth',
+    groups:[
+      {
+        board:'AQA', name:'GCSE Mathematics — Foundation Tier',
+        papers:[
+          {
+            name:'Paper 1 — Non-Calculator (June 2023)',
+            paper:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/AQA/Foundation/Paper-1/QP/June%202023%20QP.pdf',
+            ms:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/AQA/Foundation/Paper-1/MS/June%202023%20MS.pdf'
+          },
+          {
+            name:'Paper 2 — Calculator (June 2023)',
+            paper:'https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-83002F-QP-JUN23.PDF',
+            ms:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/AQA/Foundation/Paper-2/MS/June%202023%20MS.pdf'
+          },
+          {
+            name:'Paper 3 — Calculator (June 2023)',
+            paper:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/AQA/Foundation/Paper-3/QP/June%202023%20QP.pdf',
+            ms:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/AQA/Foundation/Paper-3/MS/June%202023%20MS.pdf'
+          },
+        ]
+      },
+      {
+        board:'Edexcel', name:'GCSE Mathematics — Foundation Tier',
+        papers:[
+          {
+            name:'Paper 1 — Non-Calculator (June 2023)',
+            paper:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/Edexcel/Foundation/Paper-1/QP/June%202023%20QP.pdf',
+            ms:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/Edexcel/Foundation/Paper-1/MS/June%202023%20MS.pdf'
+          },
+          {
+            name:'Paper 2 — Calculator (June 2023)',
+            paper:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/Edexcel/Foundation/Paper-2/QP/June%202023%20QP.pdf',
+            ms:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/Edexcel/Foundation/Paper-2/MS/June%202023%20MS.pdf'
+          },
+          {
+            name:'Paper 3 — Calculator (June 2023)',
+            paper:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/Edexcel/Foundation/Paper-3/QP/June%202023%20QP.pdf',
+            ms:'https://pmt.physicsandmathstutor.com/download/Maths/GCSE/Past-Papers/Edexcel/Foundation/Paper-3/MS/June%202023%20MS.pdf'
+          },
+        ]
+      },
     ]
   },
 ];
