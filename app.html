@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -9,820 +9,793 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  /* Core palette — SaveMyExams-inspired */
-  --bg:#f8f9fc; --bg2:#f1f3f8; --bg3:#e8eaf2;
-  --white:#ffffff;
-  --ink:#0f1724; --ink-mid:#3d4a5c; --ink-light:#7a8699;
-  --border:#e2e6ef; --border-dark:#cdd2de;
-  /* Accent */
-  --blue:#2563eb; --blue-lt:#3b82f6; --blue-bg:#eff6ff; --blue-border:#bfdbfe;
-  --gold:#b5893a; --gold-lt:#d4a853; --gold-bg:#fdf3e0;
-  --green:#16a34a; --green-bg:#f0fdf4; --green-border:#bbf7d0;
-  --red:#dc2626; --red-bg:#fef2f2; --red-border:#fecaca;
-  --purple:#7c3aed; --purple-bg:#f5f3ff;
-  /* Subject colours */
-  --english:#1d4ed8; --english-bg:#eff6ff;
-  --maths:#0891b2; --maths-bg:#ecfeff;
-  /* Sidebar */
-  --sidebar-bg:#0f1724; --sidebar-w:240px;
-  /* Misc */
-  --radius:10px; --radius-lg:16px; --radius-xl:20px;
-  --shadow-sm:0 1px 3px rgba(15,23,36,0.08),0 1px 2px rgba(15,23,36,0.04);
-  --shadow-md:0 4px 12px rgba(15,23,36,0.1),0 2px 4px rgba(15,23,36,0.06);
-  --shadow-lg:0 12px 32px rgba(15,23,36,0.12),0 4px 8px rgba(15,23,36,0.06);
+
+/* ════════ DESIGN TOKENS ════════ */
+:root {
+  --bg:       #f8f9fc;
+  --bg2:      #f1f3f8;
+  --bg3:      #e4e8f0;
+  --surface:  #ffffff;
+  --border:   #e2e6ef;
+  --border2:  #cdd2de;
+  --ink:      #0f1724;
+  --ink-mid:  #3d4a5c;
+  --ink-light:#7a8699;
+  --blue:     #2563eb;
+  --blue-lt:  #3b82f6;
+  --blue-bg:  #eff6ff;
+  --blue-bd:  #bfdbfe;
+  --blue-dk:  #1d4ed8;
+  --green:    #16a34a;
+  --green-bg: #f0fdf4;
+  --green-bd: #bbf7d0;
+  --red:      #dc2626;
+  --red-bg:   #fef2f2;
+  --red-bd:   #fecaca;
+  --gold:     #b5893a;
+  --gold-bg:  #fdf3e0;
+  --sidebar:  #0f1724;
+  --sidebar-w:250px;
+  --header-h: 0px;
+  --r:        10px;
+  --rl:       16px;
+  --rxl:      20px;
+  --sh-sm:    0 1px 3px rgba(15,23,36,.07),0 1px 2px rgba(15,23,36,.04);
+  --sh-md:    0 4px 12px rgba(15,23,36,.09),0 2px 4px rgba(15,23,36,.05);
+  --sh-lg:    0 12px 32px rgba(15,23,36,.11),0 4px 8px rgba(15,23,36,.05);
 }
+
+/* ════ DARK MODE ════ */
+[data-theme="dark"] {
+  --bg:       #070c14;
+  --bg2:      #0d1420;
+  --bg3:      #14202e;
+  --surface:  #111827;
+  --border:   #1e2d42;
+  --border2:  #2a3d55;
+  --ink:      #e8edf5;
+  --ink-mid:  #8fa3bc;
+  --ink-light:#4d6480;
+  --blue:     #3b82f6;
+  --blue-lt:  #60a5fa;
+  --blue-bg:  #0d1e38;
+  --blue-bd:  #1e3a6e;
+  --blue-dk:  #2563eb;
+  --green:    #22c55e;
+  --green-bg: #052e16;
+  --green-bd: #14532d;
+  --red:      #f87171;
+  --red-bg:   #2a0a0a;
+  --red-bd:   #5c1515;
+  --gold:     #d4a853;
+  --gold-bg:  #1c1408;
+  --sidebar:  #050a12;
+  --sh-sm:    0 1px 3px rgba(0,0,0,.4);
+  --sh-md:    0 4px 12px rgba(0,0,0,.5);
+  --sh-lg:    0 12px 32px rgba(0,0,0,.6);
+}
+
 html{scroll-behavior:smooth}
 body{
   background:var(--bg); color:var(--ink);
   font-family:'Inter',sans-serif; font-size:15px;
   line-height:1.6; overflow-x:hidden; min-height:100vh;
+  transition:background .2s, color .2s;
 }
 
-/* ════════════════════════════
-   VIEWS
-════════════════════════════ */
+/* ════ VIEWS ════ */
 .view{display:none}
 .view.active{display:block}
 #view-onboarding.active{display:flex}
 #view-app.active{display:flex}
 
-/* ════════════════════════════
-   ONBOARDING
-════════════════════════════ */
+/* ════ ONBOARDING ════ */
 #view-onboarding{
   min-height:100vh; align-items:center; justify-content:center;
-  padding:40px 20px;
-  background:var(--bg);
+  padding:40px 20px; background:var(--bg);
 }
 .ob-wrap{
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-xl); padding:48px 40px;
-  max-width:460px; width:100%;
-  box-shadow:var(--shadow-lg);
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--rxl); padding:48px 40px;
+  max-width:460px; width:100%; box-shadow:var(--sh-lg);
 }
 .ob-logo{
   font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:800;
   color:var(--ink); margin-bottom:32px;
   display:flex; align-items:center; gap:8px;
 }
-.ob-logo-dot{
-  width:10px; height:10px; border-radius:50%;
-  background:var(--blue); flex-shrink:0;
-}
+.ob-logo-dot{width:10px;height:10px;border-radius:50%;background:var(--blue);flex-shrink:0}
 .ob-wrap h2{
   font-family:'Playfair Display',serif; font-size:1.75rem; font-weight:800;
   color:var(--ink); margin-bottom:6px;
 }
-.ob-wrap>p{font-size:0.9rem; color:var(--ink-light); margin-bottom:32px}
-.field-label{
-  display:block; font-size:0.78rem; font-weight:600;
-  color:var(--ink-mid); margin-bottom:6px; letter-spacing:0.3px;
-}
+.ob-wrap>p{font-size:.9rem;color:var(--ink-light);margin-bottom:32px}
+.field-label{display:block;font-size:.78rem;font-weight:600;color:var(--ink-mid);margin-bottom:6px}
 .ob-input{
   width:100%; background:var(--bg); border:1.5px solid var(--border);
-  border-radius:var(--radius); padding:12px 14px;
-  font-family:'Inter',sans-serif; font-size:0.95rem; color:var(--ink);
-  outline:none; margin-bottom:20px;
-  transition:border-color 0.2s, box-shadow 0.2s;
+  border-radius:var(--r); padding:12px 14px;
+  font-family:'Inter',sans-serif; font-size:.95rem; color:var(--ink);
+  outline:none; margin-bottom:20px; transition:border-color .15s,box-shadow .15s;
 }
-.ob-input:focus{border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
+.ob-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
 .ob-input::placeholder{color:var(--ink-light)}
-
-.board-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:28px}
+.board-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
 .board-btn{
-  background:var(--bg); border:1.5px solid var(--border); border-radius:var(--radius);
+  background:var(--bg); border:1.5px solid var(--border); border-radius:var(--r);
   padding:14px; text-align:center; cursor:pointer;
-  font-family:'Inter',sans-serif; font-weight:600; font-size:0.9rem;
-  color:var(--ink-mid); transition:all 0.15s;
+  font-family:'Inter',sans-serif; font-weight:600; font-size:.9rem;
+  color:var(--ink-mid); transition:all .15s;
 }
-.board-btn:hover{border-color:var(--blue); color:var(--ink); background:var(--blue-bg)}
-.board-btn.selected{border-color:var(--blue); background:var(--blue-bg); color:var(--blue)}
-.board-btn-sub{font-size:0.72rem; color:var(--ink-light); font-weight:400; margin-top:3px}
-
+.board-btn:hover{border-color:var(--blue);color:var(--ink);background:var(--blue-bg)}
+.board-btn.selected{border-color:var(--blue);background:var(--blue-bg);color:var(--blue)}
+.board-btn-sub{font-size:.72rem;color:var(--ink-light);font-weight:400;margin-top:3px}
 .btn-primary{
-  width:100%; background:var(--blue); color:var(--white);
-  border:none; border-radius:var(--radius); padding:14px;
-  font-family:'Inter',sans-serif; font-weight:700; font-size:0.97rem;
-  cursor:pointer; transition:background 0.15s, transform 0.1s, box-shadow 0.15s;
+  width:100%; background:var(--blue); color:#fff;
+  border:none; border-radius:var(--r); padding:14px;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:.97rem;
+  cursor:pointer; transition:background .15s,transform .1s,box-shadow .15s;
 }
-.btn-primary:hover{background:var(--blue-lt); transform:translateY(-1px); box-shadow:0 4px 16px rgba(37,99,235,0.3)}
-.btn-primary:active{transform:translateY(0)}
+.btn-primary:hover{background:var(--blue-lt);transform:translateY(-1px);box-shadow:0 4px 16px rgba(37,99,235,.3)}
 
-/* ════════════════════════════
-   LAYOUT
-════════════════════════════ */
+/* ════ LAYOUT ════ */
 #view-app{min-height:100vh}
+
+/* SIDEBAR */
 .sidebar{
   width:var(--sidebar-w); flex-shrink:0;
-  background:var(--sidebar-bg); height:100vh;
-  position:sticky; top:0; overflow-y:auto;
-  display:flex; flex-direction:column; padding:24px 14px;
-  z-index:50;
+  background:var(--sidebar); height:100vh; position:sticky; top:0;
+  display:flex; flex-direction:column; padding:0; z-index:50; overflow:hidden;
+  transition:width .2s;
+}
+.sidebar-top{
+  padding:20px 16px 16px; border-bottom:1px solid rgba(255,255,255,.06);
 }
 .sidebar-logo{
-  font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:800;
-  color:var(--white); margin-bottom:8px; padding:0 8px;
-  display:flex; align-items:center; gap:8px;
+  font-family:'Playfair Display',serif; font-size:1.25rem; font-weight:800;
+  color:#fff; display:flex; align-items:center; gap:7px; margin-bottom:4px;
 }
-.sidebar-logo-dot{width:9px; height:9px; border-radius:50%; background:var(--blue-lt)}
-.sidebar-tagline{
-  font-size:0.7rem; color:rgba(255,255,255,0.3); padding:0 8px;
-  margin-bottom:28px; letter-spacing:0.3px;
-}
+.sidebar-logo-dot{width:9px;height:9px;border-radius:50%;background:var(--blue);flex-shrink:0}
+.sidebar-tag{font-size:.68rem;color:rgba(255,255,255,.28);letter-spacing:.3px}
 
-.nav-section{margin-bottom:4px}
-.nav-section-label{
-  font-size:0.65rem; font-weight:700; letter-spacing:1.5px;
-  text-transform:uppercase; color:rgba(255,255,255,0.25);
-  padding:0 10px; margin:16px 0 6px;
+/* Sidebar search */
+.sidebar-search{
+  margin:12px 12px 4px;
+  position:relative;
+}
+.sidebar-search input{
+  width:100%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+  border-radius:8px; padding:8px 10px 8px 32px;
+  font-family:'Inter',sans-serif; font-size:.82rem; color:#fff;
+  outline:none; transition:background .15s,border-color .15s;
+}
+.sidebar-search input:focus{background:rgba(255,255,255,.1);border-color:var(--blue)}
+.sidebar-search input::placeholder{color:rgba(255,255,255,.3)}
+.sidebar-search-icon{
+  position:absolute; left:10px; top:50%; transform:translateY(-50%);
+  font-size:.75rem; color:rgba(255,255,255,.35); pointer-events:none;
+}
+.search-results-dropdown{
+  position:absolute; top:calc(100% + 6px); left:0; right:0; z-index:200;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r); box-shadow:var(--sh-lg);
+  max-height:320px; overflow-y:auto; display:none;
+}
+.search-results-dropdown.open{display:block}
+.sr-item{
+  display:flex; align-items:center; gap:10px;
+  padding:11px 14px; cursor:pointer; transition:background .12s;
+  border-bottom:1px solid var(--border);
+}
+.sr-item:last-child{border-bottom:none}
+.sr-item:hover{background:var(--blue-bg)}
+.sr-icon{
+  width:30px; height:30px; border-radius:7px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:.8rem;
+}
+.sr-icon.english{background:var(--blue-bg); color:var(--blue)}
+.sr-icon.maths{background:#ecfeff; color:#0891b2}
+[data-theme="dark"] .sr-icon.maths{background:#0c2a30;color:#22d3ee}
+.sr-title{font-size:.83rem;font-weight:600;color:var(--ink)}
+.sr-sub{font-size:.72rem;color:var(--ink-light);margin-top:1px}
+.sr-empty{padding:16px;text-align:center;font-size:.82rem;color:var(--ink-light)}
+
+.sidebar-nav{flex:1;overflow-y:auto;padding:8px 12px}
+.nav-group-label{
+  font-size:.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  color:rgba(255,255,255,.22); padding:0 8px; margin:14px 0 5px;
 }
 .nav-btn{
-  display:flex; align-items:center; gap:10px;
-  width:100%; padding:9px 10px; border-radius:8px;
-  border:none; background:none; text-align:left;
-  font-family:'Inter',sans-serif; font-size:0.85rem; font-weight:500;
-  color:rgba(255,255,255,0.5); cursor:pointer;
-  transition:all 0.15s; margin-bottom:1px;
+  display:flex; align-items:center; gap:9px; width:100%;
+  padding:8px 10px; border-radius:8px; border:none; background:none;
+  text-align:left; font-family:'Inter',sans-serif;
+  font-size:.84rem; font-weight:500; color:rgba(255,255,255,.48);
+  cursor:pointer; transition:all .15s; margin-bottom:1px;
 }
-.nav-btn:hover{background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.85)}
-.nav-btn.active{
-  background:rgba(37,99,235,0.2); color:var(--blue-lt);
-  font-weight:600;
+.nav-btn:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}
+.nav-btn.active{background:rgba(37,99,235,.2);color:#60a5fa;font-weight:600}
+.nav-icon{
+  width:26px; height:26px; border-radius:6px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:.8rem;
+  background:rgba(255,255,255,.06);
 }
-.nav-btn-icon{
-  width:28px; height:28px; border-radius:7px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:0.85rem; flex-shrink:0;
-  background:rgba(255,255,255,0.06);
+.nav-btn.active .nav-icon{background:rgba(37,99,235,.25)}
+.nav-badge{
+  margin-left:auto; font-size:.65rem; font-weight:700;
+  background:rgba(37,99,235,.3); color:var(--blue-lt);
+  padding:2px 7px; border-radius:999px;
 }
-.nav-btn.active .nav-btn-icon{background:rgba(37,99,235,0.25)}
 
-.sidebar-footer{margin-top:auto; padding-top:16px; border-top:1px solid rgba(255,255,255,0.08)}
+.sidebar-bottom{
+  padding:12px; border-top:1px solid rgba(255,255,255,.07);
+  display:flex; flex-direction:column; gap:8px;
+}
 .user-card{
-  display:flex; align-items:center; gap:10px; padding:10px;
-  border-radius:var(--radius); background:rgba(255,255,255,0.05);
+  display:flex; align-items:center; gap:9px; padding:9px 10px;
+  border-radius:var(--r); background:rgba(255,255,255,.05);
 }
 .user-av{
-  width:34px; height:34px; border-radius:50%;
+  width:32px; height:32px; border-radius:50%;
   background:linear-gradient(135deg,var(--blue),var(--blue-lt));
   display:flex; align-items:center; justify-content:center;
-  font-size:0.85rem; font-weight:700; color:var(--white); flex-shrink:0;
+  font-size:.82rem; font-weight:700; color:#fff; flex-shrink:0;
 }
-.user-name{font-size:0.85rem; font-weight:600; color:var(--white)}
-.user-sub{font-size:0.72rem; color:rgba(255,255,255,0.35)}
+.user-name{font-size:.82rem;font-weight:600;color:#fff}
+.user-sub{font-size:.68rem;color:rgba(255,255,255,.32)}
+/* Dark mode toggle in sidebar */
+.dark-toggle{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 10px; border-radius:var(--r);
+  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07);
+}
+.dark-toggle-label{font-size:.75rem;font-weight:500;color:rgba(255,255,255,.45)}
+.toggle-btn{
+  width:36px; height:20px; border-radius:999px; border:none; cursor:pointer;
+  background:rgba(255,255,255,.15); position:relative; transition:background .2s;
+  flex-shrink:0;
+}
+.toggle-btn.on{background:var(--blue)}
+.toggle-knob{
+  position:absolute; top:2px; left:2px; width:16px; height:16px;
+  border-radius:50%; background:#fff; transition:transform .2s;
+  box-shadow:0 1px 3px rgba(0,0,0,.3);
+}
+.toggle-btn.on .toggle-knob{transform:translateX(16px)}
 
-.main{flex:1; overflow-y:auto; min-height:100vh}
-.page{display:none; padding:32px 40px; max-width:1000px}
+/* MAIN */
+.main{flex:1;overflow-y:auto;min-height:100vh;display:flex;flex-direction:column}
+
+/* Top header bar */
+.topbar{
+  display:none; /* desktop only shows sidebar */
+  align-items:center; justify-content:space-between;
+  padding:0 20px; height:56px; flex-shrink:0;
+  background:var(--surface); border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:40;
+}
+
+.page{display:none;padding:28px 36px;max-width:1040px;flex:1}
 .page.active{display:block}
 
-/* ════════════════════════════
-   PAGE HEADER
-════════════════════════════ */
-.page-header{margin-bottom:28px}
-.page-title{
-  font-family:'Playfair Display',serif; font-size:1.75rem; font-weight:800;
-  color:var(--ink); line-height:1.2; margin-bottom:4px;
+/* ════ PAGE HEADER ════ */
+.pg-header{
+  display:flex; align-items:flex-start; justify-content:space-between;
+  margin-bottom:24px; gap:16px; flex-wrap:wrap;
 }
-.page-title em{font-style:italic; color:var(--blue)}
-.page-sub{font-size:0.88rem; color:var(--ink-light)}
+.pg-title{
+  font-family:'Playfair Display',serif; font-size:1.65rem; font-weight:800;
+  color:var(--ink); line-height:1.2; margin-bottom:3px;
+}
+.pg-title em{font-style:italic;color:var(--blue)}
+.pg-sub{font-size:.85rem;color:var(--ink-light)}
+.pg-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
 
-/* ════════════════════════════
-   DASHBOARD
-════════════════════════════ */
-.stats-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px}
+/* Breadcrumb */
+.breadcrumb{
+  display:flex; align-items:center; gap:6px;
+  font-size:.78rem; color:var(--ink-light); margin-bottom:18px;
+}
+.breadcrumb a{color:var(--blue);cursor:pointer;text-decoration:none;transition:opacity .15s}
+.breadcrumb a:hover{opacity:.75}
+.breadcrumb-sep{color:var(--border2)}
+
+/* ════ STATS ROW ════ */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .stat-card{
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-lg); padding:18px 20px;
-  display:flex; align-items:center; gap:14px;
-  box-shadow:var(--shadow-sm);
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--rl); padding:16px 18px;
+  display:flex; align-items:center; gap:12px; box-shadow:var(--sh-sm);
 }
 .stat-icon{
-  width:42px; height:42px; border-radius:var(--radius);
+  width:38px; height:38px; border-radius:var(--r);
   display:flex; align-items:center; justify-content:center;
-  font-size:1.1rem; flex-shrink:0;
+  font-size:1rem; flex-shrink:0;
 }
-.stat-icon.xp-ic{background:var(--blue-bg)}
-.stat-icon.streak-ic{background:#fff7ed}
-.stat-icon.done-ic{background:var(--green-bg)}
+.ic-xp{background:var(--blue-bg)}
+.ic-str{background:#fff7ed}
+[data-theme="dark"] .ic-str{background:#1c0f00}
+.ic-done{background:var(--green-bg)}
+.ic-rank{background:var(--gold-bg)}
 .stat-val{
-  font-family:'Playfair Display',serif; font-size:1.6rem;
+  font-family:'Playfair Display',serif; font-size:1.45rem;
   font-weight:800; color:var(--ink); line-height:1;
 }
-.stat-label{font-size:0.75rem; color:var(--ink-light); margin-top:3px}
+.stat-label{font-size:.72rem;color:var(--ink-light);margin-top:3px}
 
-/* Tier bar */
+/* ════ TIER ════ */
 .tier-card{
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-lg); padding:18px 22px;
-  margin-bottom:24px; box-shadow:var(--shadow-sm);
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--rl); padding:16px 20px; margin-bottom:20px;
+  box-shadow:var(--sh-sm);
 }
-.tier-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px}
+.tier-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
 .tier-pill{
-  display:inline-flex; align-items:center; gap:6px;
-  font-size:0.8rem; font-weight:700; color:var(--gold);
-  background:var(--gold-bg); border:1px solid rgba(181,137,58,0.2);
+  font-size:.78rem; font-weight:700; color:var(--gold);
+  background:var(--gold-bg); border:1px solid rgba(181,137,58,.2);
   padding:3px 12px; border-radius:999px;
 }
-.tier-label-next{font-size:0.78rem; color:var(--ink-light)}
-.xp-bar{height:7px; background:var(--bg3); border-radius:999px; overflow:hidden}
+.tier-next{font-size:.75rem;color:var(--ink-light)}
+.xp-bar{height:6px;background:var(--bg3);border-radius:999px;overflow:hidden}
 .xp-fill{
   height:100%; background:linear-gradient(90deg,var(--blue),var(--blue-lt));
-  border-radius:999px; transition:width 0.7s ease;
+  border-radius:999px; transition:width .7s ease;
 }
 
-/* Subject progress */
-.subject-progress-row{
-  display:grid; grid-template-columns:1fr 1fr;
-  gap:14px; margin-bottom:28px;
+/* ════ SUBJECT PROGRESS ════ */
+.subj-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.subj-card{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--rl); padding:14px 18px; box-shadow:var(--sh-sm);
 }
-.subj-prog-card{
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-lg); padding:16px 20px;
-  box-shadow:var(--shadow-sm);
-}
-.spc-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px}
-.spc-label{
-  font-size:0.82rem; font-weight:700; color:var(--ink);
-  display:flex; align-items:center; gap:7px;
-}
-.spc-badge{
-  font-size:0.7rem; font-weight:600; padding:2px 8px; border-radius:999px;
-}
-.spc-badge.english{background:var(--english-bg); color:var(--english)}
-.spc-badge.maths{background:var(--maths-bg); color:var(--maths)}
-.spc-pct{font-size:0.78rem; font-weight:600; color:var(--ink-light)}
-.spc-bar{height:6px; background:var(--bg3); border-radius:999px; overflow:hidden; margin-bottom:8px}
-.spc-fill-e{height:100%; background:var(--english); border-radius:999px; transition:width 0.6s ease}
-.spc-fill-m{height:100%; background:var(--maths); border-radius:999px; transition:width 0.6s ease}
-.spc-count{font-size:0.75rem; color:var(--ink-light)}
+.sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sc-label{font-size:.8rem;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:6px}
+.sc-badge{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:999px}
+.sc-badge.eng{background:var(--blue-bg);color:var(--blue)}
+.sc-badge.mth{background:#ecfeff;color:#0891b2}
+[data-theme="dark"] .sc-badge.mth{background:#0c2a30;color:#22d3ee}
+.sc-pct{font-size:.75rem;font-weight:600;color:var(--ink-light)}
+.sc-bar{height:5px;background:var(--bg3);border-radius:999px;overflow:hidden;margin-bottom:6px}
+.sc-fill-e{height:100%;background:var(--blue);border-radius:999px;transition:width .6s}
+.sc-fill-m{height:100%;background:#0891b2;border-radius:999px;transition:width .6s}
+[data-theme="dark"] .sc-fill-m{background:#22d3ee}
+.sc-count{font-size:.72rem;color:var(--ink-light)}
 
-/* Section heading */
-.section-heading{
-  font-size:0.78rem; font-weight:700; letter-spacing:1px;
-  text-transform:uppercase; color:var(--ink-light);
-  margin-bottom:14px; margin-top:4px;
+/* ════ SECTION HEADING ════ */
+.sec-heading{
+  font-size:.72rem; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+  color:var(--ink-light); margin-bottom:12px; margin-top:2px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.sec-heading a{
+  font-size:.72rem; font-weight:600; color:var(--blue);
+  text-decoration:none; letter-spacing:0; text-transform:none;
+  transition:opacity .15s;
+}
+.sec-heading a:hover{opacity:.7}
+
+/* ════ FILTER TABS ════ */
+.filter-bar{display:flex;align-items:center;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.f-tab{
+  background:var(--surface); border:1.5px solid var(--border); border-radius:7px;
+  padding:5px 14px; font-family:'Inter',sans-serif;
+  font-weight:600; font-size:.8rem; color:var(--ink-light); cursor:pointer;
+  transition:all .15s;
+}
+.f-tab:hover{border-color:var(--blue-lt);color:var(--ink)}
+.f-tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.f-tab.eng.active{background:#1d4ed8;border-color:#1d4ed8}
+.f-tab.mth.active{background:#0891b2;border-color:#0891b2}
+
+/* Search bar in topics page */
+.topic-search-wrap{position:relative;margin-bottom:16px}
+.topic-search-wrap input{
+  width:100%; background:var(--surface); border:1.5px solid var(--border);
+  border-radius:var(--r); padding:10px 14px 10px 38px;
+  font-family:'Inter',sans-serif; font-size:.88rem; color:var(--ink);
+  outline:none; transition:border-color .15s,box-shadow .15s;
+}
+.topic-search-wrap input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.topic-search-wrap input::placeholder{color:var(--ink-light)}
+.topic-search-icon{
+  position:absolute; left:13px; top:50%; transform:translateY(-50%);
+  color:var(--ink-light); font-size:.85rem; pointer-events:none;
 }
 
-/* Subject tabs */
-.subj-tabs{display:flex; gap:6px; margin-bottom:18px}
-.subj-tab{
-  background:var(--white); border:1.5px solid var(--border);
-  border-radius:8px; padding:6px 16px;
-  font-family:'Inter',sans-serif; font-weight:600; font-size:0.82rem;
-  color:var(--ink-light); cursor:pointer; transition:all 0.15s;
-}
-.subj-tab:hover{border-color:var(--blue); color:var(--ink)}
-.subj-tab.active{background:var(--blue); border-color:var(--blue); color:var(--white)}
-.subj-tab.english.active{background:var(--english); border-color:var(--english)}
-.subj-tab.maths.active{background:var(--maths); border-color:var(--maths)}
-
-/* Topic cards */
-.topics-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
+/* ════ TOPIC CARDS ════ */
+.topics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
 .topic-card{
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-lg); padding:20px;
-  cursor:pointer; transition:box-shadow 0.15s, transform 0.15s, border-color 0.15s;
-  box-shadow:var(--shadow-sm); position:relative; overflow:hidden;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--rl); padding:18px; cursor:pointer;
+  transition:box-shadow .15s,transform .15s,border-color .15s;
+  box-shadow:var(--sh-sm); position:relative;
 }
-.topic-card:hover{
-  box-shadow:var(--shadow-md); transform:translateY(-2px);
-  border-color:var(--border-dark);
-}
-.topic-card.completed{border-color:var(--green-border); background:var(--green-bg)}
-.topic-card.in-progress{border-color:var(--blue-border)}
+.topic-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px);border-color:var(--border2)}
+.topic-card.completed{border-color:var(--green-bd);background:var(--green-bg)}
 
-.tc-header{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px}
-.tc-subject{
-  font-size:0.68rem; font-weight:700; letter-spacing:0.8px;
+.tc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px}
+.tc-subj{
+  font-size:.67rem; font-weight:700; letter-spacing:.6px;
   text-transform:uppercase; padding:3px 9px; border-radius:999px;
 }
-.tc-subject.english{background:var(--english-bg); color:var(--english)}
-.tc-subject.maths{background:var(--maths-bg); color:var(--maths)}
-.tc-status{
-  width:22px; height:22px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center; font-size:0.75rem;
+.tc-subj.english{background:var(--blue-bg);color:var(--blue)}
+.tc-subj.maths{background:#ecfeff;color:#0891b2}
+[data-theme="dark"] .tc-subj.maths{background:#0c2a30;color:#22d3ee}
+.tc-done{
+  width:20px; height:20px; border-radius:50%; background:var(--green-bg);
+  display:flex; align-items:center; justify-content:center;
+  font-size:.7rem; color:var(--green);
 }
-.tc-status.done{background:var(--green-bg); color:var(--green)}
-.tc-status.ip{background:var(--blue-bg); color:var(--blue)}
-
 .tc-title{
-  font-family:'Playfair Display',serif; font-size:0.97rem; font-weight:700;
-  color:var(--ink); margin-bottom:6px; line-height:1.3;
+  font-family:'Playfair Display',serif; font-size:.93rem; font-weight:700;
+  color:var(--ink); margin-bottom:5px; line-height:1.3;
 }
-.tc-desc{font-size:0.8rem; color:var(--ink-light); line-height:1.55; margin-bottom:14px}
-
-.tc-progress{margin-bottom:12px}
-.tc-prog-bar{height:4px; background:var(--bg3); border-radius:999px; overflow:hidden; margin-bottom:4px}
-.tc-prog-fill{height:100%; background:var(--blue); border-radius:999px; transition:width 0.4s}
-.tc-prog-fill.complete{background:var(--green)}
-.tc-prog-label{font-size:0.7rem; color:var(--ink-light)}
-
-.tc-footer{display:flex; align-items:center; justify-content:space-between}
-.tc-meta{display:flex; align-items:center; gap:10px}
-.tc-chip{
-  font-size:0.7rem; color:var(--ink-light); display:flex; align-items:center; gap:3px;
-}
+.tc-desc{font-size:.78rem;color:var(--ink-light);line-height:1.5;margin-bottom:12px}
+.tc-progress-bar{height:3px;background:var(--bg3);border-radius:999px;overflow:hidden;margin-bottom:10px}
+.tc-prog-fill{height:100%;background:var(--blue);border-radius:999px}
+.tc-prog-fill.done{background:var(--green)}
+.tc-footer{display:flex;align-items:center;justify-content:space-between}
+.tc-chips{display:flex;gap:8px}
+.tc-chip{font-size:.7rem;color:var(--ink-light);display:flex;align-items:center;gap:2px}
 .tc-xp{
-  font-size:0.72rem; font-weight:700; color:var(--blue);
-  background:var(--blue-bg); border:1px solid var(--blue-border);
+  font-size:.7rem; font-weight:700; color:var(--blue);
+  background:var(--blue-bg); border:1px solid var(--blue-bd);
   padding:2px 9px; border-radius:999px;
 }
 
-/* ════════════════════════════
-   TOPIC READER
-════════════════════════════ */
-.topic-header-card{
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-xl); padding:28px 32px;
-  margin-bottom:20px; box-shadow:var(--shadow-sm);
-  border-top:4px solid var(--blue);
-}
-.topic-header-card.maths{border-top-color:var(--maths)}
-.th-eyebrow{
-  font-size:0.72rem; font-weight:700; letter-spacing:1.5px;
-  text-transform:uppercase; color:var(--blue); margin-bottom:10px;
-}
-.th-eyebrow.maths{color:var(--maths)}
-.th-title{
-  font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:800;
-  color:var(--ink); margin-bottom:14px; line-height:1.25;
-}
-.th-meta{display:flex; align-items:center; gap:16px; flex-wrap:wrap}
-.th-chip{
-  font-size:0.78rem; color:var(--ink-light);
-  display:flex; align-items:center; gap:5px;
-}
-.th-chip-done{font-size:0.78rem; font-weight:600; color:var(--green); display:flex; align-items:center; gap:4px}
-
+/* ════ TOPIC READER ════ */
 .back-btn{
-  display:inline-flex; align-items:center; gap:6px;
-  font-size:0.82rem; font-weight:600; color:var(--ink-light);
-  cursor:pointer; border:none; background:none; margin-bottom:18px;
-  padding:6px 12px; border-radius:7px; transition:background 0.15s, color 0.15s;
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:.8rem; font-weight:600; color:var(--ink-light);
+  cursor:pointer; border:1px solid var(--border); border-radius:7px;
+  background:var(--surface); padding:5px 12px;
+  margin-bottom:16px; transition:all .15s;
 }
-.back-btn:hover{background:var(--bg2); color:var(--ink)}
-
-/* Content cards */
+.back-btn:hover{border-color:var(--border2);color:var(--ink);background:var(--bg2)}
+.topic-hdr-card{
+  background:var(--surface); border:1px solid var(--border);
+  border-top:4px solid var(--blue); border-radius:var(--rxl);
+  padding:24px 28px; margin-bottom:14px; box-shadow:var(--sh-sm);
+}
+.topic-hdr-card.maths{border-top-color:#0891b2}
+.th-eyebrow{
+  font-size:.7rem; font-weight:700; letter-spacing:1.5px;
+  text-transform:uppercase; color:var(--blue); margin-bottom:9px;
+}
+.th-eyebrow.maths{color:#0891b2}
+.th-title{
+  font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:800;
+  color:var(--ink); margin-bottom:12px; line-height:1.25;
+}
+.th-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.th-chip{font-size:.76rem;color:var(--ink-light);display:flex;align-items:center;gap:4px}
+.th-chip.done{color:var(--green);font-weight:600}
 .content-card{
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-xl); padding:28px 32px;
-  margin-bottom:16px; box-shadow:var(--shadow-sm);
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--rxl); padding:24px 28px;
+  margin-bottom:13px; box-shadow:var(--sh-sm);
 }
 .content-card h3{
-  font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700;
-  color:var(--ink); margin-bottom:14px; padding-bottom:10px;
+  font-family:'Playfair Display',serif; font-size:1.05rem; font-weight:700;
+  color:var(--ink); margin-bottom:12px; padding-bottom:9px;
   border-bottom:1px solid var(--border);
 }
-.content-card p{
-  font-size:0.92rem; color:var(--ink-mid); line-height:1.8; margin-bottom:12px;
-}
+.content-card p{font-size:.9rem;color:var(--ink-mid);line-height:1.8;margin-bottom:10px}
 .content-card p:last-child{margin-bottom:0}
-
-/* Key points */
 .key-points{
-  background:var(--blue-bg); border:1px solid var(--blue-border);
-  border-radius:var(--radius-lg); padding:20px; margin:16px 0;
+  background:var(--blue-bg); border:1px solid var(--blue-bd);
+  border-radius:var(--rl); padding:16px 18px; margin:14px 0;
 }
 .key-points h4{
-  font-size:0.78rem; font-weight:700; letter-spacing:0.5px;
-  text-transform:uppercase; color:var(--blue);
-  margin-bottom:12px; display:flex; align-items:center; gap:6px;
+  font-size:.72rem; font-weight:700; letter-spacing:.5px; text-transform:uppercase;
+  color:var(--blue); margin-bottom:10px; display:flex; align-items:center; gap:5px;
 }
-.key-points ul{list-style:none; display:flex; flex-direction:column; gap:9px}
+.key-points ul{list-style:none;display:flex;flex-direction:column;gap:8px}
 .key-points li{
-  font-size:0.88rem; color:var(--ink-mid); line-height:1.55;
-  display:flex; gap:10px; align-items:flex-start;
+  font-size:.86rem; color:var(--ink-mid); line-height:1.55;
+  display:flex; gap:9px; align-items:flex-start;
 }
-.key-points li::before{
-  content:'→'; color:var(--blue); font-weight:700; flex-shrink:0; margin-top:1px;
-}
-
-/* Technique grid */
-.technique-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin:16px 0}
+.key-points li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;margin-top:1px}
+.technique-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
 .technique{
-  background:var(--bg); border:1px solid var(--border);
-  border-radius:var(--radius); padding:14px 16px;
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); padding:12px 14px;
 }
-.technique strong{
-  font-size:0.88rem; font-weight:700; color:var(--ink);
-  display:block; margin-bottom:5px;
-}
-.technique span{font-size:0.82rem; color:var(--ink-mid); line-height:1.55}
-
-/* Example box */
+.technique strong{font-size:.85rem;font-weight:700;color:var(--ink);display:block;margin-bottom:4px}
+.technique span{font-size:.8rem;color:var(--ink-mid);line-height:1.55}
 .example-box{
-  background:var(--ink); border-radius:var(--radius-lg); padding:22px 24px; margin:16px 0;
+  background:var(--ink); border-radius:var(--rl); padding:20px 22px; margin:14px 0;
 }
-.ex-label{
-  font-size:0.68rem; font-weight:700; letter-spacing:1.5px;
-  text-transform:uppercase; color:rgba(181,137,58,0.9); margin-bottom:10px;
-}
-.example-box p{
-  font-size:0.9rem; color:rgba(248,249,252,0.85); line-height:1.8;
-  font-style:italic; margin:0;
-}
-.ex-note{
-  margin-top:12px; font-size:0.78rem; color:rgba(248,249,252,0.4);
-  font-style:normal; padding-top:10px; border-top:1px solid rgba(255,255,255,0.08);
-}
-
-/* Worked example */
+[data-theme="dark"] .example-box{background:#000714;border:1px solid var(--border)}
+.ex-label{font-size:.67rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(181,137,58,.9);margin-bottom:8px}
+.example-box p{font-size:.88rem;color:rgba(248,249,252,.82);line-height:1.8;font-style:italic;margin:0}
+.ex-note{margin-top:10px;font-size:.76rem;color:rgba(248,249,252,.38);font-style:normal;padding-top:8px;border-top:1px solid rgba(255,255,255,.07)}
 .worked-example{
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-lg); overflow:hidden; margin:16px 0;
-  box-shadow:var(--shadow-sm);
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--rl); overflow:hidden; margin:14px 0; box-shadow:var(--sh-sm);
 }
-.we-header{
-  background:var(--ink); padding:12px 20px;
-  display:flex; align-items:center; gap:8px;
-}
-.we-header-title{
-  font-size:0.8rem; font-weight:700; color:rgba(255,255,255,0.8);
-  letter-spacing:0.3px;
-}
+.we-header{background:var(--ink);padding:10px 18px;display:flex;align-items:center;gap:7px}
+[data-theme="dark"] .we-header{background:#000714;border-bottom:1px solid var(--border)}
+.we-header-title{font-size:.77rem;font-weight:700;color:rgba(255,255,255,.75);letter-spacing:.3px}
 .we-question{
-  padding:14px 20px; background:var(--gold-bg);
-  border-bottom:1px solid rgba(181,137,58,0.15);
-  font-size:0.9rem; font-weight:600; color:var(--ink); line-height:1.5;
+  padding:12px 18px; background:var(--gold-bg); border-bottom:1px solid rgba(181,137,58,.15);
+  font-size:.88rem; font-weight:600; color:var(--ink); line-height:1.5;
 }
-.we-steps{padding:4px 0}
+.we-steps{padding:2px 0}
 .we-step{
-  display:grid; grid-template-columns:32px 1fr auto;
-  align-items:start; gap:12px; padding:11px 20px;
-  border-bottom:1px solid var(--border);
+  display:grid; grid-template-columns:28px 1fr auto;
+  align-items:start; gap:10px; padding:9px 18px; border-bottom:1px solid var(--border);
 }
 .we-step:last-child{border-bottom:none}
 .we-step-num{
-  width:24px; height:24px; border-radius:50%;
-  background:var(--blue-bg); border:1.5px solid var(--blue-border);
+  width:22px; height:22px; border-radius:50%;
+  background:var(--blue-bg); border:1.5px solid var(--blue-bd);
   display:flex; align-items:center; justify-content:center;
-  font-size:0.72rem; font-weight:800; color:var(--blue); flex-shrink:0;
+  font-size:.68rem; font-weight:800; color:var(--blue); flex-shrink:0;
 }
-.we-step-desc{font-size:0.85rem; color:var(--ink-mid); line-height:1.5; padding-top:2px}
+.we-step-desc{font-size:.83rem;color:var(--ink-mid);line-height:1.5;padding-top:2px}
 .we-step-calc{
-  font-family:monospace; font-size:0.85rem; font-weight:700;
-  color:var(--ink); background:var(--bg2); border:1px solid var(--border);
-  border-radius:6px; padding:3px 10px; white-space:nowrap; margin-top:1px;
+  font-family:monospace; font-size:.83rem; font-weight:700; color:var(--ink);
+  background:var(--bg2); border:1px solid var(--border); border-radius:5px;
+  padding:2px 9px; white-space:nowrap; margin-top:1px; flex-shrink:0;
 }
 .we-answer{
-  padding:12px 20px; background:var(--green-bg); border-top:2px solid var(--green-border);
-  display:flex; align-items:center; gap:10px;
+  padding:10px 18px; background:var(--green-bg); border-top:2px solid var(--green-bd);
+  display:flex; align-items:center; gap:8px;
 }
-.we-answer-label{font-size:0.75rem; font-weight:700; color:var(--green); white-space:nowrap}
-.we-answer-val{font-family:monospace; font-size:0.9rem; font-weight:800; color:var(--ink)}
-
-/* Quiz start card */
+.we-ans-label{font-size:.72rem;font-weight:700;color:var(--green);white-space:nowrap}
+.we-ans-val{font-family:monospace;font-size:.88rem;font-weight:800;color:var(--ink)}
 .quiz-start-card{
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-xl); padding:28px 32px; box-shadow:var(--shadow-sm);
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--rxl); padding:24px 28px; box-shadow:var(--sh-sm);
 }
 .quiz-start-card h3{
-  font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700;
-  color:var(--ink); margin-bottom:8px;
+  font-family:'Playfair Display',serif; font-size:1.05rem; font-weight:700;
+  color:var(--ink); margin-bottom:7px;
 }
-.quiz-start-card p{font-size:0.88rem; color:var(--ink-light); margin-bottom:20px}
+.quiz-start-card p{font-size:.86rem;color:var(--ink-light);margin-bottom:18px}
 .start-quiz-btn{
-  background:var(--blue); color:var(--white);
-  border:none; border-radius:var(--radius); padding:14px 28px;
-  font-family:'Inter',sans-serif; font-weight:700; font-size:0.95rem;
-  cursor:pointer; transition:background 0.15s, transform 0.1s, box-shadow 0.15s;
-  width:100%;
+  background:var(--blue); color:#fff; border:none; border-radius:var(--r);
+  padding:12px 24px; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:.92rem; cursor:pointer; width:100%;
+  transition:background .15s,transform .1s,box-shadow .15s;
 }
-.start-quiz-btn:hover{background:var(--blue-lt); transform:translateY(-1px); box-shadow:0 4px 16px rgba(37,99,235,0.3)}
+.start-quiz-btn:hover{background:var(--blue-lt);transform:translateY(-1px);box-shadow:0 4px 16px rgba(37,99,235,.28)}
 
-/* ════════════════════════════
-   QUIZ ENGINE (Seneca-style)
-════════════════════════════ */
-.quiz-shell{padding:0}
-
+/* ════ QUIZ ════ */
 .quiz-topbar{
   display:flex; align-items:center; justify-content:space-between;
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-lg); padding:14px 20px;
-  margin-bottom:20px; box-shadow:var(--shadow-sm);
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--rl); padding:12px 18px; margin-bottom:16px; box-shadow:var(--sh-sm);
 }
-.quiz-topbar-left{display:flex; align-items:center; gap:16px}
-.quiz-streak-badge{
-  display:flex; align-items:center; gap:5px;
-  background:var(--gold-bg); border:1px solid rgba(181,137,58,0.2);
-  border-radius:999px; padding:4px 12px;
-  font-size:0.8rem; font-weight:700; color:var(--gold);
+.qtl{display:flex;align-items:center;gap:14px}
+.q-streak{
+  display:flex;align-items:center;gap:5px;
+  background:var(--gold-bg);border:1px solid rgba(181,137,58,.2);
+  border-radius:999px;padding:3px 11px;
+  font-size:.78rem;font-weight:700;color:var(--gold);
 }
-.quiz-mastered{
-  display:flex; align-items:center; gap:6px;
-  font-size:0.82rem; font-weight:600; color:var(--ink-mid);
+.q-mastered-wrap{font-size:.8rem;font-weight:600;color:var(--ink-mid)}
+.q-mastered-num{
+  font-family:'Playfair Display',serif;font-size:1.05rem;
+  font-weight:800;color:var(--ink);
 }
-.quiz-mastered-count{
-  font-family:'Playfair Display',serif; font-size:1.1rem;
-  font-weight:800; color:var(--ink);
+.q-exit{
+  font-size:.78rem;font-weight:600;color:var(--ink-light);
+  background:none;border:1px solid var(--border);border-radius:6px;
+  padding:4px 11px;cursor:pointer;transition:all .15s;
 }
-.quiz-exit-btn{
-  font-size:0.8rem; font-weight:600; color:var(--ink-light);
-  background:none; border:1px solid var(--border); border-radius:7px;
-  padding:5px 12px; cursor:pointer; transition:all 0.15s;
-}
-.quiz-exit-btn:hover{border-color:var(--border-dark); color:var(--ink); background:var(--bg2)}
-
-.quiz-prog-wrap{margin-bottom:20px}
-.quiz-prog-track{
-  height:6px; background:var(--bg3); border-radius:999px; overflow:hidden; margin-bottom:6px;
-}
-.quiz-prog-fill{
-  height:100%; background:linear-gradient(90deg,var(--blue),var(--blue-lt));
-  border-radius:999px; transition:width 0.4s ease;
-}
-.quiz-prog-label{font-size:0.75rem; color:var(--ink-light)}
-
+.q-exit:hover{border-color:var(--border2);color:var(--ink);background:var(--bg2)}
+.q-prog-track{height:5px;background:var(--bg3);border-radius:999px;overflow:hidden;margin-bottom:5px}
+.q-prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue-lt));border-radius:999px;transition:width .4s}
+.q-prog-label{font-size:.72rem;color:var(--ink-light);margin-bottom:16px}
 .quiz-card{
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-xl); padding:32px;
-  box-shadow:var(--shadow-md);
-  animation:slideIn 0.25s ease;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--rxl); padding:28px; box-shadow:var(--sh-md);
+  animation:slideIn .22s ease;
 }
-@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-
-.quiz-qnum{
-  font-size:0.72rem; font-weight:700; letter-spacing:1px;
-  text-transform:uppercase; color:var(--ink-light); margin-bottom:10px;
+@keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.q-num{font-size:.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ink-light);margin-bottom:8px}
+.q-question{
+  font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;
+  color:var(--ink);margin-bottom:20px;line-height:1.45;
 }
-.quiz-q{
-  font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700;
-  color:var(--ink); margin-bottom:24px; line-height:1.45;
+.q-options{display:flex;flex-direction:column;gap:9px;margin-bottom:18px}
+.q-opt{
+  display:flex;align-items:center;gap:12px;
+  background:var(--bg); border:1.5px solid var(--border); border-radius:var(--rl);
+  padding:12px 16px; cursor:pointer; text-align:left;
+  font-family:'Inter',sans-serif;font-size:.88rem;font-weight:500;color:var(--ink);
+  transition:all .15s;width:100%;
 }
-
-.quiz-options{display:flex; flex-direction:column; gap:10px; margin-bottom:20px}
-.quiz-opt{
-  display:flex; align-items:center; gap:14px;
-  background:var(--bg); border:1.5px solid var(--border); border-radius:var(--radius-lg);
-  padding:14px 18px; cursor:pointer; text-align:left;
-  font-family:'Inter',sans-serif; font-size:0.9rem; font-weight:500; color:var(--ink);
-  transition:all 0.15s; width:100%;
+.q-opt:hover:not(:disabled){border-color:var(--blue);background:var(--blue-bg);color:var(--ink)}
+.q-opt:disabled{cursor:default}
+.q-opt.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);font-weight:600}
+.q-opt.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red)}
+.q-opt.reveal{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.q-badge{
+  width:28px;height:28px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.76rem;font-weight:700;color:var(--ink-mid);flex-shrink:0;transition:all .15s;
 }
-.quiz-opt:hover:not(:disabled){border-color:var(--blue); background:var(--blue-bg); color:var(--ink)}
-.quiz-opt:disabled{cursor:default}
-.quiz-opt.correct{
-  border-color:var(--green); background:var(--green-bg); color:var(--green);
-  font-weight:600;
-}
-.quiz-opt.wrong{border-color:var(--red); background:var(--red-bg); color:var(--red)}
-.quiz-opt.reveal-correct{
-  border-color:var(--green); background:var(--green-bg); color:var(--green);
-}
-
-.opt-badge{
-  width:30px; height:30px; border-radius:50%;
-  background:var(--border); display:flex; align-items:center; justify-content:center;
-  font-size:0.78rem; font-weight:700; color:var(--ink-mid); flex-shrink:0;
-  transition:all 0.15s;
-}
-.quiz-opt.correct .opt-badge{background:var(--green); color:var(--white)}
-.quiz-opt.wrong .opt-badge{background:var(--red); color:var(--white)}
-.quiz-opt.reveal-correct .opt-badge{background:var(--green); color:var(--white)}
-
-/* Feedback */
-.quiz-feedback{
-  border-radius:var(--radius); padding:14px 18px; display:none; margin-bottom:16px;
-  animation:fadeIn 0.2s ease;
-}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.quiz-feedback.show{display:block}
-.quiz-feedback.correct{background:var(--green-bg); border:1px solid var(--green-border)}
-.quiz-feedback.wrong{background:var(--red-bg); border:1px solid var(--red-border)}
-.qf-title{font-weight:700; font-size:0.85rem; margin-bottom:4px}
-.quiz-feedback.correct .qf-title{color:var(--green)}
-.quiz-feedback.wrong .qf-title{color:var(--red)}
-.qf-body{font-size:0.83rem; color:var(--ink-mid); line-height:1.55}
-
-/* Requeue notice */
+.q-opt.correct .q-badge{background:var(--green);color:#fff}
+.q-opt.wrong .q-badge{background:var(--red);color:#fff}
+.q-opt.reveal .q-badge{background:var(--green);color:#fff}
 .requeue-notice{
-  display:none; background:var(--red-bg); border:1px solid var(--red-border);
-  border-radius:var(--radius); padding:10px 14px;
-  font-size:0.8rem; color:var(--red); font-weight:600; margin-bottom:12px;
-  text-align:center;
+  display:none;background:var(--red-bg);border:1px solid var(--red-bd);
+  border-radius:var(--r);padding:8px 13px;font-size:.78rem;
+  color:var(--red);font-weight:600;margin-bottom:10px;text-align:center;
 }
 .requeue-notice.show{display:block}
-
-.quiz-next-btn{
-  width:100%; background:var(--ink); color:var(--white);
-  border:none; border-radius:var(--radius); padding:14px;
-  font-family:'Inter',sans-serif; font-weight:700; font-size:0.92rem;
-  cursor:pointer; display:none; transition:background 0.15s, transform 0.1s;
+.q-feedback{border-radius:var(--r);padding:12px 16px;display:none;margin-bottom:13px;animation:fadeIn .18s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.q-feedback.show{display:block}
+.q-feedback.correct{background:var(--green-bg);border:1px solid var(--green-bd)}
+.q-feedback.wrong{background:var(--red-bg);border:1px solid var(--red-bd)}
+.qf-title{font-weight:700;font-size:.82rem;margin-bottom:3px}
+.q-feedback.correct .qf-title{color:var(--green)}
+.q-feedback.wrong .qf-title{color:var(--red)}
+.qf-body{font-size:.81rem;color:var(--ink-mid);line-height:1.55}
+.q-next{
+  width:100%;background:var(--ink);color:#fff;border:none;border-radius:var(--r);
+  padding:12px;font-family:'Inter',sans-serif;font-weight:700;font-size:.9rem;
+  cursor:pointer;display:none;transition:background .15s,transform .1s;
 }
-.quiz-next-btn.show{display:block}
-.quiz-next-btn:hover{background:var(--blue); transform:translateY(-1px)}
-
+.q-next.show{display:block}
+.q-next:hover{background:var(--blue);transform:translateY(-1px)}
 /* Results */
 .results-card{
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-xl); padding:44px;
-  text-align:center; box-shadow:var(--shadow-lg);
-  animation:slideIn 0.3s ease;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);
+  padding:40px;text-align:center;box-shadow:var(--sh-lg);animation:slideIn .28s ease;
 }
-.results-emoji{font-size:3.2rem; margin-bottom:18px}
+.results-emoji{font-size:3rem;margin-bottom:14px}
 .results-title{
-  font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:800;
-  color:var(--ink); margin-bottom:8px;
+  font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:800;
+  color:var(--ink);margin-bottom:7px;
 }
-.results-sub{font-size:0.9rem; color:var(--ink-light); margin-bottom:24px}
-.results-stats{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px}
-.rs{
-  background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-lg); padding:18px;
+.results-sub{font-size:.88rem;color:var(--ink-light);margin-bottom:20px}
+.results-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.rs{background:var(--bg);border:1px solid var(--border);border-radius:var(--rl);padding:16px}
+.rs-val{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:800;color:var(--ink)}
+.rs-label{font-size:.72rem;color:var(--ink-light);margin-top:3px}
+.xp-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--blue-bg);border:1px solid var(--blue-bd);color:var(--blue);
+  font-weight:700;font-size:.97rem;padding:9px 22px;border-radius:999px;margin-bottom:20px;
+  animation:popIn .38s cubic-bezier(.34,1.56,.64,1) both;
 }
-.rs-val{
-  font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:800; color:var(--ink);
+@keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.results-btns{display:flex;gap:10px}
+.btn-r-pri{
+  flex:1;background:var(--blue);color:#fff;border:none;border-radius:var(--r);
+  padding:12px;font-family:'Inter',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;transition:background .15s;
 }
-.rs-label{font-size:0.75rem; color:var(--ink-light); margin-top:4px}
-.xp-earned-badge{
-  display:inline-flex; align-items:center; gap:8px;
-  background:var(--blue-bg); border:1px solid var(--blue-border);
-  color:var(--blue); font-weight:700; font-size:1rem;
-  padding:10px 24px; border-radius:999px; margin-bottom:24px;
-  animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+.btn-r-pri:hover{background:var(--blue-lt)}
+.btn-r-sec{
+  flex:1;background:var(--bg2);color:var(--ink);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:12px;font-family:'Inter',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;transition:background .15s;
 }
-@keyframes popIn{from{transform:scale(0.7);opacity:0}to{transform:scale(1);opacity:1}}
+.btn-r-sec:hover{background:var(--bg3)}
 
-.results-actions{display:flex; gap:12px}
-.btn-results-primary{
-  flex:1; background:var(--blue); color:var(--white);
-  border:none; border-radius:var(--radius); padding:13px;
-  font-family:'Inter',sans-serif; font-weight:700; font-size:0.92rem;
-  cursor:pointer; transition:background 0.15s;
-}
-.btn-results-primary:hover{background:var(--blue-lt)}
-.btn-results-secondary{
-  flex:1; background:var(--bg2); color:var(--ink);
-  border:1.5px solid var(--border); border-radius:var(--radius); padding:13px;
-  font-family:'Inter',sans-serif; font-weight:700; font-size:0.92rem;
-  cursor:pointer; transition:background 0.15s;
-}
-.btn-results-secondary:hover{background:var(--bg3)}
-
-/* ════════════════════════════
-   PAST PAPERS
-════════════════════════════ */
+/* ════ PAPERS ════ */
 .papers-note{
-  background:var(--blue-bg); border:1px solid var(--blue-border);
-  border-radius:var(--radius); padding:12px 16px; font-size:0.84rem;
-  color:var(--ink-mid); margin-bottom:22px; display:flex; align-items:flex-start; gap:8px;
+  background:var(--blue-bg);border:1px solid var(--blue-bd);
+  border-radius:var(--r);padding:11px 15px;font-size:.82rem;
+  color:var(--ink-mid);margin-bottom:18px;
 }
-.papers-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px}
+.papers-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
 .papers-card{
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-xl); overflow:hidden; box-shadow:var(--shadow-sm);
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rxl);overflow:hidden;box-shadow:var(--sh-sm);
 }
-.papers-card-header{
-  padding:16px 20px; display:flex; align-items:center; gap:10px;
-}
-.papers-card-header.eng{background:#1e3a8a}
-.papers-card-header.mth{background:#0c4a6e}
-.pch-icon{font-size:1.2rem}
-.pch-title{
-  font-family:'Playfair Display',serif; font-size:0.97rem; font-weight:700; color:var(--white);
-}
-.pch-sub{font-size:0.73rem; color:rgba(255,255,255,0.45)}
-.paper-group{border-bottom:1px solid var(--border)}
-.paper-group:last-child{border-bottom:none}
-.paper-group-head{
-  padding:10px 20px; font-size:0.72rem; font-weight:700;
-  letter-spacing:0.8px; text-transform:uppercase; color:var(--ink-light);
-  background:var(--bg); border-bottom:1px solid var(--border);
+.pcard-hdr{padding:14px 18px;display:flex;align-items:center;gap:9px}
+.pcard-hdr.eng{background:#1e3a8a}
+.pcard-hdr.mth{background:#0c4a6e}
+.pch-icon{font-size:1.15rem}
+.pch-title{font-family:'Playfair Display',serif;font-size:.93rem;font-weight:700;color:#fff}
+.pch-sub{font-size:.7rem;color:rgba(255,255,255,.4)}
+.pgrp{border-bottom:1px solid var(--border)}
+.pgrp:last-child{border-bottom:none}
+.pgrp-head{
+  padding:9px 18px;font-size:.7rem;font-weight:700;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--ink-light);
+  background:var(--bg);border-bottom:1px solid var(--border);
 }
 .paper-row{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:12px 20px; border-bottom:1px solid var(--border);
-  transition:background 0.15s;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px;border-bottom:1px solid var(--border);transition:background .12s;
 }
 .paper-row:last-child{border-bottom:none}
 .paper-row:hover{background:var(--bg)}
-.pr-name{font-size:0.85rem; font-weight:500; color:var(--ink)}
-.pr-links{display:flex; gap:7px}
-.pr-link{
-  font-size:0.73rem; font-weight:700; padding:4px 11px; border-radius:6px;
-  text-decoration:none; transition:all 0.15s; border:1.5px solid;
+.pr-name{font-size:.82rem;font-weight:500;color:var(--ink)}
+.pr-links{display:flex;gap:6px}
+.pr-a{
+  font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:5px;
+  text-decoration:none;transition:all .12s;border:1.5px solid;
 }
-.pr-link.paper{color:var(--blue); border-color:var(--blue-border); background:var(--blue-bg)}
-.pr-link.paper:hover{background:var(--blue); color:var(--white); border-color:var(--blue)}
-.pr-link.ms{color:var(--ink-light); border-color:var(--border); background:var(--bg)}
-.pr-link.ms:hover{background:var(--ink); color:var(--white); border-color:var(--ink)}
+.pr-a.p{color:var(--blue);border-color:var(--blue-bd);background:var(--blue-bg)}
+.pr-a.p:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.pr-a.m{color:var(--ink-light);border-color:var(--border);background:var(--bg)}
+.pr-a.m:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
 
-/* ════════════════════════════
-   LEADERBOARD
-════════════════════════════ */
+/* ════ LEADERBOARD ════ */
 .lb-banner{
-  background:linear-gradient(135deg,#1e3a8a,#1d4ed8);
-  border-radius:var(--radius-xl); padding:28px 32px;
-  margin-bottom:20px; position:relative; overflow:hidden;
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+  border-radius:var(--rxl);padding:24px 28px;margin-bottom:18px;
+  position:relative;overflow:hidden;
 }
-.lb-banner::after{
-  content:'🏆'; position:absolute; right:28px; top:50%;
-  transform:translateY(-50%); font-size:4rem; opacity:0.12;
-}
-.lb-banner h2{
-  font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:800;
-  color:var(--white); margin-bottom:5px;
-}
-.lb-banner p{color:rgba(255,255,255,0.55); font-size:0.87rem}
-.lb-note{
-  background:var(--blue-bg); border:1px solid var(--blue-border);
-  border-radius:var(--radius); padding:12px 16px;
-  font-size:0.83rem; color:var(--ink-mid); margin-bottom:18px;
-}
-.lb-table{
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-xl); overflow:hidden; box-shadow:var(--shadow-sm);
-}
+.lb-banner::after{content:'🏆';position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:3.5rem;opacity:.1}
+.lb-banner h2{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:4px}
+.lb-banner p{color:rgba(255,255,255,.5);font-size:.84rem}
+.lb-note{background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:var(--r);padding:10px 14px;font-size:.81rem;color:var(--ink-mid);margin-bottom:16px}
+.lb-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--rxl);overflow:hidden;box-shadow:var(--sh-sm)}
 .lb-row{
-  display:grid; grid-template-columns:54px 1fr 80px 90px;
-  align-items:center; padding:14px 22px; gap:14px;
-  border-bottom:1px solid var(--border); transition:background 0.15s;
+  display:grid;grid-template-columns:50px 1fr 80px 90px;
+  align-items:center;padding:13px 20px;gap:12px;
+  border-bottom:1px solid var(--border);transition:background .12s;
 }
 .lb-row:last-child{border-bottom:none}
 .lb-row:hover{background:var(--bg)}
-.lb-row.you{background:var(--blue-bg); border-left:3px solid var(--blue)}
-.lb-rank{
-  font-family:'Playfair Display',serif; font-size:1.1rem;
-  font-weight:800; color:var(--ink-light); text-align:center;
-}
-.lb-info{display:flex; align-items:center; gap:11px}
-.lb-av{
-  width:36px; height:36px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  font-size:0.85rem; font-weight:700; color:var(--white); flex-shrink:0;
-}
-.lb-name{font-size:0.9rem; font-weight:600; color:var(--ink)}
-.lb-board{font-size:0.75rem; color:var(--ink-light)}
-.you-tag{
-  font-size:0.65rem; font-weight:700; letter-spacing:0.8px;
-  text-transform:uppercase; color:var(--blue); margin-left:5px;
-}
-.lb-xp-val{
-  font-family:'Playfair Display',serif; font-size:1rem;
-  font-weight:800; color:var(--ink); text-align:right;
-}
-.lb-xp-lbl{font-size:0.7rem; color:var(--ink-light); text-align:right}
-.lb-tier-pill{
-  font-size:0.72rem; font-weight:700; padding:3px 10px;
-  border-radius:999px; text-align:center;
-}
-.t-bronze{background:var(--gold-bg); color:var(--gold)}
-.t-silver{background:#f1f5f9; color:#64748b}
-.t-gold{background:#fffbeb; color:#d97706}
-.t-platinum{background:var(--purple-bg); color:var(--purple)}
+.lb-row.you{background:var(--blue-bg);border-left:3px solid var(--blue)}
+.lb-rank{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:800;color:var(--ink-light);text-align:center}
+.lb-info{display:flex;align-items:center;gap:10px}
+.lb-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:#fff;flex-shrink:0}
+.lb-name{font-size:.87rem;font-weight:600;color:var(--ink)}
+.lb-board{font-size:.72rem;color:var(--ink-light)}
+.you-tag{font-size:.62rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--blue);margin-left:4px}
+.lb-xp-val{font-family:'Playfair Display',serif;font-size:.97rem;font-weight:800;color:var(--ink);text-align:right}
+.lb-xp-lbl{font-size:.68rem;color:var(--ink-light);text-align:right}
+.lb-tier{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:999px;text-align:center}
+.t-br{background:var(--gold-bg);color:var(--gold)}
+.t-si{background:#f1f5f9;color:#64748b}
+[data-theme="dark"] .t-si{background:#1e2835;color:#94a3b8}
+.t-go{background:#fffbeb;color:#d97706}
+[data-theme="dark"] .t-go{background:#1c1000;color:#f59e0b}
+.t-pl{background:var(--purple-bg,#f5f3ff);color:#7c3aed}
+[data-theme="dark"] .t-pl{background:#1a1030;color:#a78bfa}
 
-/* ════════════════════════════
-   XP TOAST
-════════════════════════════ */
+/* ════ TOAST ════ */
 .xp-toast{
-  position:fixed; bottom:28px; right:28px; z-index:999;
-  background:var(--ink); border:1px solid rgba(255,255,255,0.08);
-  border-radius:var(--radius-lg); padding:14px 20px;
-  display:flex; align-items:center; gap:12px;
-  box-shadow:var(--shadow-lg);
-  transform:translateY(80px); opacity:0;
-  transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  position:fixed;bottom:24px;right:24px;z-index:999;
+  background:var(--ink);border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--rl);padding:12px 18px;
+  display:flex;align-items:center;gap:10px;box-shadow:var(--sh-lg);
+  transform:translateY(70px);opacity:0;
+  transition:all .32s cubic-bezier(.34,1.56,.64,1);
 }
-.xp-toast.show{transform:translateY(0); opacity:1}
-.toast-icon{font-size:1.3rem}
-.toast-val{
-  font-family:'Playfair Display',serif; font-size:1.2rem;
-  font-weight:800; color:var(--blue-lt);
-}
-.toast-lbl{font-size:0.78rem; color:rgba(255,255,255,0.5); margin-top:1px}
+.xp-toast.show{transform:translateY(0);opacity:1}
+.toast-icon{font-size:1.2rem}
+.toast-val{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:800;color:var(--blue-lt)}
+.toast-lbl{font-size:.75rem;color:rgba(255,255,255,.45);margin-top:1px}
 
-/* ════════════════════════════
-   MOBILE
-════════════════════════════ */
-.mobile-bar{
-  display:none; position:fixed; bottom:0; left:0; right:0;
-  background:var(--sidebar-bg); border-top:1px solid rgba(255,255,255,0.08);
-  padding:8px 0 16px; z-index:50; justify-content:space-around;
+/* ════ MOBILE ════ */
+.mob-bar{
+  display:none;position:fixed;bottom:0;left:0;right:0;
+  background:var(--sidebar);border-top:1px solid rgba(255,255,255,.07);
+  padding:7px 0 14px;z-index:50;justify-content:space-around;
 }
 .mob-btn{
-  display:flex; flex-direction:column; align-items:center; gap:3px;
-  font-size:0.63rem; font-weight:600; color:rgba(255,255,255,0.4);
-  cursor:pointer; padding:5px 14px; border:none; background:none; transition:color 0.15s;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  font-size:.6rem;font-weight:600;color:rgba(255,255,255,.38);
+  cursor:pointer;padding:4px 12px;border:none;background:none;transition:color .15s;
 }
 .mob-btn.active{color:var(--blue-lt)}
-.mob-btn-icon{font-size:1.15rem}
+.mob-icon{font-size:1.1rem}
 
-@media(max-width:900px){
+@media(max-width:920px){
   .sidebar{display:none}
   #view-app.active{flex-direction:column}
-  .main{padding-bottom:80px}
-  .mobile-bar{display:flex}
-  .page{padding:22px 18px}
+  .main{padding-bottom:72px}
+  .mob-bar{display:flex}
+  .page{padding:18px 16px}
   .topics-grid{grid-template-columns:1fr}
-  .subject-progress-row{grid-template-columns:1fr}
-  .stats-row{grid-template-columns:repeat(3,1fr)}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .subj-row{grid-template-columns:1fr}
   .papers-grid{grid-template-columns:1fr}
-  .we-step{grid-template-columns:28px 1fr}
+  .we-step{grid-template-columns:24px 1fr}
   .we-step-calc{grid-column:2}
-  .results-stats{grid-template-columns:repeat(3,1fr)}
-  .lb-row{grid-template-columns:42px 1fr 64px}
-  .lb-tier-pill{display:none}
+  .results-btns{flex-direction:column}
+  .lb-row{grid-template-columns:40px 1fr 60px}
+  .lb-tier{display:none}
   .technique-grid{grid-template-columns:1fr}
-  .results-actions{flex-direction:column}
 }
 </style>
 </head>
@@ -833,50 +806,61 @@ body{
   <div class="ob-wrap">
     <div class="ob-logo"><span class="ob-logo-dot"></span>ReviseFast</div>
     <h2>Welcome aboard</h2>
-    <p>Tell us a little about yourself so we can set up your revision.</p>
-
-    <label class="field-label" for="ob-name">Your first name</label>
+    <p>Tell us about yourself so we can personalise your revision.</p>
+    <label class="field-label" for="ob-name">First name</label>
     <input class="ob-input" type="text" id="ob-name" placeholder="e.g. Priya" autocomplete="given-name"/>
-
-    <label class="field-label">Your exam board</label>
+    <label class="field-label">Exam board</label>
     <div class="board-grid">
-      <div class="board-btn" data-board="AQA" onclick="selectBoard(this)">
-        AQA<div class="board-btn-sub">Most common</div>
-      </div>
-      <div class="board-btn" data-board="Edexcel" onclick="selectBoard(this)">
-        Edexcel<div class="board-btn-sub">Pearson</div>
-      </div>
+      <div class="board-btn" data-board="AQA" onclick="selectBoard(this)">AQA<div class="board-btn-sub">Most common</div></div>
+      <div class="board-btn" data-board="Edexcel" onclick="selectBoard(this)">Edexcel<div class="board-btn-sub">Pearson</div></div>
     </div>
-
     <button class="btn-primary" onclick="completeOnboarding()">Start Revising →</button>
   </div>
 </div>
 
-<!-- MAIN APP -->
+<!-- APP -->
 <div id="view-app" class="view">
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="sidebar-logo"><span class="sidebar-logo-dot"></span>ReviseFast</div>
-    <div class="sidebar-tagline">GCSE Revision Platform</div>
+    <div class="sidebar-top">
+      <div class="sidebar-logo"><span class="sidebar-logo-dot"></span>ReviseFast</div>
+      <div class="sidebar-tag">GCSE Revision Platform</div>
+    </div>
 
-    <div class="nav-section-label">Study</div>
-    <button class="nav-btn active" data-page="dashboard" onclick="nav('dashboard',this)">
-      <span class="nav-btn-icon">📖</span> Dashboard
-    </button>
-    <button class="nav-btn" data-page="topics" onclick="nav('topics',this)">
-      <span class="nav-btn-icon">📝</span> All Topics
-    </button>
-    <button class="nav-btn" data-page="papers" onclick="nav('papers',this)">
-      <span class="nav-btn-icon">📋</span> Past Papers
-    </button>
+    <div class="sidebar-search">
+      <span class="sidebar-search-icon">🔍</span>
+      <input type="text" id="sidebar-search" placeholder="Search topics…" autocomplete="off"
+        oninput="handleSearch(this.value)" onfocus="openDropdown()" onblur="closeDropdownDelay()"/>
+      <div class="search-results-dropdown" id="search-dropdown"></div>
+    </div>
 
-    <div class="nav-section-label">Compete</div>
-    <button class="nav-btn" data-page="leaderboard" onclick="nav('leaderboard',this)">
-      <span class="nav-btn-icon">🏆</span> Leaderboard
-    </button>
+    <div class="sidebar-nav">
+      <div class="nav-group-label">Study</div>
+      <button class="nav-btn active" data-page="dashboard" onclick="nav('dashboard',this)">
+        <span class="nav-icon">📖</span> Dashboard
+      </button>
+      <button class="nav-btn" data-page="topics" onclick="nav('topics',this)">
+        <span class="nav-icon">📝</span> All Topics
+        <span class="nav-badge" id="nav-topics-count">0</span>
+      </button>
+      <button class="nav-btn" data-page="papers" onclick="nav('papers',this)">
+        <span class="nav-icon">📋</span> Past Papers
+      </button>
 
-    <div class="sidebar-footer">
+      <div class="nav-group-label">Compete</div>
+      <button class="nav-btn" data-page="leaderboard" onclick="nav('leaderboard',this)">
+        <span class="nav-icon">🏆</span> Leaderboard
+      </button>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="dark-toggle">
+        <span class="dark-toggle-label">🌙 Dark mode</span>
+        <button class="toggle-btn" id="dark-toggle-btn" onclick="toggleDark()">
+          <div class="toggle-knob"></div>
+        </button>
+      </div>
       <div class="user-card">
         <div class="user-av" id="sb-av">?</div>
         <div>
@@ -887,124 +871,108 @@ body{
     </div>
   </aside>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main class="main">
 
     <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
-      <div class="page-header">
-        <div class="page-title" id="dash-greeting">Good morning, <em>student</em></div>
-        <div class="page-sub">Track your progress and continue where you left off.</div>
+      <div class="pg-header">
+        <div>
+          <div class="pg-title" id="dash-greeting">Good morning, <em>student</em></div>
+          <div class="pg-sub">Track progress and continue where you left off.</div>
+        </div>
       </div>
 
       <div class="stats-row">
-        <div class="stat-card">
-          <div class="stat-icon xp-ic">⚡</div>
-          <div><div class="stat-val" id="stat-xp">0</div><div class="stat-label">Total XP earned</div></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon streak-ic">🔥</div>
-          <div><div class="stat-val" id="stat-streak">0</div><div class="stat-label">Day streak</div></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon done-ic">✓</div>
-          <div><div class="stat-val" id="stat-done">0</div><div class="stat-label">Topics mastered</div></div>
-        </div>
+        <div class="stat-card"><div class="stat-icon ic-xp">⚡</div><div><div class="stat-val" id="stat-xp">0</div><div class="stat-label">Total XP</div></div></div>
+        <div class="stat-card"><div class="stat-icon ic-str">🔥</div><div><div class="stat-val" id="stat-streak">0</div><div class="stat-label">Day streak</div></div></div>
+        <div class="stat-card"><div class="stat-icon ic-done">✓</div><div><div class="stat-val" id="stat-done">0</div><div class="stat-label">Topics done</div></div></div>
+        <div class="stat-card"><div class="stat-icon ic-rank">🏅</div><div><div class="stat-val" id="stat-rank">—</div><div class="stat-label">Your rank</div></div></div>
       </div>
 
       <div class="tier-card">
         <div class="tier-row">
           <div class="tier-pill" id="tier-pill">🥉 Bronze</div>
-          <div class="tier-label-next" id="tier-next-lbl">200 XP to Silver</div>
+          <div class="tier-next" id="tier-next">200 XP to Silver</div>
         </div>
         <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
       </div>
 
-      <div class="subject-progress-row">
-        <div class="subj-prog-card">
-          <div class="spc-top">
-            <div class="spc-label"><span class="spc-badge english">📚 English</span></div>
-            <div class="spc-pct" id="eng-pct">0%</div>
-          </div>
-          <div class="spc-bar"><div class="spc-fill-e" id="eng-fill" style="width:0%"></div></div>
-          <div class="spc-count" id="eng-count">0 of 14 topics completed</div>
+      <div class="subj-row">
+        <div class="subj-card">
+          <div class="sc-top"><div class="sc-label"><span class="sc-badge eng">📚 English</span></div><div class="sc-pct" id="eng-pct">0%</div></div>
+          <div class="sc-bar"><div class="sc-fill-e" id="eng-fill" style="width:0%"></div></div>
+          <div class="sc-count" id="eng-count">0 of 14 topics</div>
         </div>
-        <div class="subj-prog-card">
-          <div class="spc-top">
-            <div class="spc-label"><span class="spc-badge maths">📐 Maths</span></div>
-            <div class="spc-pct" id="mth-pct">0%</div>
-          </div>
-          <div class="spc-bar"><div class="spc-fill-m" id="mth-fill" style="width:0%"></div></div>
-          <div class="spc-count" id="mth-count">0 of 8 topics completed</div>
+        <div class="subj-card">
+          <div class="sc-top"><div class="sc-label"><span class="sc-badge mth">📐 Maths</span></div><div class="sc-pct" id="mth-pct">0%</div></div>
+          <div class="sc-bar"><div class="sc-fill-m" id="mth-fill" style="width:0%"></div></div>
+          <div class="sc-count" id="mth-count">0 of 8 topics</div>
         </div>
       </div>
 
-      <p class="section-heading">Continue Revising</p>
-      <div class="subj-tabs">
-        <button class="subj-tab active" onclick="dashFilter('all',this)">All</button>
-        <button class="subj-tab english" onclick="dashFilter('english',this)">📚 English</button>
-        <button class="subj-tab maths" onclick="dashFilter('maths',this)">📐 Maths</button>
+      <div class="sec-heading">Continue Revising <a onclick="nav('topics',document.querySelector('[data-page=topics]'))">View all →</a></div>
+      <div class="filter-bar">
+        <button class="f-tab active" onclick="dashFilter('all',this)">All</button>
+        <button class="f-tab eng" onclick="dashFilter('english',this)">📚 English</button>
+        <button class="f-tab mth" onclick="dashFilter('maths',this)">📐 Maths</button>
       </div>
       <div class="topics-grid" id="grid-dash"></div>
     </div>
 
     <!-- ALL TOPICS -->
     <div class="page" id="page-topics">
-      <div class="page-header">
-        <div class="page-title">All <em>Topics</em></div>
-        <div class="page-sub">GCSE English &amp; Maths — AQA and Edexcel</div>
+      <div class="pg-header">
+        <div><div class="pg-title">All <em>Topics</em></div><div class="pg-sub">GCSE English &amp; Maths — AQA and Edexcel</div></div>
       </div>
-      <div class="subj-tabs">
-        <button class="subj-tab active" onclick="topicsFilter('all',this)">All</button>
-        <button class="subj-tab english" onclick="topicsFilter('english',this)">📚 English</button>
-        <button class="subj-tab maths" onclick="topicsFilter('maths',this)">📐 Maths</button>
+      <div class="topic-search-wrap">
+        <span class="topic-search-icon">🔍</span>
+        <input type="text" id="topic-search" placeholder="Search topics, papers, subjects…" autocomplete="off" oninput="filterTopics()"/>
+      </div>
+      <div class="filter-bar">
+        <button class="f-tab active" onclick="topicsFilter('all',this)">All</button>
+        <button class="f-tab eng" onclick="topicsFilter('english',this)">📚 English</button>
+        <button class="f-tab mth" onclick="topicsFilter('maths',this)">📐 Maths</button>
       </div>
       <div class="topics-grid" id="grid-topics"></div>
     </div>
 
     <!-- TOPIC READER -->
     <div class="page" id="page-topic">
-      <button class="back-btn" onclick="nav('topics',document.querySelector('[data-page=topics]'))">← Back to Topics</button>
+      <div class="breadcrumb" id="topic-breadcrumb">
+        <a onclick="nav('dashboard',document.querySelector('[data-page=dashboard]'))">Dashboard</a>
+        <span class="breadcrumb-sep">/</span>
+        <a onclick="nav('topics',document.querySelector('[data-page=topics]'))">Topics</a>
+        <span class="breadcrumb-sep">/</span>
+        <span id="bc-topic-name">Topic</span>
+      </div>
       <div id="topic-body"></div>
     </div>
 
     <!-- QUIZ -->
     <div class="page" id="page-quiz">
-      <div class="quiz-shell">
-        <div class="quiz-topbar">
-          <div class="quiz-topbar-left">
-            <div class="quiz-streak-badge" id="q-streak-badge">🔥 0 streak</div>
-            <div class="quiz-mastered">
-              <span class="quiz-mastered-count" id="q-mastered">0</span>
-              &nbsp;/ <span id="q-total">0</span>&nbsp;mastered
-            </div>
-          </div>
-          <button class="quiz-exit-btn" onclick="exitQuiz()">Exit Quiz</button>
+      <div class="quiz-topbar">
+        <div class="qtl">
+          <div class="q-streak" id="q-streak">🔥 0 streak</div>
+          <div class="q-mastered-wrap"><span class="q-mastered-num" id="q-mastered">0</span> / <span id="q-total">0</span> mastered</div>
         </div>
-        <div class="quiz-prog-wrap">
-          <div class="quiz-prog-track"><div class="quiz-prog-fill" id="q-prog"></div></div>
-          <div class="quiz-prog-label" id="q-prog-lbl">Question 1</div>
-        </div>
-        <div id="quiz-body"></div>
+        <button class="q-exit" onclick="exitQuiz()">Exit Quiz</button>
       </div>
+      <div class="q-prog-track"><div class="q-prog-fill" id="q-prog" style="width:0%"></div></div>
+      <div class="q-prog-label" id="q-prog-lbl">0 of 0 mastered</div>
+      <div id="quiz-body"></div>
     </div>
 
-    <!-- PAST PAPERS -->
+    <!-- PAPERS -->
     <div class="page" id="page-papers">
-      <div class="page-header">
-        <div class="page-title">Past <em>Papers</em></div>
-        <div class="page-sub">Official AQA and Edexcel papers with mark schemes — opens on the exam board's site.</div>
-      </div>
-      <div class="papers-note">📎 All links go directly to the official AQA and Edexcel websites. Papers and mark schemes open in a new tab.</div>
+      <div class="pg-header"><div><div class="pg-title">Past <em>Papers</em></div><div class="pg-sub">Official AQA and Edexcel papers — opens on the exam board's site.</div></div></div>
+      <div class="papers-note">📎 All links go directly to official AQA and Edexcel websites. Papers and mark schemes open in a new tab.</div>
       <div class="papers-grid" id="papers-grid"></div>
     </div>
 
     <!-- LEADERBOARD -->
     <div class="page" id="page-leaderboard">
-      <div class="lb-banner">
-        <h2>Student Rankings</h2>
-        <p>GCSE English &amp; Maths — updated as you complete topics</p>
-      </div>
+      <div class="lb-banner"><h2>Student Rankings</h2><p>GCSE English &amp; Maths — updated as you complete topics</p></div>
       <div class="lb-note">ℹ️ Rankings are saved to your device. Invite friends to compare scores!</div>
       <div class="lb-table" id="lb-table"></div>
     </div>
@@ -1013,11 +981,11 @@ body{
 </div>
 
 <!-- MOBILE NAV -->
-<nav class="mobile-bar">
-  <button class="mob-btn active" onclick="nav('dashboard',this)"><span class="mob-btn-icon">📖</span>Home</button>
-  <button class="mob-btn" onclick="nav('topics',this)"><span class="mob-btn-icon">📝</span>Topics</button>
-  <button class="mob-btn" onclick="nav('papers',this)"><span class="mob-btn-icon">📋</span>Papers</button>
-  <button class="mob-btn" onclick="nav('leaderboard',this)"><span class="mob-btn-icon">🏆</span>Ranks</button>
+<nav class="mob-bar">
+  <button class="mob-btn active" onclick="nav('dashboard',this)"><span class="mob-icon">📖</span>Home</button>
+  <button class="mob-btn" onclick="nav('topics',this)"><span class="mob-icon">📝</span>Topics</button>
+  <button class="mob-btn" onclick="nav('papers',this)"><span class="mob-icon">📋</span>Papers</button>
+  <button class="mob-btn" onclick="nav('leaderboard',this)"><span class="mob-icon">🏆</span>Ranks</button>
 </nav>
 
 <!-- XP TOAST -->
@@ -1027,9 +995,7 @@ body{
 </div>
 
 <script>
-// ──────────────────────────────────────
-// DATA
-// ──────────────────────────────────────
+// ─── DATA ─────────────────────────────
 const TOPICS = [
   {
     id:'aqa-lang-p1-reading',
@@ -2393,25 +2359,99 @@ const PAPERS_DATA = [
   },
 ];
 
-// ──────────────────────────────────────
-// STATE
-// ──────────────────────────────────────
-let state = {name:'',board:'',xp:0,streak:0,lastVisit:'',completed:[]};
-let selectedBoard = '';
-let currentTopicId = '';
-let dashSubj = 'all', topicsSubj = 'all';
+const PAPERS_DATA = [
+  {subject:'English',icon:'📚',hdrClass:'eng',groups:[
+    {board:'AQA',name:'GCSE English Language',papers:[
+      {name:'Paper 1 — Reading Fiction & Creative Writing',paper:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20language%20paper%201&start=0',ms:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20language%20paper%201%20mark%20scheme&start=0'},
+      {name:'Paper 2 — Non-Fiction & Writing Viewpoints',paper:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20language%20paper%202&start=0',ms:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20language%20paper%202%20mark%20scheme&start=0'},
+    ]},
+    {board:'AQA',name:'GCSE English Literature',papers:[
+      {name:'Paper 1 — Shakespeare & 19th Century Novel',paper:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20literature%20paper%201&start=0',ms:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20literature%20paper%201%20mark%20scheme&start=0'},
+      {name:'Paper 2 — Modern Texts, Poetry & Unseen',paper:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20literature%20paper%202&start=0',ms:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=english%20literature%20paper%202%20mark%20scheme&start=0'},
+    ]},
+    {board:'Edexcel',name:'GCSE English Language',papers:[
+      {name:'Paper 1 — Fiction & Imaginative Writing',paper:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/english-language-2015.coursematerials.html#filterQuery=category:Pearson-UK:Category%2FPast-papers-and-mark-schemes',ms:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/english-language-2015.coursematerials.html'},
+      {name:'Paper 2 — Non-Fiction & Transactional Writing',paper:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/english-language-2015.coursematerials.html#filterQuery=category:Pearson-UK:Category%2FPast-papers-and-mark-schemes',ms:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/english-language-2015.coursematerials.html'},
+    ]},
+  ]},
+  {subject:'Maths',icon:'📐',hdrClass:'mth',groups:[
+    {board:'AQA',name:'GCSE Mathematics',papers:[
+      {name:'Paper 1 — Non-Calculator',paper:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=mathematics%20paper%201%20non-calculator&start=0',ms:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=mathematics%20paper%201%20mark%20scheme&start=0'},
+      {name:'Paper 2 — Calculator',paper:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=mathematics%20paper%202%20calculator&start=0',ms:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=mathematics%20paper%202%20mark%20scheme&start=0'},
+      {name:'Paper 3 — Calculator',paper:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=mathematics%20paper%203%20calculator&start=0',ms:'https://www.aqa.org.uk/find-past-papers-and-mark-schemes/results#q=mathematics%20paper%203%20mark%20scheme&start=0'},
+    ]},
+    {board:'Edexcel',name:'GCSE Mathematics',papers:[
+      {name:'Paper 1 — Non-Calculator',paper:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.coursematerials.html#filterQuery=category:Pearson-UK:Category%2FPast-papers-and-mark-schemes',ms:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.coursematerials.html'},
+      {name:'Paper 2 — Calculator',paper:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.coursematerials.html#filterQuery=category:Pearson-UK:Category%2FPast-papers-and-mark-schemes',ms:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.coursematerials.html'},
+      {name:'Paper 3 — Calculator',paper:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.coursematerials.html#filterQuery=category:Pearson-UK:Category%2FPast-papers-and-mark-schemes',ms:'https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.coursematerials.html'},
+    ]},
+  ]},
+];
 
-// Quiz engine state
-let qEngine = {
-  topic:null, queue:[], mastered:[], streak:0, answered:false
-};
+// ─── STATE ────────────────────────────
+let state={name:'',board:'',xp:0,streak:0,lastVisit:'',completed:[]};
+let selectedBoard='', currentTopicId='', dashSubj='all', topicsSubj='all';
+let qEngine={topic:null,queue:[],mastered:[],streak:0,answered:false};
+let isDark = false;
 
-function loadState(){const s=localStorage.getItem('rf2_state');if(s)state=JSON.parse(s)}
-function saveState(){localStorage.setItem('rf2_state',JSON.stringify(state))}
+function loadState(){
+  const s=localStorage.getItem('rf3_state');
+  if(s) state=JSON.parse(s);
+  isDark = localStorage.getItem('rf3_dark') === '1';
+  applyTheme();
+}
+function saveState(){localStorage.setItem('rf3_state',JSON.stringify(state))}
 
-// ──────────────────────────────────────
-// ONBOARDING
-// ──────────────────────────────────────
+// ─── DARK MODE ─────────────────────────
+function applyTheme(){
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  const btn = document.getElementById('dark-toggle-btn');
+  if(btn) btn.classList.toggle('on', isDark);
+}
+function toggleDark(){
+  isDark = !isDark;
+  localStorage.setItem('rf3_dark', isDark ? '1' : '0');
+  applyTheme();
+}
+
+// ─── SEARCH ────────────────────────────
+function handleSearch(q){
+  const dd = document.getElementById('search-dropdown');
+  if(!q.trim()){ dd.innerHTML=''; dd.classList.remove('open'); return; }
+  const matches = TOPICS.filter(t=>
+    t.title.toLowerCase().includes(q.toLowerCase()) ||
+    t.desc.toLowerCase().includes(q.toLowerCase()) ||
+    t.paper.toLowerCase().includes(q.toLowerCase()) ||
+    (t.board||'').toLowerCase().includes(q.toLowerCase())
+  ).slice(0,8);
+  if(!matches.length){
+    dd.innerHTML='<div class="sr-empty">No topics found</div>';
+  } else {
+    dd.innerHTML = matches.map(t=>{
+      const s=t.subject||'english';
+      const icon=s==='maths'?'📐':'📚';
+      return `<div class="sr-item" onmousedown="searchOpenTopic('${t.id}')">
+        <div class="sr-icon ${s}">${icon}</div>
+        <div><div class="sr-title">${t.title}</div><div class="sr-sub">${t.board} · ${t.paper}</div></div>
+      </div>`;
+    }).join('');
+  }
+  dd.classList.add('open');
+}
+function searchOpenTopic(id){
+  document.getElementById('sidebar-search').value='';
+  document.getElementById('search-dropdown').classList.remove('open');
+  openTopic(id);
+}
+function openDropdown(){ if(document.getElementById('sidebar-search').value.trim()) document.getElementById('search-dropdown').classList.add('open'); }
+function closeDropdownDelay(){ setTimeout(()=>document.getElementById('search-dropdown').classList.remove('open'), 200); }
+
+function filterTopics(){
+  const q = document.getElementById('topic-search').value.toLowerCase().trim();
+  renderTopicsGrid('grid-topics', 0, topicsSubj, q);
+}
+
+// ─── ONBOARDING ─────────────────────────
 function selectBoard(el){
   document.querySelectorAll('.board-btn').forEach(b=>b.classList.remove('selected'));
   el.classList.add('selected'); selectedBoard=el.dataset.board;
@@ -2425,124 +2465,114 @@ function completeOnboarding(){
 }
 function checkStreak(){
   const today=new Date().toDateString();
-  if(state.lastVisit===today)return;
+  if(state.lastVisit===today) return;
   const yesterday=new Date(Date.now()-86400000).toDateString();
-  if(state.lastVisit===yesterday) state.streak+=1;
-  else if(state.lastVisit!=='') state.streak=1;
-  else state.streak=1;
+  state.streak = state.lastVisit===yesterday ? state.streak+1 : (state.lastVisit ? 1 : 1);
   state.lastVisit=today;
 }
 
-// ──────────────────────────────────────
-// LAUNCH
-// ──────────────────────────────────────
+// ─── LAUNCH ─────────────────────────────
 function launchApp(){
   document.getElementById('view-onboarding').classList.remove('active');
   document.getElementById('view-app').classList.add('active');
-  setupSidebar(); renderDashboard(); renderTopicsGrid('grid-topics',0,topicsSubj);
+  setupSidebar(); renderDashboard();
+  renderTopicsGrid('grid-topics',0,topicsSubj,'');
   renderPapers(); renderLeaderboard();
-  nav('dashboard',document.querySelector('[data-page=dashboard]'));
+  document.getElementById('nav-topics-count').textContent=TOPICS.length;
+  nav('dashboard', document.querySelector('[data-page=dashboard]'));
 }
 function setupSidebar(){
   document.getElementById('sb-av').textContent=state.name.charAt(0).toUpperCase();
   document.getElementById('sb-name').textContent=state.name;
-  document.getElementById('sb-sub').textContent=state.board+' · GCSE English & Maths';
+  document.getElementById('sb-sub').textContent=state.board+' · GCSE';
+  const btn=document.getElementById('dark-toggle-btn');
+  if(btn) btn.classList.toggle('on',isDark);
 }
 
-// ──────────────────────────────────────
-// NAVIGATION
-// ──────────────────────────────────────
-function nav(id, el){
+// ─── NAV ────────────────────────────────
+function nav(id,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  const sideBtn=document.querySelector(`.nav-btn[data-page="${id}"]`);
-  if(sideBtn) sideBtn.classList.add('active');
+  const sb=document.querySelector(`.nav-btn[data-page="${id}"]`);
+  if(sb) sb.classList.add('active');
   document.querySelectorAll('.mob-btn').forEach(b=>b.classList.remove('active'));
   if(el&&el.classList.contains('mob-btn')) el.classList.add('active');
   window.scrollTo(0,0);
 }
 
-// ──────────────────────────────────────
-// DASHBOARD
-// ──────────────────────────────────────
+// ─── DASHBOARD ──────────────────────────
 function renderDashboard(){
   const h=new Date().getHours();
   const g=h<12?'Good morning':h<18?'Good afternoon':'Good evening';
   document.getElementById('dash-greeting').innerHTML=`${g}, <em>${state.name}</em>`;
-  updateStats();
-  renderTopicsGrid('grid-dash',6,dashSubj);
+  updateStats(); renderTopicsGrid('grid-dash',6,dashSubj,'');
 }
-
 function updateStats(){
   document.getElementById('stat-xp').textContent=state.xp;
   document.getElementById('stat-streak').textContent=state.streak;
   document.getElementById('stat-done').textContent=state.completed.length;
-  const tier=getTier(state.xp), next=getNextTier(state.xp);
+  // Rank
+  const all=[...SEEDED_STUDENTS,{name:state.name,xp:state.xp,isYou:true}].sort((a,b)=>b.xp-a.xp);
+  const rank=all.findIndex(s=>s.isYou)+1;
+  document.getElementById('stat-rank').textContent='#'+rank;
+  // Tier
+  const tier=getTier(state.xp),next=getNextTier(state.xp);
   document.getElementById('tier-pill').textContent=tier.name;
-  document.getElementById('tier-next-lbl').textContent=next?`${next.min-state.xp} XP to ${next.name.split(' ')[1]}`:'✨ Max rank!';
+  document.getElementById('tier-next').textContent=next?`${next.min-state.xp} XP to ${next.name.split(' ')[1]}`:'✨ Max rank!';
   document.getElementById('xp-fill').style.width=tierPct(state.xp)+'%';
-  updateSubjectProgress();
+  // Subject progress
+  const engT=TOPICS.filter(t=>(t.subject||'english')==='english');
+  const mthT=TOPICS.filter(t=>t.subject==='maths');
+  const engD=engT.filter(t=>state.completed.includes(t.id)).length;
+  const mthD=mthT.filter(t=>state.completed.includes(t.id)).length;
+  const eP=Math.round((engD/engT.length)*100), mP=Math.round((mthD/mthT.length)*100);
+  document.getElementById('eng-pct').textContent=eP+'%';
+  document.getElementById('eng-fill').style.width=eP+'%';
+  document.getElementById('eng-count').textContent=`${engD} of ${engT.length} topics`;
+  document.getElementById('mth-pct').textContent=mP+'%';
+  document.getElementById('mth-fill').style.width=mP+'%';
+  document.getElementById('mth-count').textContent=`${mthD} of ${mthT.length} topics`;
+}
+function dashFilter(s,el){
+  dashSubj=s;
+  document.querySelectorAll('#page-dashboard .f-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active'); renderTopicsGrid('grid-dash',6,dashSubj,'');
+}
+function topicsFilter(s,el){
+  topicsSubj=s;
+  document.querySelectorAll('#page-topics .f-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active'); filterTopics();
 }
 
-function updateSubjectProgress(){
-  const engTopics=TOPICS.filter(t=>(t.subject||'english')==='english');
-  const mthTopics=TOPICS.filter(t=>t.subject==='maths');
-  const engDone=engTopics.filter(t=>state.completed.includes(t.id)).length;
-  const mthDone=mthTopics.filter(t=>state.completed.includes(t.id)).length;
-  const engPct=Math.round((engDone/engTopics.length)*100);
-  const mthPct=Math.round((mthDone/mthTopics.length)*100);
-  document.getElementById('eng-pct').textContent=engPct+'%';
-  document.getElementById('eng-fill').style.width=engPct+'%';
-  document.getElementById('eng-count').textContent=`${engDone} of ${engTopics.length} topics completed`;
-  document.getElementById('mth-pct').textContent=mthPct+'%';
-  document.getElementById('mth-fill').style.width=mthPct+'%';
-  document.getElementById('mth-count').textContent=`${mthDone} of ${mthTopics.length} topics completed`;
-}
-
-function dashFilter(subj,el){
-  dashSubj=subj;
-  document.querySelectorAll('#page-dashboard .subj-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  renderTopicsGrid('grid-dash',6,dashSubj);
-}
-function topicsFilter(subj,el){
-  topicsSubj=subj;
-  document.querySelectorAll('#page-topics .subj-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  renderTopicsGrid('grid-topics',0,topicsSubj);
-}
-
-// ──────────────────────────────────────
-// TOPIC CARDS
-// ──────────────────────────────────────
-function renderTopicsGrid(containerId, limit, subj){
+// ─── TOPIC CARDS ────────────────────────
+function renderTopicsGrid(cid,limit,subj,query){
   let topics=TOPICS.filter(t=>{
     const s=t.subject||'english';
-    return !subj||subj==='all'||s===subj;
+    if(subj&&subj!=='all'&&s!==subj) return false;
+    if(query){
+      const q=query.toLowerCase();
+      return t.title.toLowerCase().includes(q)||t.desc.toLowerCase().includes(q)||t.paper.toLowerCase().includes(q);
+    }
+    return true;
   });
   if(limit) topics=topics.slice(0,limit);
-  const el=document.getElementById(containerId);
-  if(!el) return;
+  const el=document.getElementById(cid); if(!el) return;
+  if(!topics.length){ el.innerHTML='<div style="color:var(--ink-light);font-size:.88rem;padding:20px 0">No topics match your search.</div>'; return; }
   el.innerHTML=topics.map(t=>{
     const done=state.completed.includes(t.id);
     const s=t.subject||'english';
     const isMaths=s==='maths';
-    const pct=done?100:0;
-    const statusIcon=done?'<div class="tc-status done">✓</div>':'';
     return `<div class="topic-card ${done?'completed':''}" onclick="openTopic('${t.id}')">
       <div class="tc-header">
-        <span class="tc-subject ${s}">${isMaths?`📐 ${t.paper}`:t.board}</span>
-        ${statusIcon}
+        <span class="tc-subj ${s}">${isMaths?`📐 ${t.paper}`:t.board}</span>
+        ${done?'<div class="tc-done">✓</div>':''}
       </div>
       <div class="tc-title">${t.title}</div>
       <div class="tc-desc">${t.desc}</div>
-      ${done?`<div class="tc-progress">
-        <div class="tc-prog-bar"><div class="tc-prog-fill complete" style="width:100%"></div></div>
-        <div class="tc-prog-label">Completed</div>
-      </div>`:''}
+      <div class="tc-progress-bar"><div class="tc-prog-fill ${done?'done':''}" style="width:${done?100:0}%"></div></div>
       <div class="tc-footer">
-        <div class="tc-meta">
+        <div class="tc-chips">
           <span class="tc-chip">⏱ ${t.duration}</span>
           ${!isMaths?`<span class="tc-chip">📄 ${t.paper}</span>`:''}
         </div>
@@ -2552,287 +2582,166 @@ function renderTopicsGrid(containerId, limit, subj){
   }).join('');
 }
 
-// ──────────────────────────────────────
-// TOPIC READER
-// ──────────────────────────────────────
+// ─── TOPIC READER ───────────────────────
 function openTopic(id){
-  currentTopicId=id;
-  renderTopic(id);
-  nav('topic',null);
-}
-
-function renderTopic(id){
+  currentTopicId=id; renderTopic(id); nav('topic',null);
   const t=TOPICS.find(x=>x.id===id);
-  if(!t) return;
+  if(t) document.getElementById('bc-topic-name').textContent=t.title;
+}
+function renderTopic(id){
+  const t=TOPICS.find(x=>x.id===id); if(!t) return;
   const done=state.completed.includes(id);
   const isMaths=(t.subject||'english')==='maths';
   const c=t.content;
-
-  let sections=c.sections.map(s=>{
-    let html=`<div class="content-card"><h3>${s.heading}</h3><p>${s.body}</p>`;
-    if(s.keyPoints) html+=`<div class="key-points"><h4>📌 Key Points</h4><ul>${s.keyPoints.map(p=>`<li>${p}</li>`).join('')}</ul></div>`;
-    if(s.techniques) html+=`<div class="technique-grid">${s.techniques.map(tc=>`<div class="technique"><strong>${tc.name}</strong><span>${tc.desc}</span></div>`).join('')}</div>`;
+  let secs=c.sections.map(s=>{
+    let h=`<div class="content-card"><h3>${s.heading}</h3><p>${s.body}</p>`;
+    if(s.keyPoints) h+=`<div class="key-points"><h4>📌 Key Points</h4><ul>${s.keyPoints.map(p=>`<li>${p}</li>`).join('')}</ul></div>`;
+    if(s.techniques) h+=`<div class="technique-grid">${s.techniques.map(tc=>`<div class="technique"><strong>${tc.name}</strong><span>${tc.desc}</span></div>`).join('')}</div>`;
     if(s.workedExample){
       const we=s.workedExample;
-      html+=`<div class="worked-example">
-        <div class="we-header"><span class="we-header-title">📐 Worked Example</span></div>
-        <div class="we-question">${we.question}</div>
-        <div class="we-steps">${we.steps.map(st=>`<div class="we-step"><div class="we-step-num">${st.n}</div><div class="we-step-desc">${st.desc}</div><div class="we-step-calc">${st.calc}</div></div>`).join('')}</div>
-        <div class="we-answer"><span class="we-answer-label">Answer:</span><span class="we-answer-val">${we.answer}</span></div>
-      </div>`;
+      h+=`<div class="worked-example"><div class="we-header"><span class="we-header-title">📐 Worked Example</span></div><div class="we-question">${we.question}</div><div class="we-steps">${we.steps.map(st=>`<div class="we-step"><div class="we-step-num">${st.n}</div><div class="we-step-desc">${st.desc}</div><div class="we-step-calc">${st.calc}</div></div>`).join('')}</div><div class="we-answer"><span class="we-ans-label">Answer:</span><span class="we-ans-val">${we.answer}</span></div></div>`;
     }
-    if(s.example) html+=`<div class="example-box"><div class="ex-label">${s.example.label}</div><p>${s.example.text}</p><div class="ex-note">${s.example.note}</div></div>`;
-    html+=`</div>`;
-    return html;
+    if(s.example) h+=`<div class="example-box"><div class="ex-label">${s.example.label}</div><p>${s.example.text}</p><div class="ex-note">${s.example.note}</div></div>`;
+    h+=`</div>`; return h;
   }).join('');
-
-  const eyebrowClass=isMaths?'th-eyebrow maths':'th-eyebrow';
-  const eyebrowTxt=isMaths?`📐 ${t.paper}`:`${t.board} · ${t.paper}`;
-
   document.getElementById('topic-body').innerHTML=`
-    <div class="topic-header-card ${isMaths?'maths':''}">
-      <div class="${eyebrowClass}">${eyebrowTxt}</div>
+    <div class="topic-hdr-card ${isMaths?'maths':''}">
+      <div class="th-eyebrow ${isMaths?'maths':''}">${isMaths?`📐 ${t.paper}`:`${t.board} · ${t.paper}`}</div>
       <div class="th-title">${t.title}</div>
       <div class="th-meta">
         <span class="th-chip">⏱ ${t.duration}</span>
         <span class="th-chip">⚡ +${t.xp} XP</span>
-        ${done?'<span class="th-chip-done">✓ Completed</span>':''}
+        ${done?'<span class="th-chip done">✓ Completed</span>':''}
       </div>
     </div>
     <div class="content-card"><p>${c.intro}</p></div>
-    ${sections}
+    ${secs}
     <div class="quiz-start-card">
       <h3>${done?'Retake the Quiz':'Test your knowledge'}</h3>
-      <p>${done?`You've already mastered this topic. Retake the quiz to keep your knowledge sharp.`:`Answer all ${t.quiz.length} questions to earn +${t.xp} XP. Wrong answers re-queue until you get them right.`}</p>
-      <button class="start-quiz-btn" onclick="startQuiz('${id}')">
-        ${done?'Retake Quiz':'Start Quiz'} — ${t.quiz.length} questions →
-      </button>
+      <p>${done?`Already completed — retake to keep knowledge sharp.`:`Answer all ${t.quiz.length} questions to earn +${t.xp} XP. Wrong answers re-queue until correct.`}</p>
+      <button class="start-quiz-btn" onclick="startQuiz('${id}')">${done?'Retake':'Start'} Quiz — ${t.quiz.length} questions →</button>
     </div>`;
 }
 
-// ──────────────────────────────────────
-// QUIZ ENGINE (Seneca-style adaptive)
-// ──────────────────────────────────────
+// ─── QUIZ ENGINE ────────────────────────
 function startQuiz(id){
-  const t=TOPICS.find(x=>x.id===id);
-  currentTopicId=id;
-  // Build queue: each question object + index
-  qEngine={
-    topic:t,
-    queue:t.quiz.map((q,i)=>({...q,idx:i})),
-    mastered:[],
-    streak:0,
-    answered:false
-  };
-  nav('quiz',null);
-  renderQuestion();
+  const t=TOPICS.find(x=>x.id===id); currentTopicId=id;
+  qEngine={topic:t,queue:t.quiz.map((q,i)=>({...q,idx:i})),mastered:[],streak:0,answered:false};
+  nav('quiz',null); renderQ();
 }
-
-function exitQuiz(){
-  nav('topic',null);
-  renderTopic(currentTopicId);
-}
-
-function renderQuestion(){
-  const {topic, queue, mastered, streak} = qEngine;
-  const totalQ = topic.quiz.length;
-  const masteredCount = mastered.length;
-  const pct = Math.round((masteredCount/totalQ)*100);
-
-  document.getElementById('q-streak-badge').textContent=`🔥 ${streak} streak`;
-  document.getElementById('q-mastered').textContent=masteredCount;
-  document.getElementById('q-total').textContent=totalQ;
+function exitQuiz(){nav('topic',null);renderTopic(currentTopicId)}
+function renderQ(){
+  const {queue,mastered,streak,topic}=qEngine;
+  const total=topic.quiz.length, done=mastered.length;
+  const pct=Math.round((done/total)*100);
+  document.getElementById('q-streak').textContent=`🔥 ${streak} streak`;
+  document.getElementById('q-mastered').textContent=done;
+  document.getElementById('q-total').textContent=total;
   document.getElementById('q-prog').style.width=pct+'%';
-  document.getElementById('q-prog-lbl').textContent=
-    `${masteredCount} of ${totalQ} mastered · ${queue.length} remaining`;
-
-  const q=queue[0];
-  const letters=['A','B','C','D'];
+  document.getElementById('q-prog-lbl').textContent=`${done} of ${total} mastered · ${queue.length} remaining`;
+  const q=queue[0], letters=['A','B','C','D'];
   document.getElementById('quiz-body').innerHTML=`
     <div class="quiz-card">
-      <div class="quiz-qnum">Question ${masteredCount+1} of ${totalQ}</div>
-      <div class="quiz-q">${q.q}</div>
-      <div class="quiz-options">
-        ${q.opts.map((o,i)=>`
-          <button class="quiz-opt" onclick="selectAnswer(${i})" id="qo-${i}">
-            <span class="opt-badge">${letters[i]}</span> ${o}
-          </button>`).join('')}
-      </div>
-      <div class="requeue-notice" id="requeue-notice">
-        ↩ That's not quite right — this question will come back around
-      </div>
-      <div class="quiz-feedback" id="quiz-feedback"></div>
-      <button class="quiz-next-btn" id="quiz-next" onclick="nextQuestion()">
-        ${queue.length===1?'See Results →':'Next Question →'}
-      </button>
+      <div class="q-num">Question ${done+1} of ${total}</div>
+      <div class="q-question">${q.q}</div>
+      <div class="q-options">${q.opts.map((o,i)=>`<button class="q-opt" onclick="selectA(${i})" id="qo-${i}"><span class="q-badge">${letters[i]}</span>${o}</button>`).join('')}</div>
+      <div class="requeue-notice" id="rn">↩ Not quite — this question will come back around</div>
+      <div class="q-feedback" id="qf"></div>
+      <button class="q-next" id="qn" onclick="nextQ()">${queue.length===1?'See Results →':'Next Question →'}</button>
     </div>`;
   qEngine.answered=false;
 }
-
-function selectAnswer(idx){
-  if(qEngine.answered) return;
-  qEngine.answered=true;
-
-  const q=qEngine.queue[0];
-  const correct=idx===q.ans;
-
-  // Style all options
-  document.querySelectorAll('.quiz-opt').forEach((btn,i)=>{
-    btn.disabled=true;
-    if(i===q.ans) btn.classList.add('reveal-correct');
-    if(i===idx&&!correct) btn.classList.add('wrong');
-    if(i===idx&&correct) { btn.classList.remove('reveal-correct'); btn.classList.add('correct'); }
+function selectA(idx){
+  if(qEngine.answered) return; qEngine.answered=true;
+  const q=qEngine.queue[0], correct=idx===q.ans;
+  document.querySelectorAll('.q-opt').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.ans) b.classList.add('reveal');
+    if(i===idx&&!correct) b.classList.add('wrong');
+    if(i===idx&&correct){b.classList.remove('reveal');b.classList.add('correct')}
   });
-
-  const fb=document.getElementById('quiz-feedback');
-  fb.className=`quiz-feedback ${correct?'correct':'wrong'} show`;
+  const fb=document.getElementById('qf');
+  fb.className=`q-feedback ${correct?'correct':'wrong'} show`;
   fb.innerHTML=`<div class="qf-title">${correct?'✓ Correct!':'✗ Not quite'}</div><div class="qf-body">${q.explain}</div>`;
-
-  if(correct){
-    qEngine.streak++;
-    qEngine.mastered.push(qEngine.queue.shift()); // remove from front, add to mastered
-  } else {
-    qEngine.streak=0;
-    const failed=qEngine.queue.shift();
-    qEngine.queue.push(failed); // move to end of queue
-    document.getElementById('requeue-notice').classList.add('show');
-  }
-
-  // Update next button label
-  const nextBtn=document.getElementById('quiz-next');
-  nextBtn.textContent=qEngine.queue.length===0?'See Results →':'Next Question →';
-  nextBtn.classList.add('show');
-
-  // Update streak badge immediately
-  document.getElementById('q-streak-badge').textContent=`🔥 ${qEngine.streak} streak`;
+  if(correct){qEngine.streak++;qEngine.mastered.push(qEngine.queue.shift())}
+  else{qEngine.streak=0;qEngine.queue.push(qEngine.queue.shift());document.getElementById('rn').classList.add('show')}
+  document.getElementById('q-streak').textContent=`🔥 ${qEngine.streak} streak`;
+  const nb=document.getElementById('qn');
+  nb.textContent=qEngine.queue.length===0?'See Results →':'Next Question →';
+  nb.classList.add('show');
 }
-
-function nextQuestion(){
-  if(qEngine.queue.length===0){
-    showResults();
-  } else {
-    renderQuestion();
-  }
-}
-
+function nextQ(){qEngine.queue.length===0?showResults():renderQ()}
 function showResults(){
-  const {topic, mastered, streak} = qEngine;
-  const total=topic.quiz.length;
-  const score=mastered.length; // All questions eventually mastered (all correct)
-  const pct=100; // Seneca style — you don't finish until you get them all right
-  const alreadyDone=state.completed.includes(topic.id);
-  const xpEarned=alreadyDone?0:topic.xp;
-
-  if(!alreadyDone){
-    state.xp+=xpEarned;
-    state.completed.push(topic.id);
-    saveState(); updateStats();
-    renderTopicsGrid('grid-dash',6,dashSubj);
-    renderTopicsGrid('grid-topics',0,topicsSubj);
-    renderLeaderboard();
-    setTimeout(()=>showToast(xpEarned,'Topic mastered!'),400);
+  const {topic}=qEngine; const total=topic.quiz.length;
+  const already=state.completed.includes(topic.id);
+  const xp=already?0:topic.xp;
+  if(!already){
+    state.xp+=xp; state.completed.push(topic.id); saveState(); updateStats();
+    renderTopicsGrid('grid-dash',6,dashSubj,'');
+    renderTopicsGrid('grid-topics',0,topicsSubj,'');
+    renderLeaderboard(); setTimeout(()=>showToast(xp,'Topic mastered!'),400);
   }
-
   document.getElementById('q-prog').style.width='100%';
-  document.getElementById('q-mastered').textContent=total;
-
-  const emoji=qEngine.streak>=3?'🎉':'👍';
   document.getElementById('quiz-body').innerHTML=`
     <div class="results-card">
-      <div class="results-emoji">${emoji}</div>
+      <div class="results-emoji">🎉</div>
       <div class="results-title">All questions mastered!</div>
-      <div class="results-sub">You answered every question correctly — that's how it's done.</div>
-      ${xpEarned>0?`<div class="xp-earned-badge">⚡ +${xpEarned} XP earned</div>`:`<div class="xp-earned-badge" style="background:var(--bg2);border-color:var(--border);color:var(--ink-light)">Already completed — no XP this time</div>`}
+      <div class="results-sub">Every question answered correctly — that's how it's done.</div>
+      ${xp>0?`<div class="xp-badge">⚡ +${xp} XP earned</div>`:`<div class="xp-badge" style="background:var(--bg2);border-color:var(--border);color:var(--ink-light)">Already completed — no XP this time</div>`}
       <div class="results-stats">
         <div class="rs"><div class="rs-val">${total}/${total}</div><div class="rs-label">Mastered</div></div>
         <div class="rs"><div class="rs-val">100%</div><div class="rs-label">Score</div></div>
         <div class="rs"><div class="rs-val">${state.xp}</div><div class="rs-label">Total XP</div></div>
       </div>
-      <div class="results-actions">
-        <button class="btn-results-primary" onclick="nav('topics',document.querySelector('[data-page=topics]'))">Back to Topics</button>
-        <button class="btn-results-secondary" onclick="startQuiz('${topic.id}')">Retake Quiz</button>
+      <div class="results-btns">
+        <button class="btn-r-pri" onclick="nav('topics',document.querySelector('[data-page=topics]'))">Back to Topics</button>
+        <button class="btn-r-sec" onclick="startQuiz('${topic.id}')">Retake Quiz</button>
       </div>
     </div>`;
 }
 
-// ──────────────────────────────────────
-// TIER UTILS
-// ──────────────────────────────────────
+// ─── TIER UTILS ─────────────────────────
 function getTier(xp){return TIERS.find(t=>xp>=t.min&&xp<=t.max)}
 function getNextTier(xp){const i=TIERS.findIndex(t=>xp>=t.min&&xp<=t.max);return TIERS[i+1]||null}
 function tierPct(xp){
-  const tier=getTier(xp);
-  if(tier.max===Infinity)return 100;
-  const next=getNextTier(xp);
-  return Math.min(100,Math.round(((xp-tier.min)/(next.min-tier.min))*100));
+  const t=getTier(xp);if(t.max===Infinity)return 100;
+  const n=getNextTier(xp);return Math.min(100,Math.round(((xp-t.min)/(n.min-t.min))*100));
 }
 
-// ──────────────────────────────────────
-// PAPERS
-// ──────────────────────────────────────
+// ─── PAPERS ─────────────────────────────
 function renderPapers(){
-  document.getElementById('papers-grid').innerHTML=PAPERS_DATA.map(subj=>`
+  document.getElementById('papers-grid').innerHTML=PAPERS_DATA.map(s=>`
     <div class="papers-card">
-      <div class="papers-card-header ${subj.hdrClass}">
-        <span class="pch-icon">${subj.icon}</span>
-        <div><div class="pch-title">GCSE ${subj.subject}</div><div class="pch-sub">Past papers &amp; mark schemes</div></div>
-      </div>
-      ${subj.groups.map(g=>`
-        <div class="paper-group">
-          <div class="paper-group-head">${g.board} — ${g.name}</div>
-          ${g.papers.map(p=>`
-            <div class="paper-row">
-              <div class="pr-name">${p.name}</div>
-              <div class="pr-links">
-                <a class="pr-link paper" href="${p.paper}" target="_blank" rel="noopener">Papers</a>
-                <a class="pr-link ms" href="${p.ms}" target="_blank" rel="noopener">Mark Schemes</a>
-              </div>
-            </div>`).join('')}
-        </div>`).join('')}
+      <div class="pcard-hdr ${s.hdrClass}"><span class="pch-icon">${s.icon}</span><div><div class="pch-title">GCSE ${s.subject}</div><div class="pch-sub">Past papers &amp; mark schemes</div></div></div>
+      ${s.groups.map(g=>`<div class="pgrp"><div class="pgrp-head">${g.board} — ${g.name}</div>${g.papers.map(p=>`<div class="paper-row"><div class="pr-name">${p.name}</div><div class="pr-links"><a class="pr-a p" href="${p.paper}" target="_blank" rel="noopener">Papers</a><a class="pr-a m" href="${p.ms}" target="_blank" rel="noopener">Mark Schemes</a></div></div>`).join('')}</div>`).join('')}
     </div>`).join('');
 }
 
-// ──────────────────────────────────────
-// LEADERBOARD
-// ──────────────────────────────────────
+// ─── LEADERBOARD ────────────────────────
 function renderLeaderboard(){
-  const all=[
-    ...SEEDED_STUDENTS,
-    {name:state.name,board:state.board,xp:state.xp,avatar:'#2563eb',isYou:true}
-  ].sort((a,b)=>b.xp-a.xp);
+  const all=[...SEEDED_STUDENTS,{name:state.name,board:state.board,xp:state.xp,avatar:'#2563eb',isYou:true}].sort((a,b)=>b.xp-a.xp);
   const medals=['🥇','🥈','🥉'];
   document.getElementById('lb-table').innerHTML=all.map((s,i)=>{
     const tier=getTier(s.xp);
-    const rank=i<3?`<span style="font-size:1.2rem">${medals[i]}</span>`:`<span class="lb-rank">${i+1}</span>`;
+    const rank=i<3?`<span style="font-size:1.1rem">${medals[i]}</span>`:`<span class="lb-rank">${i+1}</span>`;
     return `<div class="lb-row ${s.isYou?'you':''}">
       <div style="text-align:center">${rank}</div>
-      <div class="lb-info">
-        <div class="lb-av" style="background:${s.avatar}">${s.name.charAt(0)}</div>
-        <div>
-          <div class="lb-name">${s.name}${s.isYou?'<span class="you-tag">YOU</span>':''}</div>
-          <div class="lb-board">${s.board} · GCSE</div>
-        </div>
-      </div>
+      <div class="lb-info"><div class="lb-av" style="background:${s.avatar}">${s.name.charAt(0)}</div><div><div class="lb-name">${s.name}${s.isYou?'<span class="you-tag">YOU</span>':''}</div><div class="lb-board">${s.board} · GCSE</div></div></div>
       <div><div class="lb-xp-val">${s.xp.toLocaleString()}</div><div class="lb-xp-lbl">XP</div></div>
-      <div><span class="lb-tier-pill ${tier.cls}">${tier.name}</span></div>
+      <div><span class="lb-tier ${tier.cls}">${tier.name}</span></div>
     </div>`;
   }).join('');
 }
 
-// ──────────────────────────────────────
-// XP TOAST
-// ──────────────────────────────────────
-function showToast(amount, label){
+// ─── TOAST ──────────────────────────────
+function showToast(amount,label){
   const t=document.getElementById('xp-toast');
   document.getElementById('toast-val').textContent=`+${amount} XP`;
   t.querySelector('.toast-lbl').textContent=label;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3200);
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3200);
 }
 
-// ──────────────────────────────────────
-// INIT
-// ──────────────────────────────────────
+// ─── INIT ───────────────────────────────
 loadState();
 if(state.name&&state.board){checkStreak();saveState();launchApp();}
 </script>
