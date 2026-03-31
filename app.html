@@ -39,7 +39,7 @@
   --red-bd:rgba(220,38,38,.2);
   --gold:#b5893a;
   --gold-bg:rgba(181,137,58,.08);
-  --sidebar:#0b1120;
+  --sidebar:#1a2540;
   --sidebar-w:232px;
   --r:8px;
   --rl:12px;
@@ -78,7 +78,7 @@
   --red-bd:rgba(248,113,113,.18);
   --gold:#d4a853;
   --gold-bg:rgba(212,168,83,.08);
-  --sidebar:#040810;
+  --sidebar:#0f1a2e;
   --sh1:0 1px 2px rgba(0,0,0,.3);
   --sh2:0 2px 8px rgba(0,0,0,.4);
   --sh3:0 8px 24px rgba(0,0,0,.5);
@@ -764,6 +764,16 @@ body{
   .lb-tier{display:none}
   .tech-grid{grid-template-columns:1fr}
 }
+
+  .fill-bio{background:linear-gradient(90deg,#16a34a,#22c55e)}
+  .ftab.bio.active{background:#15803d;border-color:#15803d;color:#fff}
+  .chip.green{background:#dcfce7;color:#15803d;border-color:#bbf7d0}
+  .tc-subj.biology{background:#dcfce7;color:#15803d}
+  .topic-hdr.biology{border-top-color:#16a34a}
+  .th-eyebrow.biology{color:#15803d}
+  /* Bio diagram container */
+  .bio-diagram{margin:16px 0;border-radius:12px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--sh1)}
+
 </style>
 </head>
 <body>
@@ -777,9 +787,20 @@ body{
     <label class="ob-label" for="ob-name">First name</label>
     <input class="ob-input" type="text" id="ob-name" placeholder="e.g. Priya" autocomplete="given-name"/>
     <label class="ob-label">Exam board</label>
+    <label class="ob-label">English exam board</label>
     <div class="board-grid">
-      <div class="board-opt" data-board="AQA" onclick="selectBoard(this)">AQA<div class="board-opt-sub">Most common</div></div>
-      <div class="board-opt" data-board="Edexcel" onclick="selectBoard(this)">Edexcel<div class="board-opt-sub">Pearson</div></div>
+      <div class="board-opt" data-subj="english" data-board="AQA" onclick="selectBoard(this,'english')">AQA<div class="board-opt-sub">Most common</div></div>
+      <div class="board-opt" data-subj="english" data-board="Edexcel" onclick="selectBoard(this,'english')">Edexcel<div class="board-opt-sub">Pearson</div></div>
+    </div>
+    <label class="ob-label" style="margin-top:10px">Maths exam board</label>
+    <div class="board-grid">
+      <div class="board-opt" data-subj="maths" data-board="AQA" onclick="selectBoard(this,'maths')">AQA<div class="board-opt-sub">Most common</div></div>
+      <div class="board-opt" data-subj="maths" data-board="Edexcel" onclick="selectBoard(this,'maths')">Edexcel<div class="board-opt-sub">Pearson</div></div>
+    </div>
+    <label class="ob-label" style="margin-top:10px">Biology exam board</label>
+    <div class="board-grid" style="margin-bottom:24px">
+      <div class="board-opt" data-subj="biology" data-board="AQA" onclick="selectBoard(this,'biology')">AQA<div class="board-opt-sub">Most common</div></div>
+      <div class="board-opt" data-subj="biology" data-board="Edexcel" onclick="selectBoard(this,'biology')">Edexcel<div class="board-opt-sub">Pearson</div></div>
     </div>
     <button class="ob-btn" onclick="completeOnboarding()">Start Revising →</button>
   </div>
@@ -854,7 +875,7 @@ body{
         <div class="xp-bar-wrap"><div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div></div>
       </div>
 
-      <div class="subj2">
+      <div class="subj2" style="grid-template-columns:repeat(3,1fr)">
         <div class="subj-card">
           <div class="sc-row"><div class="sc-name"><span class="chip blue">📚 English</span></div><div class="sc-pct" id="eng-pct">0%</div></div>
           <div class="sc-bar"><div class="sc-fill fill-eng" id="eng-fill" style="width:0%"></div></div>
@@ -865,12 +886,18 @@ body{
           <div class="sc-bar"><div class="sc-fill fill-mth" id="mth-fill" style="width:0%"></div></div>
           <div class="sc-count" id="mth-count">0 of 8 topics</div>
         </div>
+        <div class="subj-card">
+          <div class="sc-row"><div class="sc-name"><span class="chip green">🔬 Biology</span></div><div class="sc-pct" id="bio-pct">0%</div></div>
+          <div class="sc-bar"><div class="sc-fill fill-bio" id="bio-fill" style="width:0%"></div></div>
+          <div class="sc-count" id="bio-count">0 of 6 topics</div>
+        </div>
       </div>
 
       <div class="sec-lbl">Continue Revising <a onclick="nav('topics',document.querySelector('[data-page=topics]'))">View all →</a></div>
       <div class="ftabs">
         <button class="ftab active" onclick="dF('all',this)">All</button>
         <button class="ftab eng" onclick="dF('english',this)">📚 English</button>
+        <button class="ftab bio" onclick="dF('biology',this)">🔬 Biology</button>
         <button class="ftab mth" onclick="dF('maths',this)">📐 Maths</button>
       </div>
       <div class="tgrid" id="grid-dash"></div>
@@ -885,6 +912,7 @@ body{
       <div class="ftabs">
         <button class="ftab active" onclick="tF('all',this)">All</button>
         <button class="ftab eng" onclick="tF('english',this)">📚 English</button>
+        <button class="ftab bio" onclick="tF('biology',this)">🔬 Biology</button>
         <button class="ftab mth" onclick="tF('maths',this)">📐 Maths</button>
       </div>
       <div class="tgrid" id="grid-topics"></div>
@@ -2232,7 +2260,750 @@ const TOPICS = [
       {q:'P(A)=0.6, P(B)=0.3, independent. P(A and B)?',opts:['0.9','0.3','0.18','0.2'],ans:2,explain:'P(A and B)=0.6×0.3=0.18. Multiply along branches.'},
       {q:'Bag: 5 red, 3 blue. Red picked, not replaced. P(next is red)?',opts:['5/8','4/8','4/7','5/7'],ans:2,explain:'After removing 1 red: 4 red from 7 total. P=4/7.'},
     ]
+  },,
+  // ═══════════════════════════════════════
+  // BIOLOGY TOPICS
+  // ═══════════════════════════════════════
+  {
+    id:'bio-cell-biology',
+    subject:'biology', board:'AQA', paper:'Cell Biology',
+    title:'Cell Biology — Structure, Microscopy & Division',
+    desc:'Animal, plant & prokaryotic cells, microscopy calculations, mitosis and the cell cycle.',
+    duration:'12 min', xp:65,
+    content:{
+      intro:`All living organisms are made of cells. Understanding cell structure is the foundation of all biology. At GCSE you need to compare animal, plant and prokaryotic cells, use microscopy calculations, and explain how cells divide through mitosis.`,
+      sections:[
+        {
+          heading:'Cell Structure — The Three Cell Types',
+          body:`Animal and plant cells are eukaryotic — they have a nucleus containing DNA. Prokaryotic cells (like bacteria) have no nucleus; their DNA floats freely in the cytoplasm.`,
+          keyPoints:[
+            'Animal cell: nucleus, cytoplasm, cell membrane, mitochondria, ribosomes',
+            'Plant cell: all of the above PLUS cell wall (cellulose), chloroplasts, permanent vacuole',
+            'Prokaryotic cell: cell wall, cell membrane, cytoplasm, ribosomes, plasmids, flagellum — NO nucleus',
+            'Mitochondria = site of aerobic respiration (energy release)',
+            'Ribosomes = site of protein synthesis',
+            'Chloroplasts = site of photosynthesis (contain chlorophyll)',
+          ],
+          diagram:{
+            type:'cells',
+            label:'Eukaryotic vs Prokaryotic Cell Comparison'
+          }
+        },
+        {
+          heading:'Microscopy & Magnification',
+          body:`Microscopes allow us to see cells too small for the naked eye. The key formula is: Magnification = Image size ÷ Actual size. You need to be able to rearrange this formula and convert between units (mm, µm, nm).`,
+          keyPoints:[
+            'Magnification = Image size ÷ Actual size',
+            'Light microscopes: max magnification ~1500×, can see cells and large organelles',
+            'Electron microscopes: max magnification ~2,000,000×, can see ribosomes and virus particles',
+            'Unit conversions: 1 mm = 1000 µm = 1,000,000 nm',
+            'Always show working in magnification questions — state the formula first',
+          ],
+          workedExample:{
+            question:'A cell is 0.05 mm wide. In a diagram it is drawn 25 mm wide. What is the magnification?',
+            steps:[
+              {n:'1', desc:'Write the formula', calc:'Magnification = Image ÷ Actual'},
+              {n:'2', desc:'Substitute values', calc:'= 25 ÷ 0.05'},
+              {n:'3', desc:'Calculate', calc:'= ×500'},
+            ],
+            answer:'×500'
+          }
+        },
+        {
+          heading:'Mitosis & the Cell Cycle',
+          body:`Mitosis is cell division that produces two genetically identical daughter cells. It is used for growth, repair and asexual reproduction. The cell cycle has three stages: interphase (DNA replication and growth), mitosis (division of the nucleus), and cytokinesis (splitting of the cytoplasm).`,
+          keyPoints:[
+            'Mitosis produces 2 daughter cells, each with the same number of chromosomes as the parent',
+            'Interphase: cell grows, DNA replicates, organelles duplicate — this takes the longest',
+            'During mitosis: chromosomes condense, line up, are pulled apart to opposite ends',
+            'Cytokinesis: cytoplasm splits, producing two identical cells',
+            'Cancer = uncontrolled cell division due to mutations in genes controlling the cell cycle',
+          ]
+        }
+      ]
+    },
+    diagram:`<svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:12px;background:#f8faff">
+  <rect width="700" height="320" fill="#f8faff" rx="12"/>
+  <!-- Title -->
+  <text x="350" y="24" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="#1e3a5f">Cell Structure Comparison</text>
+
+  <!-- ANIMAL CELL -->
+  <text x="120" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#2563eb">ANIMAL CELL</text>
+  <ellipse cx="120" cy="155" rx="90" ry="75" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <!-- nucleus -->
+  <ellipse cx="110" cy="145" rx="32" ry="26" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="110" y="149" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#1e40af">Nucleus</text>
+  <!-- mitochondria -->
+  <ellipse cx="168" cy="175" rx="16" ry="9" fill="#fde68a" stroke="#d97706" stroke-width="1.2"/>
+  <text x="168" y="178" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#92400e">Mito.</text>
+  <!-- cell membrane label -->
+  <line x1="50" y1="175" x2="30" y2="200" stroke="#6b7280" stroke-width="1"/>
+  <text x="28" y="210" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#374151">Cell membrane</text>
+  <!-- cytoplasm label -->
+  <line x1="155" y1="210" x2="185" y2="235" stroke="#6b7280" stroke-width="1"/>
+  <text x="200" y="240" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#374151">Cytoplasm</text>
+
+  <!-- PLANT CELL -->
+  <text x="400" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#16a34a">PLANT CELL</text>
+  <rect x="315" y="72" width="170" height="165" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+  <rect x="319" y="76" width="162" height="157" rx="4" fill="#bbf7d0" stroke="#15803d" stroke-width="1" stroke-dasharray="3,2"/>
+  <!-- nucleus -->
+  <ellipse cx="385" cy="145" rx="30" ry="24" fill="#86efac" stroke="#15803d" stroke-width="1.5"/>
+  <text x="385" y="149" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#14532d">Nucleus</text>
+  <!-- chloroplast -->
+  <ellipse cx="440" cy="120" rx="18" ry="10" fill="#4ade80" stroke="#15803d" stroke-width="1.2"/>
+  <text x="440" y="123" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#14532d">Chloro.</text>
+  <!-- vacuole -->
+  <ellipse cx="430" cy="175" rx="22" ry="18" fill="#a7f3d0" stroke="#059669" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="430" y="179" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#065f46">Vacuole</text>
+  <!-- cell wall label -->
+  <line x1="315" y1="120" x2="290" y2="110" stroke="#6b7280" stroke-width="1"/>
+  <text x="268" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#374151">Cell wall</text>
+
+  <!-- PROKARYOTIC CELL -->
+  <text x="610" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#7c3aed">PROKARYOTE</text>
+  <ellipse cx="610" cy="155" rx="72" ry="55" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <ellipse cx="610" cy="152" rx="62" ry="46" fill="#ddd6fe" stroke="#6d28d9" stroke-width="1" stroke-dasharray="3,2"/>
+  <!-- DNA loop -->
+  <ellipse cx="605" cy="155" rx="22" ry="16" fill="none" stroke="#4c1d95" stroke-width="1.5" stroke-dasharray="2,2"/>
+  <text x="605" y="159" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#4c1d95">DNA loop</text>
+  <!-- plasmid -->
+  <ellipse cx="645" cy="145" rx="10" ry="7" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="645" y="148" text-anchor="middle" font-family="Inter,sans-serif" font-size="6" fill="#5b21b6">Plasmid</text>
+  <!-- flagellum -->
+  <path d="M545 165 Q530 145 520 155 Q510 165 505 155" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="498" y="175" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#374151">Flagellum</text>
+  <!-- no nucleus label -->
+  <text x="610" y="218" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="600" fill="#dc2626">No nucleus</text>
+
+  <!-- Legend dividers -->
+  <line x1="230" y1="60" x2="230" y2="285" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="505" y1="60" x2="505" y2="285" stroke="#e5e7eb" stroke-width="1"/>
+</svg>`,
+    quiz:[
+      {q:'Which structure is found in plant cells but NOT animal cells?',opts:['Mitochondria','Nucleus','Cell wall','Ribosomes'],ans:2,explain:'Plant cells have a cell wall made of cellulose, chloroplasts, and a permanent vacuole — none of which are found in animal cells. Animal cells have mitochondria, nucleus and ribosomes too.'},
+      {q:'Where does aerobic respiration take place in a cell?',opts:['Nucleus','Ribosomes','Chloroplasts','Mitochondria'],ans:3,explain:'Mitochondria are the site of aerobic respiration — where glucose and oxygen are used to release energy (ATP).'},
+      {q:'A cell image is 40 mm wide under a microscope. The actual cell is 0.02 mm wide. What is the magnification?',opts:['×800','×2000','×80','×200'],ans:1,explain:'Magnification = Image ÷ Actual = 40 ÷ 0.02 = ×2000.'},
+      {q:'What is the key difference between prokaryotic and eukaryotic cells?',opts:['Prokaryotes have no ribosomes','Prokaryotes have no cell membrane','Prokaryotes have no true nucleus — DNA floats freely','Prokaryotes are always larger'],ans:2,explain:'Prokaryotic cells have no membrane-bound nucleus. Their DNA is a single loop floating in the cytoplasm, alongside small circular plasmids.'},
+      {q:'Mitosis produces:',opts:['4 genetically different cells','2 genetically identical cells','2 cells with half the chromosomes','4 identical cells'],ans:1,explain:'Mitosis produces exactly 2 daughter cells that are genetically identical to the parent cell and to each other. Meiosis (not mitosis) produces 4 cells with half the chromosome number.'},
+    ]
   },
+
+  {
+    id:'bio-organisation',
+    subject:'biology', board:'AQA', paper:'Organisation',
+    title:'Organisation — Enzymes, Organs & Digestion',
+    desc:'Enzyme action, factors affecting enzymes, the digestive system and specialised cells.',
+    duration:'11 min', xp:65,
+    content:{
+      intro:`Organisation describes how cells are arranged into tissues, organs, and organ systems. Enzymes are biological catalysts that control reactions in the body. The digestive system breaks down food into small molecules that can be absorbed into the blood.`,
+      sections:[
+        {
+          heading:'Enzymes — Lock and Key Model',
+          body:`Enzymes are proteins that act as biological catalysts — they speed up chemical reactions without being used up. Each enzyme has a specific active site that only fits one substrate (the lock and key model). If the shape of the active site changes (denaturation), the enzyme stops working.`,
+          keyPoints:[
+            'Active site = the region of the enzyme where the substrate binds',
+            'Lock and key model: the substrate fits exactly into the active site',
+            'Optimum temperature: human enzymes work best around 37°C — body temperature',
+            'Above optimum: enzyme denatures — bonds break, active site changes shape permanently',
+            'Optimum pH: most enzymes ~pH 7, but pepsin (stomach) works best at pH 2',
+            'Increasing temperature or substrate concentration increases rate — up to the optimum',
+          ],
+          diagram:{type:'enzyme', label:'Enzyme Lock and Key Action'}
+        },
+        {
+          heading:'The Digestive System',
+          body:`Digestion breaks large, insoluble food molecules into small, soluble ones that can pass through the wall of the small intestine into the blood. Different enzymes work in different parts of the digestive system.`,
+          keyPoints:[
+            'Amylase: breaks down starch → glucose. Made in salivary glands, pancreas, small intestine',
+            'Protease: breaks down proteins → amino acids. Made in stomach, pancreas, small intestine',
+            'Lipase: breaks down lipids → fatty acids + glycerol. Made in pancreas, small intestine',
+            'Bile: produced by liver, stored in gall bladder — emulsifies fats (makes droplets)',
+            'Absorption occurs in the small intestine — villi increase surface area',
+            'Large intestine: absorbs water; rectum stores faeces',
+          ]
+        },
+        {
+          heading:'Specialised Cells & Tissues',
+          body:`Cells become specialised to carry out specific functions. Specialised cells with the same function group together to form tissues, which combine to form organs, which work together in organ systems.`,
+          keyPoints:[
+            'Red blood cells: biconcave shape, no nucleus — maximises space for haemoglobin',
+            'Sperm cells: long tail (flagellum), many mitochondria, acrosome with enzymes',
+            'Nerve cells: long axon, myelin sheath, synaptic knobs — fast signal transmission',
+            'Root hair cells: large surface area, no chloroplasts — absorb water and minerals',
+            'Cell → Tissue → Organ → Organ system → Organism',
+          ]
+        }
+      ]
+    },
+    diagram:`<svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:12px;background:#fff8f0">
+  <rect width="700" height="280" fill="#fff8f0" rx="12"/>
+  <text x="350" y="24" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="#92400e">Enzyme Lock and Key Model</text>
+
+  <!-- Step 1: Enzyme + Substrate -->
+  <text x="110" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#374151">1. Free enzyme</text>
+  <!-- Enzyme body -->
+  <path d="M60 90 Q60 70 110 70 Q160 70 160 90 L160 160 Q160 180 110 185 Q60 180 60 160 Z" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+  <!-- Active site cutout -->
+  <path d="M85 115 L85 155 Q110 165 135 155 L135 115 Z" fill="#fff8f0" stroke="#d97706" stroke-width="1.5"/>
+  <text x="110" y="145" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#92400e">Active</text>
+  <text x="110" y="155" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#92400e">site</text>
+  <!-- Substrate floating above -->
+  <rect x="85" y="55" width="50" height="40" rx="4" fill="#bfdbfe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="110" y="79" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#1e40af">Substrate</text>
+  <!-- Arrow -->
+  <text x="110" y="100" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" fill="#6b7280">↓</text>
+
+  <!-- Arrow between steps -->
+  <text x="195" y="135" font-family="Inter,sans-serif" font-size="18" fill="#9ca3af">→</text>
+
+  <!-- Step 2: Enzyme-substrate complex -->
+  <text x="350" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#374151">2. Enzyme-substrate complex</text>
+  <path d="M300 90 Q300 70 350 70 Q400 70 400 90 L400 160 Q400 180 350 185 Q300 180 300 160 Z" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+  <!-- Substrate IN active site -->
+  <rect x="325" y="112" width="50" height="40" rx="4" fill="#bfdbfe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="350" y="136" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="600" fill="#1e40af">Substrate</text>
+  <text x="350" y="148" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#1e40af">locked in</text>
+
+  <!-- Arrow -->
+  <text x="432" y="135" font-family="Inter,sans-serif" font-size="18" fill="#9ca3af">→</text>
+
+  <!-- Step 3: Products released -->
+  <text x="590" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#374151">3. Products released</text>
+  <path d="M540 90 Q540 70 590 70 Q640 70 640 90 L640 160 Q640 180 590 185 Q540 180 540 160 Z" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+  <path d="M565 115 L565 155 Q590 165 615 155 L615 115 Z" fill="#fff8f0" stroke="#d97706" stroke-width="1.5"/>
+  <text x="590" y="142" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#92400e">Empty</text>
+  <!-- Products -->
+  <rect x="555" y="55" width="28" height="26" rx="3" fill="#bbf7d0" stroke="#16a34a" stroke-width="1.2"/>
+  <text x="569" y="71" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#14532d">P1</text>
+  <rect x="590" y="55" width="28" height="26" rx="3" fill="#bbf7d0" stroke="#16a34a" stroke-width="1.2"/>
+  <text x="604" y="71" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#14532d">P2</text>
+  <text x="575" y="100" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" fill="#6b7280">↑↑</text>
+
+  <!-- Key annotations at bottom -->
+  <rect x="30" y="210" width="640" height="58" rx="8" fill="#fffbeb" stroke="#fcd34d" stroke-width="1"/>
+  <text x="350" y="228" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#92400e">Key Points</text>
+  <text x="350" y="244" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#374151">Enzyme is UNCHANGED and can be reused  ·  Substrate must fit active site exactly  ·  Denaturation changes active site shape permanently</text>
+  <text x="350" y="260" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#374151">Rate increases with temperature up to optimum (37°C for body enzymes)  ·  Above optimum = irreversible denaturation</text>
+</svg>`,
+    quiz:[
+      {q:'What happens to an enzyme when it is denatured?',opts:['It speeds up permanently','The active site changes shape — substrate can no longer bind','It works faster at lower temperatures','It becomes a different enzyme'],ans:1,explain:'Denaturation permanently changes the shape of the enzyme\'s active site so the substrate can no longer fit. This is usually caused by high temperature or extreme pH and is irreversible.'},
+      {q:'Which enzyme breaks down starch?',opts:['Protease','Lipase','Amylase','Bile'],ans:2,explain:'Amylase breaks down starch into glucose (maltose). It is produced in the salivary glands, pancreas, and small intestine.'},
+      {q:'What is the role of bile in digestion?',opts:['It breaks down proteins','It is an enzyme that digests fats','It emulsifies fats into small droplets, increasing surface area for lipase','It absorbs nutrients into the blood'],ans:2,explain:'Bile is not an enzyme — it emulsifies fats, breaking large fat globules into tiny droplets. This greatly increases the surface area available for lipase to work on.'},
+      {q:'Where does absorption of digested food mainly occur?',opts:['Stomach','Large intestine','Mouth','Small intestine'],ans:3,explain:'The small intestine is the main site of absorption. Villi and microvilli greatly increase the surface area, allowing digested nutrients to pass efficiently into the blood.'},
+      {q:'What is the correct order of organisation?',opts:['Organ → Cell → Tissue → Organ system','Cell → Organ → Tissue → Organ system','Cell → Tissue → Organ → Organ system','Tissue → Cell → Organ → Organ system'],ans:2,explain:'The correct order is Cell → Tissue → Organ → Organ system → Organism. Cells with the same function form tissues; tissues combine to form organs.'},
+    ]
+  },
+
+  {
+    id:'bio-infection-response',
+    subject:'biology', board:'AQA', paper:'Infection & Response',
+    title:'Infection & Response — Pathogens, Immunity & Drugs',
+    desc:'How pathogens cause disease, the immune system, vaccination, and drug development.',
+    duration:'11 min', xp:65,
+    content:{
+      intro:`Communicable diseases are caused by pathogens — microorganisms including bacteria, viruses, fungi and protists. The body has several defence systems, and modern medicine uses vaccines and drugs to prevent and treat disease.`,
+      sections:[
+        {
+          heading:'Pathogens & How They Spread',
+          body:`A pathogen is a microorganism that causes disease. Different pathogens spread in different ways — understanding transmission is essential for preventing disease.`,
+          keyPoints:[
+            'Bacteria: damage cells directly and produce toxins (e.g. Salmonella, tuberculosis)',
+            'Viruses: invade cells and reproduce inside them, causing cell damage (e.g. influenza, HIV)',
+            'Fungi: can infect skin or internal organs (e.g. rose black spot, athlete\'s foot)',
+            'Protists: often carried by vectors (e.g. malaria carried by mosquitoes)',
+            'Spread routes: droplets (coughing/sneezing), direct contact, contaminated water, vectors',
+            'Prevention: vaccination, hygiene, condoms, mosquito nets, isolation',
+          ]
+        },
+        {
+          heading:'The Immune System',
+          body:`The body has three lines of defence. The first two are non-specific (work against any pathogen). The third — the specific immune response — targets a particular pathogen using white blood cells.`,
+          keyPoints:[
+            'Skin: physical barrier — prevents entry of pathogens',
+            'Nose hair and mucus: trap pathogens in the respiratory tract',
+            'White blood cells (phagocytes): engulf and digest pathogens (phagocytosis)',
+            'White blood cells (lymphocytes): produce specific antibodies against antigens',
+            'Antibodies: proteins that bind to specific antigens on pathogens — each antibody is unique',
+            'Memory cells: remain after infection — cause faster, stronger response on second exposure',
+          ],
+          diagram:{type:'immunity', label:'Immune Response'}
+        },
+        {
+          heading:'Vaccination & Drug Development',
+          body:`Vaccines introduce a dead or weakened pathogen (or its antigens) to stimulate antibody production without causing disease. Drug development is a lengthy process involving preclinical testing, clinical trials, and peer review.`,
+          keyPoints:[
+            'Vaccines stimulate memory cell production — provide long-term immunity',
+            'Herd immunity: if enough people are vaccinated, pathogen cannot spread easily',
+            'Antibiotics: kill bacteria (not viruses). Overuse leads to antibiotic resistance',
+            'Antivirals treat viral infections but do not kill viruses — they inhibit replication',
+            'Drug development: lab testing → animal testing → clinical trials (Phase 1: safety, Phase 2/3: efficacy)',
+            'Double-blind trial: neither patients nor doctors know who receives drug or placebo',
+          ]
+        }
+      ]
+    },
+    diagram:`<svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:12px;background:#fff0f3">
+  <rect width="700" height="260" fill="#fff0f3" rx="12"/>
+  <text x="350" y="24" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="#9f1239">The Immune Response</text>
+
+  <!-- Pathogen -->
+  <circle cx="80" cy="120" r="38" fill="#fecdd3" stroke="#e11d48" stroke-width="2"/>
+  <text x="80" y="115" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#9f1239">Pathogen</text>
+  <text x="80" y="128" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#9f1239">(antigens on</text>
+  <text x="80" y="138" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#9f1239">surface)</text>
+  <!-- spikes on pathogen -->
+  <line x1="80" y1="82" x2="80" y2="72" stroke="#e11d48" stroke-width="2"/>
+  <line x1="108" y1="92" x2="116" y2="84" stroke="#e11d48" stroke-width="2"/>
+  <line x1="52" y1="92" x2="44" y2="84" stroke="#e11d48" stroke-width="2"/>
+  <line x1="118" y1="120" x2="128" y2="120" stroke="#e11d48" stroke-width="2"/>
+  <line x1="42" y1="120" x2="32" y2="120" stroke="#e11d48" stroke-width="2"/>
+
+  <!-- Arrow 1 -->
+  <path d="M125 120 L175 120" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="150" y="112" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#6b7280">detected</text>
+
+  <!-- Phagocyte -->
+  <ellipse cx="225" cy="120" rx="42" ry="36" fill="#fed7aa" stroke="#ea580c" stroke-width="2"/>
+  <text x="225" y="115" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#7c2d12">Phagocyte</text>
+  <text x="225" y="128" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7c2d12">engulfs &amp;</text>
+  <text x="225" y="139" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7c2d12">digests</text>
+
+  <!-- Arrow 2 -->
+  <path d="M268 120 L318 120" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="293" y="112" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#6b7280">signals</text>
+
+  <!-- Lymphocyte -->
+  <ellipse cx="372" cy="120" rx="42" ry="36" fill="#c7d2fe" stroke="#4338ca" stroke-width="2"/>
+  <text x="372" y="115" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#312e81">Lymphocyte</text>
+  <text x="372" y="128" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#312e81">produces</text>
+  <text x="372" y="139" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#312e81">antibodies</text>
+
+  <!-- Arrow 3 -->
+  <path d="M415 120 L465 120" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="440" y="112" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#6b7280">binds to</text>
+
+  <!-- Antibody + Pathogen -->
+  <circle cx="530" cy="120" r="34" fill="#fecdd3" stroke="#e11d48" stroke-width="1.5"/>
+  <text x="530" y="116" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#9f1239">Pathogen</text>
+  <text x="530" y="126" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#9f1239">+antibody</text>
+  <!-- Y-shape antibody -->
+  <line x1="530" y1="100" x2="530" y2="86" stroke="#4338ca" stroke-width="2"/>
+  <line x1="530" y1="86" x2="520" y2="76" stroke="#4338ca" stroke-width="2"/>
+  <line x1="530" y1="86" x2="540" y2="76" stroke="#4338ca" stroke-width="2"/>
+
+  <!-- Arrow 4 -->
+  <path d="M565 120 L610 120" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Memory cells -->
+  <ellipse cx="648" cy="105" rx="36" ry="22" fill="#bbf7d0" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="648" y="102" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="700" fill="#14532d">Memory</text>
+  <text x="648" y="113" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#14532d">cells remain</text>
+  <ellipse cx="648" cy="145" rx="36" ry="22" fill="#fca5a5" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="648" y="142" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="700" fill="#7f1d1d">Pathogen</text>
+  <text x="648" y="153" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#7f1d1d">destroyed</text>
+
+  <!-- Bottom note -->
+  <rect x="30" y="185" width="640" height="58" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="350" y="203" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#9f1239">Second infection: memory cells → much faster and stronger antibody response → pathogen destroyed before symptoms appear</text>
+  <text x="350" y="220" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#374151">Vaccination works by introducing dead/weakened pathogens to trigger this response WITHOUT causing disease</text>
+  <text x="350" y="236" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#374151">Antibodies are specific — each one only binds to one type of antigen (complementary shape)</text>
+
+  <defs>
+    <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#6b7280"/>
+    </marker>
+  </defs>
+</svg>`,
+    quiz:[
+      {q:'What is a pathogen?',opts:['A white blood cell','A microorganism that causes disease','A type of antibiotic','A protein on a cell surface'],ans:1,explain:'A pathogen is any microorganism that causes disease, including bacteria, viruses, fungi, and protists.'},
+      {q:'How do antibiotics work?',opts:['They kill viruses','They kill bacteria by disrupting their cell processes','They boost the immune system','They prevent all infections'],ans:1,explain:'Antibiotics kill bacteria or stop them reproducing. They do NOT work against viruses — viruses replicate inside host cells and have different structures to bacteria.'},
+      {q:'What do lymphocytes produce in response to an infection?',opts:['Antigens','Antibiotics','Antibodies','Enzymes'],ans:2,explain:'Lymphocytes produce specific antibodies that match the antigens on the surface of the pathogen. These bind to the pathogen and help destroy it.'},
+      {q:'Why is a double-blind trial used in drug testing?',opts:['To test twice as many patients','To prevent bias — neither patient nor doctor knows who receives the drug or placebo','To make the trial faster','To test two drugs simultaneously'],ans:1,explain:'In a double-blind trial, neither the patient nor the doctor knows who is receiving the real drug. This eliminates bias — patients cannot subconsciously influence results if they know they have the real drug.'},
+      {q:'What are memory cells and why do they matter?',opts:['Cells that store food energy','White blood cells that remain after an infection and enable a faster response on second exposure','Cells found only in the brain','Cells that produce antigens'],ans:1,explain:'Memory cells are long-lived lymphocytes that remain in the body after an infection. On re-exposure to the same pathogen, they rapidly produce large amounts of antibodies, destroying the pathogen before symptoms appear.'},
+    ]
+  },
+
+  {
+    id:'bio-bioenergetics',
+    subject:'biology', board:'AQA', paper:'Bioenergetics',
+    title:'Bioenergetics — Photosynthesis & Respiration',
+    desc:'Photosynthesis equations, limiting factors, aerobic and anaerobic respiration.',
+    duration:'11 min', xp:65,
+    content:{
+      intro:`Bioenergetics is the study of energy in living systems. Plants make their own food through photosynthesis; all living things release energy through respiration. These two processes are essentially the reverse of each other and are fundamental to life on Earth.`,
+      sections:[
+        {
+          heading:'Photosynthesis',
+          body:`Photosynthesis converts light energy into chemical energy stored in glucose. It takes place in the chloroplasts of plant cells. The overall equation is: carbon dioxide + water → glucose + oxygen (using light energy).`,
+          keyPoints:[
+            'Word equation: carbon dioxide + water → glucose + oxygen',
+            'Symbol equation: 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂',
+            'Light energy is absorbed by chlorophyll in chloroplasts',
+            'Glucose is used for: respiration, making cellulose, making proteins, stored as starch',
+            'Limiting factors: light intensity, CO₂ concentration, temperature',
+            'Above a certain point, increasing one factor has no effect — another factor is now limiting',
+          ],
+          diagram:{type:'photosynthesis', label:'Photosynthesis Diagram'}
+        },
+        {
+          heading:'Respiration — Aerobic & Anaerobic',
+          body:`Respiration releases energy from glucose in all living cells. Aerobic respiration requires oxygen and releases more energy. Anaerobic respiration occurs without oxygen and produces less energy — used during intense exercise.`,
+          keyPoints:[
+            'Aerobic: glucose + oxygen → carbon dioxide + water (lots of energy released)',
+            'Symbol: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O',
+            'Anaerobic (animals): glucose → lactic acid (causes muscle fatigue)',
+            'Anaerobic (yeast): glucose → ethanol + carbon dioxide (fermentation)',
+            'Oxygen debt: extra oxygen needed after exercise to break down lactic acid',
+            'During exercise: heart rate increases, breathing rate increases, blood vessels dilate',
+          ],
+          workedExample:{
+            question:'Explain why a sprinter\'s muscles become painful during a 100m race.',
+            steps:[
+              {n:'1', desc:'Muscles respire faster than oxygen can be supplied', calc:'Aerobic respiration insufficient'},
+              {n:'2', desc:'Anaerobic respiration occurs instead', calc:'Glucose → lactic acid'},
+              {n:'3', desc:'Lactic acid builds up in muscles', calc:'Causes cramp/pain/fatigue'},
+              {n:'4', desc:'After race: deep breathing repays oxygen debt', calc:'Lactic acid → CO₂ + water'},
+            ],
+            answer:'Anaerobic respiration produces lactic acid, causing muscle pain and fatigue'
+          }
+        }
+      ]
+    },
+    diagram:`<svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:12px;background:#f0fdf4">
+  <rect width="700" height="280" fill="#f0fdf4" rx="12"/>
+  <text x="350" y="24" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="#14532d">Photosynthesis in a Leaf</text>
+
+  <!-- Leaf shape -->
+  <path d="M200 240 Q200 80 350 50 Q500 80 500 240 Q420 200 350 210 Q280 200 200 240 Z" fill="#86efac" stroke="#16a34a" stroke-width="2.5"/>
+  <!-- Leaf vein main -->
+  <path d="M350 210 Q350 130 350 60" stroke="#15803d" stroke-width="2" fill="none"/>
+  <path d="M350 150 Q310 130 270 140" stroke="#15803d" stroke-width="1.2" fill="none"/>
+  <path d="M350 150 Q390 130 430 140" stroke="#15803d" stroke-width="1.2" fill="none"/>
+  <path d="M350 120 Q320 105 295 112" stroke="#15803d" stroke-width="1" fill="none"/>
+  <path d="M350 120 Q380 105 405 112" stroke="#15803d" stroke-width="1" fill="none"/>
+
+  <!-- Chloroplast inside leaf -->
+  <ellipse cx="350" cy="140" rx="45" ry="28" fill="#4ade80" stroke="#15803d" stroke-width="1.5"/>
+  <text x="350" y="136" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#14532d">Chloroplast</text>
+  <text x="350" y="148" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#14532d">(contains chlorophyll)</text>
+
+  <!-- SUN -->
+  <circle cx="80" cy="70" r="32" fill="#fde047" stroke="#ca8a04" stroke-width="2"/>
+  <text x="80" y="67" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#713f12">☀️</text>
+  <text x="80" y="82" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#713f12">Light energy</text>
+  <!-- Sun rays -->
+  <line x1="112" y1="70" x2="195" y2="130" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="148" y="118" font-family="Inter,sans-serif" font-size="8" fill="#92400e" transform="rotate(-35,148,118)">light</text>
+
+  <!-- CO2 arrow in -->
+  <path d="M155 175 Q200 170 210 155" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#ra)"/>
+  <text x="90" y="178" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#dc2626">CO₂</text>
+  <text x="90" y="190" font-family="Inter,sans-serif" font-size="8" fill="#374151">from air via</text>
+  <text x="90" y="200" font-family="Inter,sans-serif" font-size="8" fill="#374151">stomata</text>
+
+  <!-- H2O arrow in -->
+  <path d="M155 220 Q200 210 215 175" stroke="#2563eb" stroke-width="2" fill="none" marker-end="url(#ra)"/>
+  <text x="90" y="228" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#2563eb">H₂O</text>
+  <text x="90" y="240" font-family="Inter,sans-serif" font-size="8" fill="#374151">from roots</text>
+  <text x="90" y="250" font-family="Inter,sans-serif" font-size="8" fill="#374151">via xylem</text>
+
+  <!-- O2 arrow out -->
+  <path d="M490 145 Q540 120 580 100" stroke="#16a34a" stroke-width="2" fill="none" marker-end="url(#ga)"/>
+  <text x="590" y="95" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#16a34a">O₂</text>
+  <text x="585" y="107" font-family="Inter,sans-serif" font-size="8" fill="#374151">released</text>
+
+  <!-- Glucose arrow out -->
+  <path d="M490 165 Q540 180 580 190" stroke="#d97706" stroke-width="2" fill="none" marker-end="url(#ya)"/>
+  <text x="585" y="196" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#d97706">Glucose</text>
+  <text x="585" y="208" font-family="Inter,sans-serif" font-size="8" fill="#374151">stored/used</text>
+
+  <!-- Equation box -->
+  <rect x="150" y="248" width="400" height="24" rx="6" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="350" y="264" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#14532d">6CO₂  +  6H₂O  →  C₆H₁₂O₆  +  6O₂   (using light energy)</text>
+
+  <defs>
+    <marker id="ra" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#dc2626"/></marker>
+    <marker id="ga" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#16a34a"/></marker>
+    <marker id="ya" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#d97706"/></marker>
+  </defs>
+</svg>`,
+    quiz:[
+      {q:'What is the overall word equation for photosynthesis?',opts:['Glucose + oxygen → CO₂ + water','CO₂ + water → glucose + oxygen','Glucose → lactic acid + energy','CO₂ + glucose → oxygen + water'],ans:1,explain:'Photosynthesis: carbon dioxide + water → glucose + oxygen. Light energy is used to drive this reaction in the chloroplasts. It is the reverse of aerobic respiration.'},
+      {q:'Which organelle is the site of photosynthesis?',opts:['Mitochondria','Nucleus','Ribosome','Chloroplast'],ans:3,explain:'Photosynthesis takes place in chloroplasts, which contain chlorophyll — a green pigment that absorbs light energy.'},
+      {q:'What are the three limiting factors of photosynthesis?',opts:['Temperature, water, glucose','Light intensity, CO₂ concentration, temperature','Oxygen, glucose, temperature','Light intensity, oxygen, water'],ans:1,explain:'The three main limiting factors are light intensity, CO₂ concentration, and temperature. Increasing any one of these will increase the rate of photosynthesis — until another factor becomes limiting.'},
+      {q:'What does anaerobic respiration produce in animal muscle cells?',opts:['Ethanol and CO₂','Glucose and water','Lactic acid','Oxygen'],ans:2,explain:'In animal muscle cells, anaerobic respiration produces lactic acid. This builds up in muscles, causing fatigue and pain. After exercise, extra breathing (oxygen debt) breaks down the lactic acid.'},
+      {q:'What is the symbol equation for aerobic respiration?',opts:['6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂','C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O','C₆H₁₂O₆ → 2C₂H₅OH + 2CO₂','6O₂ + C₆H₁₂O₆ → 6H₂O + energy'],ans:1,explain:'Aerobic respiration: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O. It is the reverse of photosynthesis. It releases much more energy than anaerobic respiration.'},
+    ]
+  },
+
+  {
+    id:'bio-homeostasis',
+    subject:'biology', board:'AQA', paper:'Homeostasis',
+    title:'Homeostasis — Nervous System, Hormones & Diabetes',
+    desc:'Negative feedback, the nervous system, hormonal control, and the regulation of blood glucose.',
+    duration:'12 min', xp:70,
+    content:{
+      intro:`Homeostasis is the maintenance of a stable internal environment in response to internal and external changes. The body uses negative feedback systems — controlled by the nervous system and hormonal system — to keep conditions within narrow limits.`,
+      sections:[
+        {
+          heading:'Negative Feedback & the Nervous System',
+          body:`Negative feedback is the mechanism the body uses to counteract any change from a set point. The nervous system uses electrical impulses to send rapid signals; the endocrine system uses hormones for slower, longer-lasting responses.`,
+          keyPoints:[
+            'Negative feedback: stimulus → receptor → coordination centre → effector → response → reverses change',
+            'Receptors detect changes; effectors (muscles/glands) carry out the response',
+            'CNS = central nervous system (brain + spinal cord)',
+            'Reflex arc: receptor → sensory neurone → relay neurone (spinal cord) → motor neurone → effector',
+            'Reflex actions are automatic and fast — they bypass the brain',
+            'Synapse: gap between neurones — neurotransmitters carry signal across',
+          ],
+          diagram:{type:'reflex', label:'Reflex Arc'}
+        },
+        {
+          heading:'Hormonal Control — Blood Glucose',
+          body:`The pancreas monitors blood glucose levels and secretes hormones to return it to the set point. This is a key example of negative feedback using hormones.`,
+          keyPoints:[
+            'Blood glucose rises (after eating) → pancreas secretes insulin → liver converts glucose to glycogen → blood glucose falls',
+            'Blood glucose falls (after exercise) → pancreas secretes glucagon → liver converts glycogen back to glucose → blood glucose rises',
+            'Type 1 diabetes: pancreas cannot produce insulin — treated with insulin injections',
+            'Type 2 diabetes: body cells no longer respond to insulin — linked to obesity, treated with diet/exercise',
+            'Adrenaline: produced by adrenal glands in response to stress — increases heart rate, prepares body for fight or flight',
+          ]
+        },
+        {
+          heading:'Control of Body Temperature & Water',
+          body:`Body temperature is maintained at 37°C (optimum for enzymes) by the thermoregulatory centre in the hypothalamus. Water balance is controlled by the kidneys and the hormone ADH.`,
+          keyPoints:[
+            'Too hot: vasodilation (skin vessels widen), sweating → heat loss increases',
+            'Too cold: vasoconstriction (skin vessels narrow), shivering → heat conservation',
+            'Hypothalamus: detects blood temperature and coordinates the response',
+            'Kidneys filter blood and produce urine to remove urea and excess water',
+            'ADH (antidiuretic hormone): produced by pituitary gland — makes kidneys reabsorb more water → concentrated urine',
+          ]
+        }
+      ]
+    },
+    diagram:`<svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:12px;background:#f5f3ff">
+  <rect width="700" height="240" fill="#f5f3ff" rx="12"/>
+  <text x="350" y="24" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="#4c1d95">The Reflex Arc</text>
+
+  <!-- Finger (stimulus) -->
+  <ellipse cx="55" cy="130" rx="28" ry="20" fill="#fecdd3" stroke="#e11d48" stroke-width="1.5"/>
+  <text x="55" y="128" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="700" fill="#9f1239">Stimulus</text>
+  <text x="55" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#9f1239">(e.g. heat)</text>
+
+  <!-- Arrow 1 -->
+  <path d="M84 130 L118 130" stroke="#7c3aed" stroke-width="2" marker-end="url(#pa)"/>
+
+  <!-- Receptor -->
+  <rect x="120" y="112" width="70" height="36" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="155" y="128" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#4c1d95">Receptor</text>
+  <text x="155" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#5b21b6">skin/sense organ</text>
+
+  <!-- Arrow 2 - sensory neurone -->
+  <path d="M192 130 L242 130" stroke="#7c3aed" stroke-width="2" marker-end="url(#pa)"/>
+  <text x="217" y="122" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#6d28d9">sensory</text>
+  <text x="217" y="143" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#6d28d9">neurone</text>
+
+  <!-- Spinal cord (relay) -->
+  <rect x="244" y="95" width="80" height="70" rx="10" fill="#ddd6fe" stroke="#6d28d9" stroke-width="2"/>
+  <text x="284" y="122" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#4c1d95">Spinal</text>
+  <text x="284" y="134" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#4c1d95">Cord</text>
+  <text x="284" y="148" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#5b21b6">relay neurone</text>
+
+  <!-- Arrow 3 - motor neurone -->
+  <path d="M326 130 L376 130" stroke="#7c3aed" stroke-width="2" marker-end="url(#pa)"/>
+  <text x="351" y="122" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#6d28d9">motor</text>
+  <text x="351" y="143" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#6d28d9">neurone</text>
+
+  <!-- Effector (muscle) -->
+  <rect x="378" y="112" width="72" height="36" rx="8" fill="#c7d2fe" stroke="#4338ca" stroke-width="1.5"/>
+  <text x="414" y="128" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#312e81">Effector</text>
+  <text x="414" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#3730a3">muscle/gland</text>
+
+  <!-- Arrow 4 -->
+  <path d="M452 130 L502 130" stroke="#7c3aed" stroke-width="2" marker-end="url(#pa)"/>
+
+  <!-- Response -->
+  <ellipse cx="544" cy="130" rx="38" ry="22" fill="#bbf7d0" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="544" y="127" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#14532d">Response</text>
+  <text x="544" y="139" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#14532d">withdraw hand</text>
+
+  <!-- Brain box -->
+  <rect x="244" y="30" width="80" height="40" rx="8" fill="#fde68a" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="284" y="46" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#78350f">Brain</text>
+  <text x="284" y="58" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#92400e">not involved!</text>
+  <!-- Arrow brain to spinal cord -->
+  <line x1="284" y1="70" x2="284" y2="95" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+  <!-- Synapse label -->
+  <path d="M192 155 Q217 170 242 155" stroke="#a855f7" stroke-width="1" fill="none"/>
+  <text x="217" y="183" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7c3aed">synapse</text>
+  <text x="217" y="193" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#7c3aed">(neurotransmitters)</text>
+
+  <!-- Key note -->
+  <rect x="30" y="205" width="640" height="26" rx="7" fill="#ede9fe" stroke="#a78bfa" stroke-width="1"/>
+  <text x="350" y="222" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#4c1d95">Reflex arcs bypass the brain — they are automatic, involuntary and very fast. The brain is informed afterwards.</text>
+
+  <defs>
+    <marker id="pa" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed"/></marker>
+  </defs>
+</svg>`,
+    quiz:[
+      {q:'What is the correct order of a reflex arc?',opts:['Effector → receptor → relay neurone → motor neurone','Receptor → sensory neurone → relay neurone → motor neurone → effector','Brain → spinal cord → receptor → effector','Stimulus → motor neurone → brain → response'],ans:1,explain:'The reflex arc goes: Receptor → Sensory neurone → Relay neurone (spinal cord) → Motor neurone → Effector. The brain is not part of the arc — this is what makes reflexes automatic and fast.'},
+      {q:'What does insulin do?',opts:['Converts glycogen to glucose in the liver','Stimulates the liver to convert glucose to glycogen, lowering blood glucose','Breaks down fat for energy','Increases heart rate'],ans:1,explain:'Insulin is secreted by the pancreas when blood glucose is too high. It causes the liver to convert glucose into glycogen for storage, bringing blood glucose back to the set point.'},
+      {q:'What is the difference between Type 1 and Type 2 diabetes?',opts:['Type 1 = diet-related; Type 2 = genetic only','Type 1 = pancreas cannot produce insulin; Type 2 = cells don\'t respond to insulin','Type 1 = too much insulin; Type 2 = too little glucose','They are the same condition'],ans:1,explain:'Type 1: the immune system destroys insulin-producing cells — treated with insulin injections. Type 2: body cells become resistant to insulin — linked to obesity, managed with diet and exercise.'},
+      {q:'What happens to blood vessels in the skin when the body is too hot?',opts:['Vasoconstriction — vessels narrow to retain heat','Vasodilation — vessels widen to increase heat loss','Shivering to generate heat','Blood vessels close completely'],ans:1,explain:'Vasodilation allows more blood to flow near the skin surface, increasing heat loss by radiation. This is why your skin looks red when you\'re hot.'},
+      {q:'What is the role of ADH?',opts:['It increases urine production','It is produced by the pancreas to control blood glucose','Produced by the pituitary gland — makes kidneys reabsorb more water, producing concentrated urine','It controls heart rate'],ans:2,explain:'ADH (antidiuretic hormone) is produced by the pituitary gland when the body is dehydrated. It makes the kidney tubules more permeable to water, so more water is reabsorbed — producing small amounts of concentrated urine.'},
+    ]
+  },
+
+  {
+    id:'bio-inheritance',
+    subject:'biology', board:'AQA', paper:'Inheritance',
+    title:'Inheritance — DNA, Genetics & Evolution',
+    desc:'DNA structure, inheritance patterns, Punnett squares, and natural selection.',
+    duration:'12 min', xp:70,
+    content:{
+      intro:`Inheritance is the passing of genetic information from parent to offspring. DNA carries the instructions for building and running every organism. Understanding how genes are inherited — and how errors can occur — is central to modern biology and medicine.`,
+      sections:[
+        {
+          heading:'DNA Structure & the Genome',
+          body:`DNA (deoxyribonucleic acid) is a double helix made of two strands of nucleotides. Each nucleotide contains a sugar, phosphate group, and one of four bases (A, T, C, G). Complementary base pairing holds the two strands together: A-T and C-G.`,
+          keyPoints:[
+            'DNA is a polymer made of nucleotide monomers',
+            'Bases pair complementarily: A with T, C with G',
+            'Gene: a section of DNA that codes for a specific protein',
+            'Genome: the complete set of genetic information in an organism',
+            'Chromosomes: long coiled DNA molecules found in the nucleus',
+            'Humans have 46 chromosomes (23 pairs) in most body cells',
+          ],
+          diagram:{type:'dna', label:'DNA Double Helix Structure'}
+        },
+        {
+          heading:'Genetics — Alleles, Genotypes & Punnett Squares',
+          body:`Most characteristics are controlled by genes. Each gene can have different versions called alleles. Dominant alleles are always expressed; recessive alleles are only expressed if two copies are present.`,
+          keyPoints:[
+            'Allele: a version of a gene (e.g. B = brown eyes, b = blue eyes)',
+            'Dominant: expressed even with one copy (capital letter)',
+            'Recessive: only expressed with two copies (lower case letter)',
+            'Homozygous: both alleles the same (BB or bb)',
+            'Heterozygous: two different alleles (Bb) — called a carrier for recessive conditions',
+            'Genotype = alleles present (e.g. Bb) | Phenotype = observable characteristic (e.g. brown eyes)',
+          ],
+          workedExample:{
+            question:'Two carriers of cystic fibrosis (Ff) have children. What is the probability of a child having cystic fibrosis?',
+            steps:[
+              {n:'1', desc:'Both parents are Ff (carriers)', calc:'F = normal, f = cystic fibrosis'},
+              {n:'2', desc:'Draw Punnett square: F and f from each parent', calc:'FF | Ff | Ff | ff'},
+              {n:'3', desc:'ff = cystic fibrosis (both recessive)', calc:'1 out of 4 = ff'},
+              {n:'4', desc:'Probability', calc:'25% chance (1 in 4)'},
+            ],
+            answer:'25% probability of cystic fibrosis'
+          }
+        },
+        {
+          heading:'Evolution & Natural Selection',
+          body:`Evolution is the change in inherited characteristics of a population over many generations. Natural selection is the mechanism by which evolution occurs — individuals with advantageous traits are more likely to survive and reproduce.`,
+          keyPoints:[
+            'Variation exists in all populations — due to mutation and sexual reproduction',
+            'Individuals better adapted to their environment survive and reproduce (survival of the fittest)',
+            'Genes for advantageous traits are passed to offspring — frequency increases in population',
+            'Over many generations, the population changes — this is evolution',
+            'Antibiotic resistance: a key example — bacteria with resistance genes survive, reproduce, pass on resistance',
+            'Extinction: occurs when a species cannot adapt fast enough to environmental change',
+          ]
+        }
+      ]
+    },
+    diagram:`<svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:12px;background:#f0f9ff">
+  <rect width="700" height="280" fill="#f0f9ff" rx="12"/>
+  <text x="210" y="24" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="#075985">DNA Double Helix</text>
+  <text x="530" y="24" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="#075985">Punnett Square — Cystic Fibrosis</text>
+
+  <!-- DNA double helix (left panel) -->
+  <!-- Left backbone (wavy) -->
+  <path d="M80 45 C60 65 60 85 80 105 C100 125 100 145 80 165 C60 185 60 205 80 225 C100 245 100 255 90 265" fill="none" stroke="#2563eb" stroke-width="3"/>
+  <!-- Right backbone (wavy opposite) -->
+  <path d="M200 45 C220 65 220 85 200 105 C180 125 180 145 200 165 C220 185 220 205 200 225 C180 245 180 255 190 265" fill="none" stroke="#2563eb" stroke-width="3"/>
+
+  <!-- Base pairs -->
+  <!-- A-T -->
+  <line x1="84" y1="75" x2="196" y2="75" stroke="#e5e7eb" stroke-width="1"/>
+  <rect x="84" y="65" width="36" height="20" rx="4" fill="#fde68a" stroke="#d97706" stroke-width="1"/>
+  <text x="102" y="79" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#92400e">A</text>
+  <rect x="160" y="65" width="36" height="20" rx="4" fill="#bfdbfe" stroke="#2563eb" stroke-width="1"/>
+  <text x="178" y="79" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#1e40af">T</text>
+  <text x="140" y="72" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#6b7280">bond</text>
+
+  <!-- G-C -->
+  <line x1="76" y1="120" x2="204" y2="120" stroke="#e5e7eb" stroke-width="1"/>
+  <rect x="76" y="110" width="36" height="20" rx="4" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="94" y="124" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#14532d">G</text>
+  <rect x="168" y="110" width="36" height="20" rx="4" fill="#fecdd3" stroke="#e11d48" stroke-width="1"/>
+  <text x="186" y="124" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#9f1239">C</text>
+  <text x="140" y="117" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" fill="#6b7280">bond</text>
+
+  <!-- T-A -->
+  <line x1="84" y1="168" x2="196" y2="168" stroke="#e5e7eb" stroke-width="1"/>
+  <rect x="84" y="158" width="36" height="20" rx="4" fill="#bfdbfe" stroke="#2563eb" stroke-width="1"/>
+  <text x="102" y="172" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#1e40af">T</text>
+  <rect x="160" y="158" width="36" height="20" rx="4" fill="#fde68a" stroke="#d97706" stroke-width="1"/>
+  <text x="178" y="172" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#92400e">A</text>
+
+  <!-- C-G -->
+  <line x1="80" y1="215" x2="200" y2="215" stroke="#e5e7eb" stroke-width="1"/>
+  <rect x="80" y="205" width="36" height="20" rx="4" fill="#fecdd3" stroke="#e11d48" stroke-width="1"/>
+  <text x="98" y="219" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#9f1239">C</text>
+  <rect x="164" y="205" width="36" height="20" rx="4" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="182" y="219" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#14532d">G</text>
+
+  <!-- Labels -->
+  <text x="140" y="256" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="600" fill="#1e40af">A pairs with T  ·  G pairs with C</text>
+  <text x="140" y="269" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#374151">(complementary base pairing)</text>
+
+  <!-- Divider -->
+  <line x1="290" y1="40" x2="290" y2="270" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- PUNNETT SQUARE (right panel) -->
+  <!-- Parents -->
+  <text x="430" y="48" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#374151">Parent 1 (Ff) × Parent 2 (Ff)</text>
+  <text x="430" y="63" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6b7280">Both carriers of cystic fibrosis</text>
+
+  <!-- Grid -->
+  <rect x="340" y="75" width="180" height="180" rx="4" fill="white" stroke="#cbd5e1" stroke-width="1.5"/>
+  <!-- Column headers -->
+  <text x="385" y="70" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#374151">F</text>
+  <text x="475" y="70" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#374151">f</text>
+  <!-- Row headers -->
+  <text x="332" y="130" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#374151">F</text>
+  <text x="332" y="220" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#374151">f</text>
+  <!-- Grid lines -->
+  <line x1="430" y1="75" x2="430" y2="255" stroke="#cbd5e1" stroke-width="1"/>
+  <line x1="340" y1="165" x2="520" y2="165" stroke="#cbd5e1" stroke-width="1"/>
+  <!-- Cell contents -->
+  <text x="385" y="128" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#15803d">FF</text>
+  <text x="385" y="143" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#15803d">Unaffected</text>
+  <text x="475" y="128" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#2563eb">Ff</text>
+  <text x="475" y="143" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#2563eb">Carrier</text>
+  <text x="385" y="213" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#2563eb">Ff</text>
+  <text x="385" y="228" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#2563eb">Carrier</text>
+  <rect x="434" y="170" width="82" height="82" rx="0" fill="#fee2e2"/>
+  <text x="475" y="213" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#dc2626">ff</text>
+  <text x="475" y="228" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#dc2626">CF affected</text>
+
+  <!-- Probability -->
+  <text x="430" y="266" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#374151">25% FF (unaffected)  ·  50% Ff (carrier)  ·  <tspan font-weight="700" fill="#dc2626">25% ff (cystic fibrosis)</tspan></text>
+</svg>`,
+    quiz:[
+      {q:'What are the complementary base pairs in DNA?',opts:['A-G and T-C','A-T and G-C','A-C and G-T','A-A and G-G'],ans:1,explain:'In DNA, adenine (A) always pairs with thymine (T), and guanine (G) always pairs with cytosine (C). This complementary base pairing holds the double helix together.'},
+      {q:'What is the difference between genotype and phenotype?',opts:['They mean the same thing','Genotype = physical appearance; phenotype = alleles present','Genotype = the alleles present; phenotype = the observable characteristic','Genotype = recessive only; phenotype = dominant only'],ans:2,explain:'Genotype refers to the alleles actually present in an organism\'s DNA (e.g. Bb). Phenotype is the observable physical characteristic that results (e.g. brown eyes).'},
+      {q:'Two carriers of cystic fibrosis (Ff) have a child. What is the probability of an unaffected non-carrier child (FF)?',opts:['50%','25%','75%','0%'],ans:1,explain:'From a Punnett square of Ff × Ff: FF = 25%, Ff = 50%, ff = 25%. So 25% of children will be FF (unaffected and not a carrier).'},
+      {q:'How does antibiotic resistance evolve in bacteria?',opts:['Bacteria deliberately change to resist antibiotics','Bacteria with random mutations for resistance survive, reproduce, and pass on the gene','All bacteria become resistant at the same time','Antibiotics cause mutations directly'],ans:1,explain:'Antibiotic resistance evolves through natural selection. Rare random mutations give some bacteria resistance. When antibiotics are used, non-resistant bacteria die but resistant ones survive, reproduce, and pass on the resistance gene.'},
+      {q:'What is a homozygous dominant genotype for eye colour (B = brown, b = blue)?',opts:['bb','Bb','bB','BB'],ans:3,explain:'Homozygous means both alleles are the same. Dominant means the dominant allele (B for brown). So BB is homozygous dominant — this individual has two copies of the brown eye allele and will always pass B to their children.'},
+    ]
+  }
+
 ];
 
 const TIERS = [
@@ -2243,10 +3014,10 @@ const TIERS = [
 ];
 
 const SEEDED_STUDENTS = [
-  {name:'Priya S.',  board:'AQA',     xp:780, avatar:'#6366f1'},
-  {name:'Marcus T.', board:'Edexcel', xp:650, avatar:'#7c3aed'},
-  {name:'Aisha M.',  board:'AQA',     xp:520, avatar:'#ec4899'},
-  {name:'James R.',  board:'Edexcel', xp:430, avatar:'#0ea5e9'},
+  {name:'Priya S.',  board:'AQA',     xp:1050, avatar:'#6366f1'},
+  {name:'Marcus T.', board:'Edexcel', xp:890, avatar:'#7c3aed'},
+  {name:'Aisha M.',  board:'AQA',     xp:720, avatar:'#ec4899'},
+  {name:'James R.',  board:'Edexcel', xp:560, avatar:'#0ea5e9'},
   {name:'Chloe W.',  board:'AQA',     xp:370, avatar:'#10b981'},
   {name:'Dev P.',    board:'Edexcel', xp:280, avatar:'#f59e0b'},
   {name:'Sophie L.', board:'AQA',     xp:190, avatar:'#ef4444'},
@@ -2541,6 +3312,14 @@ function updateStats(){
   document.getElementById('mth-pct').textContent=mP+'%';
   document.getElementById('mth-fill').style.width=mP+'%';
   document.getElementById('mth-count').textContent=`${mthD} of ${mthT.length} topics`;
+  const bioT=TOPICS.filter(t=>t.subject==='biology');
+  const bioD=bioT.filter(t=>S.completed.includes(t.id)).length;
+  const bP=Math.round((bioD/bioT.length)*100);
+  if(document.getElementById('bio-pct')){
+    document.getElementById('bio-pct').textContent=bP+'%';
+    document.getElementById('bio-fill').style.width=bP+'%';
+    document.getElementById('bio-count').textContent=`${bioD} of ${bioT.length} topics`;
+  }
 }
 function dashFilter(s,el){
   dSubj=s;
@@ -2558,6 +3337,9 @@ function renderTopicsGrid(cid,limit,subj,query){
   let topics=TOPICS.filter(t=>{
     const s=t.subject||'english';
     if(subj&&subj!=='all'&&s!==subj) return false;
+    // board filter: show topic if user's board matches OR topic boards aren't restricted
+    const uBoard=(S.boards&&S.boards[s])||S.board||'AQA';
+    if(t.board&&t.board!=='Both'&&!t.board.includes(uBoard)){}// topic is visible regardless
     if(query){
       const q=query.toLowerCase();
       return t.title.toLowerCase().includes(q)||t.desc.toLowerCase().includes(q)||t.paper.toLowerCase().includes(q);
@@ -2570,10 +3352,11 @@ function renderTopicsGrid(cid,limit,subj,query){
   el.innerHTML=topics.map(t=>{
     const done=S.completed.includes(t.id);
     const s=t.subject||'english';
-    const isMaths=s==='maths';
+    const isMaths=s==='maths'; const isBio=s==='biology';
+    const subjLabel=isMaths?`📐 ${t.paper}`:isBio?`🔬 ${t.paper}`:`${t.board} · ${t.paper}`;
     return `<div class="topic-card ${done?'completed':''}" onclick="openTopic('${t.id}')">
       <div class="tc-header">
-        <span class="tc-subj ${s}">${isMaths?`📐 ${t.paper}`:t.board}</span>
+        <span class="tc-subj ${s}">${subjLabel}</span>
         ${done?'<div class="tc-done">✓</div>':''}
       </div>
       <div class="tc-title">${t.title}</div>
@@ -2601,6 +3384,9 @@ function renderTopic(id){
   const done=S.completed.includes(id);
   const isMaths=(t.subject||'english')==='maths';
   const c=t.content;
+  // render SVG diagram if topic has one
+  const diagHTML = t.diagram ? `<div class="bio-diagram">${t.diagram}</div>` : '';
+
   let secs=c.sections.map(s=>{
     let h=`<div class="content-card"><h3>${s.heading}</h3><p>${s.body}</p>`;
     if(s.keyPoints) h+=`<div class="key-points"><h4>📌 Key Points</h4><ul>${s.keyPoints.map(p=>`<li>${p}</li>`).join('')}</ul></div>`;
@@ -2623,7 +3409,7 @@ function renderTopic(id){
       </div>
     </div>
     <div class="content-card"><p>${c.intro}</p></div>
-    ${secs}
+    ${diagHTML}${secs}
     <div class="quiz-start-card">
       <h3>${done?'Retake the Quiz':'Test your knowledge'}</h3>
       <p>${done?`Already completed — retake to keep knowledge sharp.`:`Answer all ${t.quiz.length} questions to earn +${t.xp} XP. Wrong answers re-queue until correct.`}</p>
@@ -2753,7 +3539,7 @@ function showToast(amount,label){
 
 
 // ── STATE ──
-let S={name:'',board:'',xp:0,streak:0,lastVisit:'',completed:[]};
+let S={name:'',board:'',boards:{english:'AQA',maths:'AQA',biology:'AQA'},xp:0,streak:0,lastVisit:'',completed:[]};
 let selB='', curTopic='', dSubj='all', tSubj='all';
 let QE={topic:null,queue:[],mastered:[],streak:0,answered:false};
 let dark=false;
@@ -2797,8 +3583,14 @@ function selectBoard(el){document.querySelectorAll('.board-opt').forEach(b=>b.cl
 function completeOnboarding(){
   const nm=document.getElementById('ob-name').value.trim();
   if(!nm){alert('Please enter your name');return}
-  if(!selB){alert('Please select your exam board');return}
-  S.name=nm;S.board=selB;checkStreak();saveState();launchApp();
+  // Default to AQA if not selected
+  if(!boardPicks.english) boardPicks.english='AQA';
+  if(!boardPicks.maths)   boardPicks.maths='AQA';
+  if(!boardPicks.biology) boardPicks.biology='AQA';
+  S.name=nm;
+  S.board=boardPicks.english; // primary board for legacy
+  S.boards=Object.assign({},boardPicks);
+  checkStreak();saveState();launchApp();
 }
 function checkStreak(){
   const today=new Date().toDateString();
@@ -2910,6 +3702,9 @@ function renderTopic(id){
   const done=S.completed.includes(id);
   const isM=(t.subject||'english')==='maths';
   const c=t.content;
+  // render SVG diagram if topic has one
+  const diagHTML = t.diagram ? `<div class="bio-diagram">${t.diagram}</div>` : '';
+
   let secs=c.sections.map(s=>{
     let h=`<div class="ccrd"><h3>${s.heading}</h3><p>${s.body}</p>`;
     if(s.keyPoints)h+=`<div class="kpoints"><h4>📌 Key Points</h4><ul>${s.keyPoints.map(p=>`<li>${p}</li>`).join('')}</ul></div>`;
