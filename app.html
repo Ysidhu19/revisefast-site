@@ -793,9 +793,9 @@ body{
       <div class="sb-logo"><div class="sb-logo-mark">R</div>ReviseFast</div>
       <div class="sb-search">
         <span class="sb-search-ic">🔍</span>
-        <input type="text" id="sb-srch" placeholder="Search topics…" autocomplete="off"
+        <input type="text" id="sidebar-search" placeholder="Search topics…" autocomplete="off"
           oninput="doSearch(this.value)" onfocus="openDrop()" onblur="closeDrop()"/>
-        <div class="sr-drop" id="sr-drop"></div>
+        <div class="sr-drop" id="search-dropdown"></div>
       </div>
     </div>
 
@@ -806,7 +806,7 @@ body{
       </button>
       <button class="sb-btn" data-page="topics" onclick="nav('topics',this)">
         <span class="sb-icon">📝</span>All Topics
-        <span class="sb-badge" id="sb-tc">0</span>
+        <span class="sb-badge" id="nav-topics-count">0</span>
       </button>
       <button class="sb-btn" data-page="papers" onclick="nav('papers',this)">
         <span class="sb-icon">📋</span>Past Papers
@@ -820,11 +820,11 @@ body{
     <div class="sb-foot">
       <div class="dark-row">
         <span class="dark-lbl">🌙 Dark mode</span>
-        <button class="toggle" id="dk-btn" onclick="toggleDark()"><div class="toggle-k"></div></button>
+        <button class="toggle" id="dark-toggle-btn" onclick="toggleDark()"><div class="toggle-k"></div></button>
       </div>
       <div class="user-row">
         <div class="user-av" id="sb-av">?</div>
-        <div><div class="user-name" id="sb-nm">—</div><div class="user-sub" id="sb-sb">—</div></div>
+        <div><div class="user-name" id="sb-name">—</div><div class="user-sub" id="sb-sub">—</div></div>
       </div>
     </div>
   </aside>
@@ -835,34 +835,34 @@ body{
     <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
       <div class="dash-greeting-row">
-        <div class="pg-title" id="dash-g">Good morning, <em>student</em></div>
+        <div class="pg-title" id="dash-greeting">Good morning, <em>student</em></div>
         <div class="pg-sub">Your revision hub — everything in one place.</div>
       </div>
 
       <div class="stats4">
-        <div class="scard xp"><span class="scard-icon">⚡</span><div class="scard-val" id="st-xp">0</div><div class="scard-lbl">Total XP</div></div>
-        <div class="scard str"><span class="scard-icon">🔥</span><div class="scard-val" id="st-str">0</div><div class="scard-lbl">Day streak</div></div>
-        <div class="scard done"><span class="scard-icon">✓</span><div class="scard-val" id="st-done">0</div><div class="scard-lbl">Topics done</div></div>
-        <div class="scard rank"><span class="scard-icon">🏅</span><div class="scard-val" id="st-rank">#—</div><div class="scard-lbl">Your rank</div></div>
+        <div class="scard xp"><span class="scard-icon">⚡</span><div class="scard-val" id="stat-xp">0</div><div class="scard-lbl">Total XP</div></div>
+        <div class="scard str"><span class="scard-icon">🔥</span><div class="scard-val" id="stat-streak">0</div><div class="scard-lbl">Day streak</div></div>
+        <div class="scard done"><span class="scard-icon">✓</span><div class="scard-val" id="stat-done">0</div><div class="scard-lbl">Topics done</div></div>
+        <div class="scard rank"><span class="scard-icon">🏅</span><div class="scard-val" id="stat-rank">#—</div><div class="scard-lbl">Your rank</div></div>
       </div>
 
       <div class="tier-card">
         <div class="tier-top">
-          <div class="tier-left"><span class="tier-name" id="tier-nm">🥉 Bronze</span><span class="tier-xp-label" id="tier-nxt">200 XP to Silver</span></div>
+          <div class="tier-left"><span class="tier-name" id="tier-pill">🥉 Bronze</span><span class="tier-xp-label" id="tier-next">200 XP to Silver</span></div>
         </div>
         <div class="xp-bar-wrap"><div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div></div>
       </div>
 
       <div class="subj2">
         <div class="subj-card">
-          <div class="sc-row"><div class="sc-name"><span class="chip blue">📚 English</span></div><div class="sc-pct" id="e-pct">0%</div></div>
-          <div class="sc-bar"><div class="sc-fill fill-eng" id="e-fill" style="width:0%"></div></div>
-          <div class="sc-count" id="e-cnt">0 of 14 topics</div>
+          <div class="sc-row"><div class="sc-name"><span class="chip blue">📚 English</span></div><div class="sc-pct" id="eng-pct">0%</div></div>
+          <div class="sc-bar"><div class="sc-fill fill-eng" id="eng-fill" style="width:0%"></div></div>
+          <div class="sc-count" id="eng-count">0 of 14 topics</div>
         </div>
         <div class="subj-card">
-          <div class="sc-row"><div class="sc-name"><span class="chip cyan">📐 Maths</span></div><div class="sc-pct" id="m-pct">0%</div></div>
-          <div class="sc-bar"><div class="sc-fill fill-mth" id="m-fill" style="width:0%"></div></div>
-          <div class="sc-count" id="m-cnt">0 of 8 topics</div>
+          <div class="sc-row"><div class="sc-name"><span class="chip cyan">📐 Maths</span></div><div class="sc-pct" id="mth-pct">0%</div></div>
+          <div class="sc-bar"><div class="sc-fill fill-mth" id="mth-fill" style="width:0%"></div></div>
+          <div class="sc-count" id="mth-count">0 of 8 topics</div>
         </div>
       </div>
 
@@ -872,7 +872,7 @@ body{
         <button class="ftab eng" onclick="dF('english',this)">📚 English</button>
         <button class="ftab mth" onclick="dF('maths',this)">📐 Maths</button>
       </div>
-      <div class="tgrid" id="g-dash"></div>
+      <div class="tgrid" id="grid-dash"></div>
     </div>
 
     <!-- ALL TOPICS -->
@@ -880,23 +880,23 @@ body{
       <div class="pg-header">
         <div><div class="pg-title">All <em>Topics</em></div><div class="pg-sub">GCSE English &amp; Maths — AQA and Edexcel</div></div>
       </div>
-      <div class="tsearch"><span class="tsearch-ic">🔍</span><input type="text" id="t-srch" placeholder="Search topics, papers, subjects…" oninput="filterT()"/></div>
+      <div class="tsearch"><span class="tsearch-ic">🔍</span><input type="text" id="topic-search" placeholder="Search topics, papers, subjects…" oninput="filterT()"/></div>
       <div class="ftabs">
         <button class="ftab active" onclick="tF('all',this)">All</button>
         <button class="ftab eng" onclick="tF('english',this)">📚 English</button>
         <button class="ftab mth" onclick="tF('maths',this)">📐 Maths</button>
       </div>
-      <div class="tgrid" id="g-topics"></div>
+      <div class="tgrid" id="grid-topics"></div>
     </div>
 
     <!-- TOPIC READER -->
     <div class="page" id="page-topic">
-      <div class="breadcrumb" id="bc">
+      <div class="breadcrumb" id="topic-breadcrumb">
         <a onclick="nav('dashboard',document.querySelector('[data-page=dashboard]'))">Home</a>
         <span class="bc-sep">/</span>
         <a onclick="nav('topics',document.querySelector('[data-page=topics]'))">Topics</a>
         <span class="bc-sep">/</span>
-        <span id="bc-t">—</span>
+        <span id="bc-topic-name">—</span>
       </div>
       <div id="topic-body"></div>
     </div>
@@ -905,13 +905,13 @@ body{
     <div class="page" id="page-quiz">
       <div class="quiz-top">
         <div class="qtl">
-          <div class="q-streak" id="q-str">🔥 0 streak</div>
-          <div class="q-mas"><span class="q-mas-n" id="q-mn">0</span> / <span id="q-tot">0</span> mastered</div>
+          <div class="q-streak" id="q-streak">🔥 0 streak</div>
+          <div class="q-mas"><span class="q-mas-n" id="q-mastered">0</span> / <span id="q-total">0</span> mastered</div>
         </div>
         <button class="q-exit" onclick="exitQ()">Exit Quiz</button>
       </div>
-      <div class="q-track"><div class="q-fill" id="q-fill" style="width:0%"></div></div>
-      <div class="q-lbl" id="q-lbl">0 of 0 mastered</div>
+      <div class="q-track"><div class="q-fill" id="q-prog" style="width:0%"></div></div>
+      <div class="q-lbl" id="q-prog-lbl">0 of 0 mastered</div>
       <div id="quiz-body"></div>
     </div>
 
@@ -919,14 +919,14 @@ body{
     <div class="page" id="page-papers">
       <div class="pg-header"><div><div class="pg-title">Past <em>Papers</em></div><div class="pg-sub">Direct PDF links — opens immediately in a new tab.</div></div></div>
       <div class="papers-note">📎 All links go directly to official PDF files. Click Papers to open the question paper, Mark Schemes for the answers.</div>
-      <div class="pgrid" id="pg"></div>
+      <div class="pgrid" id="papers-grid"></div>
     </div>
 
     <!-- LEADERBOARD -->
     <div class="page" id="page-leaderboard">
       <div class="lb-hero"><h2>Student Rankings</h2><p>GCSE English &amp; Maths — updated as you complete topics</p></div>
       <div class="lb-note">ℹ️ Rankings are saved in your browser. Share your score with friends to compare!</div>
-      <div class="lb-table" id="lb"></div>
+      <div class="lb-table" id="lb-table"></div>
     </div>
 
   </main>
@@ -941,9 +941,9 @@ body{
 </nav>
 
 <!-- TOAST -->
-<div class="toast" id="toast">
+<div class="toast" id="xp-toast">
   <div class="toast-ic">⚡</div>
-  <div><div class="toast-val" id="t-val">+50 XP</div><div class="toast-lbl">Topic mastered!</div></div>
+  <div><div class="toast-val" id="toast-val">+50 XP</div><div class="toast-lbl">Topic mastered!</div></div>
 </div>
 
 <script>
@@ -2766,13 +2766,13 @@ function saveState(){localStorage.setItem('rf4',JSON.stringify(S))}
 // ── DARK MODE ──
 function applyDark(){
   document.documentElement.setAttribute('data-theme',dark?'dark':'light');
-  const b=document.getElementById('dk-btn');if(b)b.classList.toggle('on',dark);
+  const b=document.getElementById('dark-toggle-btn');if(b)b.classList.toggle('on',dark);
 }
 function toggleDark(){dark=!dark;localStorage.setItem('rf4_dark',dark?'1':'0');applyDark()}
 
 // ── SEARCH ──
 function doSearch(q){
-  const dd=document.getElementById('sr-drop');
+  const dd=document.getElementById('search-dropdown');
   if(!q.trim()){dd.innerHTML='';dd.classList.remove('open');return}
   const hits=TOPICS.filter(t=>
     [t.title,t.desc,t.paper,t.board||''].some(f=>f.toLowerCase().includes(q.toLowerCase()))
@@ -2783,13 +2783,13 @@ function doSearch(q){
   dd.classList.add('open');
 }
 function pickSearch(id){
-  document.getElementById('sb-srch').value='';
-  document.getElementById('sr-drop').classList.remove('open');
+  document.getElementById('sidebar-search').value='';
+  document.getElementById('search-dropdown').classList.remove('open');
   openTopic(id);
 }
-function openDrop(){if(document.getElementById('sb-srch').value.trim())document.getElementById('sr-drop').classList.add('open')}
-function closeDrop(){setTimeout(()=>document.getElementById('sr-drop').classList.remove('open'),180)}
-function filterT(){renderGrid('g-topics',0,tSubj,document.getElementById('t-srch').value)}
+function openDrop(){if(document.getElementById('sidebar-search').value.trim())document.getElementById('search-dropdown').classList.add('open')}
+function closeDrop(){setTimeout(()=>document.getElementById('search-dropdown').classList.remove('open'),180)}
+function filterT(){renderGrid('grid-topics',0,tSubj,document.getElementById('topic-search').value)}
 
 // ── ONBOARDING ──
 function selectBoard(el){document.querySelectorAll('.board-opt').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selB=el.dataset.board}
@@ -2809,19 +2809,19 @@ function checkStreak(){
 
 // ── LAUNCH ──
 function launch(){
-  document.getElementById('ob').classList.remove('active');
-  document.getElementById('app').classList.add('active');
+  document.getElementById('view-onboarding').classList.remove('active');
+  document.getElementById('view-app').classList.add('active');
   setupSB();renderDash();
-  renderGrid('g-topics',0,tSubj,'');
+  renderGrid('grid-topics',0,tSubj,'');
   renderPapers();renderLB();
-  document.getElementById('sb-tc').textContent=TOPICS.length;
+  document.getElementById('nav-topics-count').textContent=TOPICS.length;
   nav('dashboard',document.querySelector('[data-page=dashboard]'));
 }
 function setupSB(){
   document.getElementById('sb-av').textContent=S.name.charAt(0).toUpperCase();
-  document.getElementById('sb-nm').textContent=S.name;
-  document.getElementById('sb-sb').textContent=S.board+' · GCSE';
-  const b=document.getElementById('dk-btn');if(b)b.classList.toggle('on',dark);
+  document.getElementById('sb-name').textContent=S.name;
+  document.getElementById('sb-sub').textContent=S.board+' · GCSE';
+  const b=document.getElementById('dark-toggle-btn');if(b)b.classList.toggle('on',dark);
 }
 
 // ── NAV ──
@@ -2839,32 +2839,32 @@ function nav(id,el){
 function renderDash(){
   const h=new Date().getHours();
   const g=h<12?'Good morning':h<18?'Good afternoon':'Good evening';
-  document.getElementById('dash-g').innerHTML=`${g}, <em>${S.name}</em>`;
-  updateStats();renderGrid('g-dash',6,dSubj,'');
+  document.getElementById('dash-greeting').innerHTML=`${g}, <em>${S.name}</em>`;
+  updateStats();renderGrid('grid-dash',6,dSubj,'');
 }
 function updateStats(){
-  document.getElementById('st-xp').textContent=S.xp;
-  document.getElementById('st-str').textContent=S.streak;
-  document.getElementById('st-done').textContent=S.completed.length;
+  document.getElementById('stat-xp').textContent=S.xp;
+  document.getElementById('stat-streak').textContent=S.streak;
+  document.getElementById('stat-done').textContent=S.completed.length;
   const all=[...SEEDED_STUDENTS,{name:S.name,xp:S.xp,isYou:true}].sort((a,b)=>b.xp-a.xp);
-  document.getElementById('st-rank').textContent='#'+(all.findIndex(s=>s.isYou)+1);
+  document.getElementById('stat-rank').textContent='#'+(all.findIndex(s=>s.isYou)+1);
   const tier=getTier(S.xp),next=getNext(S.xp);
-  document.getElementById('tier-nm').textContent=tier.name;
-  document.getElementById('tier-nxt').textContent=next?`${next.min-S.xp} XP to ${next.name.split(' ')[1]}`:'✨ Max rank!';
+  document.getElementById('tier-pill').textContent=tier.name;
+  document.getElementById('tier-next').textContent=next?`${next.min-S.xp} XP to ${next.name.split(' ')[1]}`:'✨ Max rank!';
   document.getElementById('xp-fill').style.width=tierPct(S.xp)+'%';
   const eT=TOPICS.filter(t=>(t.subject||'english')==='english');
   const mT=TOPICS.filter(t=>t.subject==='maths');
   const eD=eT.filter(t=>S.completed.includes(t.id)).length;
   const mD=mT.filter(t=>S.completed.includes(t.id)).length;
   const eP=Math.round(eD/eT.length*100),mP=Math.round(mD/mT.length*100);
-  document.getElementById('e-pct').textContent=eP+'%';
-  document.getElementById('e-fill').style.width=eP+'%';
-  document.getElementById('e-cnt').textContent=`${eD} of ${eT.length} topics`;
-  document.getElementById('m-pct').textContent=mP+'%';
-  document.getElementById('m-fill').style.width=mP+'%';
-  document.getElementById('m-cnt').textContent=`${mD} of ${mT.length} topics`;
+  document.getElementById('eng-pct').textContent=eP+'%';
+  document.getElementById('eng-fill').style.width=eP+'%';
+  document.getElementById('eng-count').textContent=`${eD} of ${eT.length} topics`;
+  document.getElementById('mth-pct').textContent=mP+'%';
+  document.getElementById('mth-fill').style.width=mP+'%';
+  document.getElementById('mth-count').textContent=`${mD} of ${mT.length} topics`;
 }
-function dF(s,el){dSubj=s;document.querySelectorAll('#page-dashboard .ftab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderGrid('g-dash',6,dSubj,'')}
+function dF(s,el){dSubj=s;document.querySelectorAll('#page-dashboard .ftab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderGrid('grid-dash',6,dSubj,'')}
 function tF(s,el){tSubj=s;document.querySelectorAll('#page-topics .ftab').forEach(t=>t.classList.remove('active'));el.classList.add('active');filterT()}
 
 // ── TOPIC GRID ──
@@ -2902,7 +2902,7 @@ function renderGrid(cid,limit,subj,query){
 function openTopic(id){
   curTopic=id;renderTopic(id);nav('topic',null);
   const t=TOPICS.find(x=>x.id===id);
-  if(t)document.getElementById('bc-t').textContent=t.title;
+  if(t)document.getElementById('bc-topic-name').textContent=t.title;
 }
 function renderTopic(id){
   const t=TOPICS.find(x=>x.id===id);if(!t)return;
@@ -2946,11 +2946,11 @@ function exitQ(){nav('topic',null);renderTopic(curTopic)}
 function renderQ(){
   const {queue,mastered,streak,topic}=QE;
   const tot=topic.quiz.length,done=mastered.length,pct=Math.round(done/tot*100);
-  document.getElementById('q-str').textContent=`🔥 ${streak} streak`;
-  document.getElementById('q-mn').textContent=done;
-  document.getElementById('q-tot').textContent=tot;
-  document.getElementById('q-fill').style.width=pct+'%';
-  document.getElementById('q-lbl').textContent=`${done} of ${tot} mastered · ${queue.length} remaining`;
+  document.getElementById('q-streak').textContent=`🔥 ${streak} streak`;
+  document.getElementById('q-mastered').textContent=done;
+  document.getElementById('q-total').textContent=tot;
+  document.getElementById('q-prog').style.width=pct+'%';
+  document.getElementById('q-prog-lbl').textContent=`${done} of ${tot} mastered · ${queue.length} remaining`;
   const q=queue[0],L=['A','B','C','D'];
   document.getElementById('quiz-body').innerHTML=`
     <div class="q-card">
@@ -2972,12 +2972,12 @@ function selA(idx){
     if(i===idx&&!ok)b.classList.add('wrong');
     if(i===idx&&ok){b.classList.remove('reveal');b.classList.add('correct')}
   });
-  const fb=document.getElementById('qfb');
+  const fb=document.getElementById('qf');
   fb.className=`q-fb ${ok?'correct':'wrong'} show`;
   fb.innerHTML=`<div class="qf-title">${ok?'✓ Correct!':'✗ Not quite'}</div><div class="qf-body">${q.explain}</div>`;
   if(ok){QE.streak++;QE.mastered.push(QE.queue.shift())}
-  else{QE.streak=0;QE.queue.push(QE.queue.shift());document.getElementById('rq').classList.add('show')}
-  document.getElementById('q-str').textContent=`🔥 ${QE.streak} streak`;
+  else{QE.streak=0;QE.queue.push(QE.queue.shift());document.getElementById('rn').classList.add('show')}
+  document.getElementById('q-streak').textContent=`🔥 ${QE.streak} streak`;
   const nb=document.getElementById('qn');
   nb.textContent=QE.queue.length===0?'See Results →':'Next Question →';
   nb.classList.add('show');
@@ -2987,8 +2987,8 @@ function showRes(){
   const {topic}=QE,tot=topic.quiz.length;
   const already=S.completed.includes(topic.id);
   const xp=already?0:topic.xp;
-  if(!already){S.xp+=xp;S.completed.push(topic.id);saveState();updateStats();renderGrid('g-dash',6,dSubj,'');renderGrid('g-topics',0,tSubj,'');renderLB();setTimeout(()=>showToast(xp,'Topic mastered!'),400)}
-  document.getElementById('q-fill').style.width='100%';
+  if(!already){S.xp+=xp;S.completed.push(topic.id);saveState();updateStats();renderGrid('grid-dash',6,dSubj,'');renderGrid('grid-topics',0,tSubj,'');renderLB();setTimeout(()=>showToast(xp,'Topic mastered!'),400)}
+  document.getElementById('q-prog').style.width='100%';
   document.getElementById('quiz-body').innerHTML=`
     <div class="results">
       <div class="res-emoji">🎉</div>
@@ -3014,7 +3014,7 @@ function tierPct(xp){const t=getTier(xp);if(t.max===Infinity)return 100;const n=
 
 // ── PAPERS ──
 function renderPapers(){
-  document.getElementById('pg').innerHTML=PAPERS_DATA.map(s=>`
+  document.getElementById('papers-grid').innerHTML=PAPERS_DATA.map(s=>`
     <div class="pc">
       <div class="pc-hd ${s.hdrClass}"><span class="pc-hd-icon">${s.icon}</span><div><div class="pc-hd-title">GCSE ${s.subject}</div><div class="pc-hd-sub">Past papers &amp; mark schemes</div></div></div>
       ${s.groups.map(g=>`<div class="pgrp"><div class="pgrp-hd">${g.board} — ${g.name}</div>${g.papers.map(p=>`<div class="pr"><div class="pr-name">${p.name}</div><div class="pr-links"><a class="pra p" href="${p.paper}" target="_blank" rel="noopener">📄 Paper</a><a class="pra m" href="${p.ms}" target="_blank" rel="noopener">✓ Mark Scheme</a></div></div>`).join('')}</div>`).join('')}
@@ -3025,7 +3025,7 @@ function renderPapers(){
 function renderLB(){
   const all=[...SEEDED_STUDENTS,{name:S.name,board:S.board,xp:S.xp,avatar:'#2563eb',isYou:true}].sort((a,b)=>b.xp-a.xp);
   const M=['🥇','🥈','🥉'];
-  document.getElementById('lb').innerHTML=all.map((s,i)=>{
+  document.getElementById('lb-table').innerHTML=all.map((s,i)=>{
     const tier=getTier(s.xp);
     const rank=i<3?`<span style="font-size:1.1rem">${M[i]}</span>`:`<span class="lb-rank">${i+1}</span>`;
     return`<div class="lb-row ${s.isYou?'you':''}">
@@ -3039,8 +3039,8 @@ function renderLB(){
 
 // ── TOAST ──
 function showToast(amt,lbl){
-  const t=document.getElementById('toast');
-  document.getElementById('t-val').textContent=`+${amt} XP`;
+  const t=document.getElementById('xp-toast');
+  document.getElementById('toast-val').textContent=`+${amt} XP`;
   t.querySelector('.toast-lbl').textContent=lbl;
   t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);
 }
