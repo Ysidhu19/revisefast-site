@@ -3700,22 +3700,26 @@ function openTopic(id){
 function renderTopic(id){
   const t=TOPICS.find(x=>x.id===id);if(!t)return;
   const done=S.completed.includes(id);
-  const isM=(t.subject||'english')==='maths';
+  const s=t.subject||'english';
+  const isM=s==='maths';
+  const isBio=s==='biology';
   const c=t.content;
   // render SVG diagram if topic has one
   const diagHTML = t.diagram ? `<div class="bio-diagram">${t.diagram}</div>` : '';
 
-  let secs=c.sections.map(s=>{
-    let h=`<div class="ccrd"><h3>${s.heading}</h3><p>${s.body}</p>`;
-    if(s.keyPoints)h+=`<div class="kpoints"><h4>📌 Key Points</h4><ul>${s.keyPoints.map(p=>`<li>${p}</li>`).join('')}</ul></div>`;
-    if(s.techniques)h+=`<div class="tech-grid">${s.techniques.map(tc=>`<div class="tech"><strong>${tc.name}</strong><span>${tc.desc}</span></div>`).join('')}</div>`;
-    if(s.workedExample){const we=s.workedExample;h+=`<div class="we"><div class="we-head"><span class="we-head-lbl">📐 Worked Example</span></div><div class="we-q">${we.question}</div>${we.steps.map(st=>`<div class="we-step"><div class="we-step-n">${st.n}</div><div class="we-step-d">${st.desc}</div><div class="we-step-c">${st.calc}</div></div>`).join('')}<div class="we-ans"><span class="we-ans-lbl">Answer:</span><span class="we-ans-val">${we.answer}</span></div></div>`}
-    if(s.example)h+=`<div class="ex-box"><div class="ex-lbl">${s.example.label}</div><p>${s.example.text}</p><div class="ex-note">${s.example.note}</div></div>`;
+  let secs=c.sections.map(sec=>{
+    let h=`<div class="ccrd"><h3>${sec.heading}</h3><p>${sec.body}</p>`;
+    if(sec.keyPoints)h+=`<div class="kpoints"><h4>📌 Key Points</h4><ul>${sec.keyPoints.map(p=>`<li>${p}</li>`).join('')}</ul></div>`;
+    if(sec.techniques)h+=`<div class="tech-grid">${sec.techniques.map(tc=>`<div class="tech"><strong>${tc.name}</strong><span>${tc.desc}</span></div>`).join('')}</div>`;
+    if(sec.workedExample){const we=sec.workedExample;h+=`<div class="we"><div class="we-head"><span class="we-head-lbl">📐 Worked Example</span></div><div class="we-q">${we.question}</div>${we.steps.map(st=>`<div class="we-step"><div class="we-step-n">${st.n}</div><div class="we-step-d">${st.desc}</div><div class="we-step-c">${st.calc}</div></div>`).join('')}<div class="we-ans"><span class="we-ans-lbl">Answer:</span><span class="we-ans-val">${we.answer}</span></div></div>`}
+    if(sec.example)h+=`<div class="ex-box"><div class="ex-lbl">${sec.example.label}</div><p>${sec.example.text}</p><div class="ex-note">${sec.example.note}</div></div>`;
+    if(sec.diagram)h+=`<div class="bio-diagram">${sec.diagram.type==='...'?'':''}</div>`;
     h+=`</div>`;return h;
   }).join('');
+  
   document.getElementById('topic-body').innerHTML=`
-    <div class="topic-hdr ${isM?'maths':''}">
-      <div class="th-ey ${isM?'maths':''}">${isM?`📐 ${t.paper}`:`${t.board} · ${t.paper}`}</div>
+    <div class="topic-hdr ${isM?'maths':isBio?'biology':''}">
+      <div class="th-ey ${isM?'maths':isBio?'biology':''}">${isM?`📐 ${t.paper}`:isBio?`🔬 ${t.paper}`:`${t.board} · ${t.paper}`}</div>
       <div class="th-title">${t.title}</div>
       <div class="th-meta">
         <span class="th-chip">⏱ ${t.duration}</span>
@@ -3724,12 +3728,14 @@ function renderTopic(id){
       </div>
     </div>
     <div class="ccrd"><p>${c.intro}</p></div>
+    ${diagHTML}
     ${secs}
     <div class="qs-card">
       <h3>${done?'Retake the Quiz':'Test your knowledge'}</h3>
       <p>${done?`Already completed — retake to keep it sharp.`:`Answer all ${t.quiz.length} questions to earn +${t.xp} XP. Wrong answers re-queue until you get them right.`}</p>
       <button class="start-btn" onclick="startQ('${id}')">${done?'Retake':'Start'} Quiz — ${t.quiz.length} questions →</button>
     </div>`;
+}
 }
 
 // ── QUIZ ──
