@@ -768,7 +768,7 @@ body{
 <body>
 
 <!-- ONBOARDING -->
-<div id="ob" class="view active">
+<div id="view-onboarding" class="view active">
   <div class="ob-card">
     <div class="ob-logo"><div class="ob-logo-mark">R</div>ReviseFast</div>
     <h2>Welcome aboard</h2>
@@ -777,15 +777,15 @@ body{
     <input class="ob-input" type="text" id="ob-name" placeholder="e.g. Priya" autocomplete="given-name"/>
     <label class="ob-label">Exam board</label>
     <div class="board-grid">
-      <div class="board-opt" data-board="AQA" onclick="selBoard(this)">AQA<div class="board-opt-sub">Most common</div></div>
-      <div class="board-opt" data-board="Edexcel" onclick="selBoard(this)">Edexcel<div class="board-opt-sub">Pearson</div></div>
+      <div class="board-opt" data-board="AQA" onclick="selectBoard(this)">AQA<div class="board-opt-sub">Most common</div></div>
+      <div class="board-opt" data-board="Edexcel" onclick="selectBoard(this)">Edexcel<div class="board-opt-sub">Pearson</div></div>
     </div>
-    <button class="ob-btn" onclick="doOnboard()">Start Revising →</button>
+    <button class="ob-btn" onclick="completeOnboarding()">Start Revising →</button>
   </div>
 </div>
 
 <!-- APP -->
-<div id="app" class="view">
+<div id="view-app" class="view">
 
   <!-- SIDEBAR -->
   <aside class="sb">
@@ -1432,7 +1432,7 @@ const TOPICS = [
       sections:[
         {
           heading:'Structure & Form — The Fractured Mind',
-          body:`The poem's structure mirrors the soldier's fractured mental state. Irregular stanza lengths and a shift from past to present tense enact the way traumatic memory intrudes on present reality — the soldier cannot separate what happened from what is happening now.`,
+          body:`The poem's structure mirrors the soldier's fractured mental S. Irregular stanza lengths and a shift from past to present tense enact the way traumatic memory intrudes on present reality — the soldier cannot separate what happened from what is happening now.`,
           keyPoints:[
             'Colloquial, conversational language ("tosses his guts") — makes the soldier relatable and the horror more shocking',
             'Shift from past to present tense — the trauma is not "over"; it bleeds into the present moment',
@@ -2400,28 +2400,24 @@ const PAPERS_DATA = [
   },
 ];
 // ─── STATE ────────────────────────────
-let state={name:'',board:'',xp:0,streak:0,lastVisit:'',completed:[]};
-let selectedBoard='', currentTopicId='', dashSubj='all', topicsSubj='all';
-let qEngine={topic:null,queue:[],mastered:[],streak:0,answered:false};
-let isDark = false;
 
 function loadState(){
-  const s=localStorage.getItem('rf3_state');
-  if(s) state=JSON.parse(s);
-  isDark = localStorage.getItem('rf3_dark') === '1';
+  const s=localStorage.getItem('rf4_state');
+  if(s) S=JSON.parse(s);
+  dark = localStorage.getItem('rf4_dark') === '1';
   applyTheme();
 }
-function saveState(){localStorage.setItem('rf3_state',JSON.stringify(state))}
+function saveState(){localStorage.setItem('rf4_state',JSON.stringify(state))}
 
 // ─── DARK MODE ─────────────────────────
 function applyTheme(){
-  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
   const btn = document.getElementById('dark-toggle-btn');
-  if(btn) btn.classList.toggle('on', isDark);
+  if(btn) btn.classList.toggle('on', dark);
 }
 function toggleDark(){
-  isDark = !isDark;
-  localStorage.setItem('rf3_dark', isDark ? '1' : '0');
+  dark = !dark;
+  localStorage.setItem('rf4_dark', dark ? '1' : '0');
   applyTheme();
 }
 
@@ -2459,27 +2455,27 @@ function closeDropdownDelay(){ setTimeout(()=>document.getElementById('search-dr
 
 function filterTopics(){
   const q = document.getElementById('topic-search').value.toLowerCase().trim();
-  renderTopicsGrid('grid-topics', 0, topicsSubj, q);
+  renderTopicsGrid('grid-topics', 0, tSubj, q);
 }
 
 // ─── ONBOARDING ─────────────────────────
 function selectBoard(el){
   document.querySelectorAll('.board-btn').forEach(b=>b.classList.remove('selected'));
-  el.classList.add('selected'); selectedBoard=el.dataset.board;
+  el.classList.add('selected'); selB=el.dataset.board;
 }
 function completeOnboarding(){
   const name=document.getElementById('ob-name').value.trim();
   if(!name){alert('Please enter your name');return}
-  if(!selectedBoard){alert('Please select an exam board');return}
-  state.name=name; state.board=selectedBoard;
+  if(!selB){alert('Please select an exam board');return}
+  S.name=name; S.board=selB;
   checkStreak(); saveState(); launchApp();
 }
 function checkStreak(){
   const today=new Date().toDateString();
-  if(state.lastVisit===today) return;
+  if(S.lastVisit===today) return;
   const yesterday=new Date(Date.now()-86400000).toDateString();
-  state.streak = state.lastVisit===yesterday ? state.streak+1 : (state.lastVisit ? 1 : 1);
-  state.lastVisit=today;
+  S.streak = S.lastVisit===yesterday ? S.streak+1 : (S.lastVisit ? 1 : 1);
+  S.lastVisit=today;
 }
 
 // ─── LAUNCH ─────────────────────────────
@@ -2487,17 +2483,17 @@ function launchApp(){
   document.getElementById('view-onboarding').classList.remove('active');
   document.getElementById('view-app').classList.add('active');
   setupSidebar(); renderDashboard();
-  renderTopicsGrid('grid-topics',0,topicsSubj,'');
+  renderTopicsGrid('grid-topics',0,tSubj,'');
   renderPapers(); renderLeaderboard();
   document.getElementById('nav-topics-count').textContent=TOPICS.length;
   nav('dashboard', document.querySelector('[data-page=dashboard]'));
 }
 function setupSidebar(){
-  document.getElementById('sb-av').textContent=state.name.charAt(0).toUpperCase();
-  document.getElementById('sb-name').textContent=state.name;
-  document.getElementById('sb-sub').textContent=state.board+' · GCSE';
+  document.getElementById('sb-av').textContent=S.name.charAt(0).toUpperCase();
+  document.getElementById('sb-name').textContent=S.name;
+  document.getElementById('sb-sub').textContent=S.board+' · GCSE';
   const btn=document.getElementById('dark-toggle-btn');
-  if(btn) btn.classList.toggle('on',isDark);
+  if(btn) btn.classList.toggle('on',dark);
 }
 
 // ─── NAV ────────────────────────────────
@@ -2516,27 +2512,27 @@ function nav(id,el){
 function renderDashboard(){
   const h=new Date().getHours();
   const g=h<12?'Good morning':h<18?'Good afternoon':'Good evening';
-  document.getElementById('dash-greeting').innerHTML=`${g}, <em>${state.name}</em>`;
-  updateStats(); renderTopicsGrid('grid-dash',6,dashSubj,'');
+  document.getElementById('dash-greeting').innerHTML=`${g}, <em>${S.name}</em>`;
+  updateStats(); renderTopicsGrid('grid-dash',6,dSubj,'');
 }
 function updateStats(){
-  document.getElementById('stat-xp').textContent=state.xp;
-  document.getElementById('stat-streak').textContent=state.streak;
-  document.getElementById('stat-done').textContent=state.completed.length;
+  document.getElementById('stat-xp').textContent=S.xp;
+  document.getElementById('stat-streak').textContent=S.streak;
+  document.getElementById('stat-done').textContent=S.completed.length;
   // Rank
-  const all=[...SEEDED_STUDENTS,{name:state.name,xp:state.xp,isYou:true}].sort((a,b)=>b.xp-a.xp);
+  const all=[...SEEDED_STUDENTS,{name:S.name,xp:S.xp,isYou:true}].sort((a,b)=>b.xp-a.xp);
   const rank=all.findIndex(s=>s.isYou)+1;
   document.getElementById('stat-rank').textContent='#'+rank;
   // Tier
-  const tier=getTier(state.xp),next=getNextTier(state.xp);
+  const tier=getTier(S.xp),next=getNextTier(S.xp);
   document.getElementById('tier-pill').textContent=tier.name;
-  document.getElementById('tier-next').textContent=next?`${next.min-state.xp} XP to ${next.name.split(' ')[1]}`:'✨ Max rank!';
-  document.getElementById('xp-fill').style.width=tierPct(state.xp)+'%';
+  document.getElementById('tier-next').textContent=next?`${next.min-S.xp} XP to ${next.name.split(' ')[1]}`:'✨ Max rank!';
+  document.getElementById('xp-fill').style.width=tierPct(S.xp)+'%';
   // Subject progress
   const engT=TOPICS.filter(t=>(t.subject||'english')==='english');
   const mthT=TOPICS.filter(t=>t.subject==='maths');
-  const engD=engT.filter(t=>state.completed.includes(t.id)).length;
-  const mthD=mthT.filter(t=>state.completed.includes(t.id)).length;
+  const engD=engT.filter(t=>S.completed.includes(t.id)).length;
+  const mthD=mthT.filter(t=>S.completed.includes(t.id)).length;
   const eP=Math.round((engD/engT.length)*100), mP=Math.round((mthD/mthT.length)*100);
   document.getElementById('eng-pct').textContent=eP+'%';
   document.getElementById('eng-fill').style.width=eP+'%';
@@ -2546,12 +2542,12 @@ function updateStats(){
   document.getElementById('mth-count').textContent=`${mthD} of ${mthT.length} topics`;
 }
 function dashFilter(s,el){
-  dashSubj=s;
+  dSubj=s;
   document.querySelectorAll('#page-dashboard .f-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active'); renderTopicsGrid('grid-dash',6,dashSubj,'');
+  el.classList.add('active'); renderTopicsGrid('grid-dash',6,dSubj,'');
 }
 function topicsFilter(s,el){
-  topicsSubj=s;
+  tSubj=s;
   document.querySelectorAll('#page-topics .f-tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active'); filterTopics();
 }
@@ -2571,7 +2567,7 @@ function renderTopicsGrid(cid,limit,subj,query){
   const el=document.getElementById(cid); if(!el) return;
   if(!topics.length){ el.innerHTML='<div style="color:var(--ink-light);font-size:.88rem;padding:20px 0">No topics match your search.</div>'; return; }
   el.innerHTML=topics.map(t=>{
-    const done=state.completed.includes(t.id);
+    const done=S.completed.includes(t.id);
     const s=t.subject||'english';
     const isMaths=s==='maths';
     return `<div class="topic-card ${done?'completed':''}" onclick="openTopic('${t.id}')">
@@ -2595,13 +2591,13 @@ function renderTopicsGrid(cid,limit,subj,query){
 
 // ─── TOPIC READER ───────────────────────
 function openTopic(id){
-  currentTopicId=id; renderTopic(id); nav('topic',null);
+  curTopic=id; renderTopic(id); nav('topic',null);
   const t=TOPICS.find(x=>x.id===id);
   if(t) document.getElementById('bc-topic-name').textContent=t.title;
 }
 function renderTopic(id){
   const t=TOPICS.find(x=>x.id===id); if(!t) return;
-  const done=state.completed.includes(id);
+  const done=S.completed.includes(id);
   const isMaths=(t.subject||'english')==='maths';
   const c=t.content;
   let secs=c.sections.map(s=>{
@@ -2636,13 +2632,13 @@ function renderTopic(id){
 
 // ─── QUIZ ENGINE ────────────────────────
 function startQuiz(id){
-  const t=TOPICS.find(x=>x.id===id); currentTopicId=id;
-  qEngine={topic:t,queue:t.quiz.map((q,i)=>({...q,idx:i})),mastered:[],streak:0,answered:false};
+  const t=TOPICS.find(x=>x.id===id); curTopic=id;
+  QE={topic:t,queue:t.quiz.map((q,i)=>({...q,idx:i})),mastered:[],streak:0,answered:false};
   nav('quiz',null); renderQ();
 }
-function exitQuiz(){nav('topic',null);renderTopic(currentTopicId)}
+function exitQuiz(){nav('topic',null);renderTopic(curTopic)}
 function renderQ(){
-  const {queue,mastered,streak,topic}=qEngine;
+  const {queue,mastered,streak,topic}=QE;
   const total=topic.quiz.length, done=mastered.length;
   const pct=Math.round((done/total)*100);
   document.getElementById('q-streak').textContent=`🔥 ${streak} streak`;
@@ -2660,11 +2656,11 @@ function renderQ(){
       <div class="q-feedback" id="qf"></div>
       <button class="q-next" id="qn" onclick="nextQ()">${queue.length===1?'See Results →':'Next Question →'}</button>
     </div>`;
-  qEngine.answered=false;
+  QE.answered=false;
 }
 function selectA(idx){
-  if(qEngine.answered) return; qEngine.answered=true;
-  const q=qEngine.queue[0], correct=idx===q.ans;
+  if(QE.answered) return; QE.answered=true;
+  const q=QE.queue[0], correct=idx===q.ans;
   document.querySelectorAll('.q-opt').forEach((b,i)=>{
     b.disabled=true;
     if(i===q.ans) b.classList.add('reveal');
@@ -2674,22 +2670,22 @@ function selectA(idx){
   const fb=document.getElementById('qf');
   fb.className=`q-feedback ${correct?'correct':'wrong'} show`;
   fb.innerHTML=`<div class="qf-title">${correct?'✓ Correct!':'✗ Not quite'}</div><div class="qf-body">${q.explain}</div>`;
-  if(correct){qEngine.streak++;qEngine.mastered.push(qEngine.queue.shift())}
-  else{qEngine.streak=0;qEngine.queue.push(qEngine.queue.shift());document.getElementById('rn').classList.add('show')}
-  document.getElementById('q-streak').textContent=`🔥 ${qEngine.streak} streak`;
+  if(correct){QE.streak++;QE.mastered.push(QE.queue.shift())}
+  else{QE.streak=0;QE.queue.push(QE.queue.shift());document.getElementById('rn').classList.add('show')}
+  document.getElementById('q-streak').textContent=`🔥 ${QE.streak} streak`;
   const nb=document.getElementById('qn');
-  nb.textContent=qEngine.queue.length===0?'See Results →':'Next Question →';
+  nb.textContent=QE.queue.length===0?'See Results →':'Next Question →';
   nb.classList.add('show');
 }
-function nextQ(){qEngine.queue.length===0?showResults():renderQ()}
+function nextQ(){QE.queue.length===0?showResults():renderQ()}
 function showResults(){
-  const {topic}=qEngine; const total=topic.quiz.length;
-  const already=state.completed.includes(topic.id);
+  const {topic}=QE; const total=topic.quiz.length;
+  const already=S.completed.includes(topic.id);
   const xp=already?0:topic.xp;
   if(!already){
-    state.xp+=xp; state.completed.push(topic.id); saveState(); updateStats();
-    renderTopicsGrid('grid-dash',6,dashSubj,'');
-    renderTopicsGrid('grid-topics',0,topicsSubj,'');
+    S.xp+=xp; S.completed.push(topic.id); saveState(); updateStats();
+    renderTopicsGrid('grid-dash',6,dSubj,'');
+    renderTopicsGrid('grid-topics',0,tSubj,'');
     renderLeaderboard(); setTimeout(()=>showToast(xp,'Topic mastered!'),400);
   }
   document.getElementById('q-prog').style.width='100%';
@@ -2702,7 +2698,7 @@ function showResults(){
       <div class="results-stats">
         <div class="rs"><div class="rs-val">${total}/${total}</div><div class="rs-label">Mastered</div></div>
         <div class="rs"><div class="rs-val">100%</div><div class="rs-label">Score</div></div>
-        <div class="rs"><div class="rs-val">${state.xp}</div><div class="rs-label">Total XP</div></div>
+        <div class="rs"><div class="rs-val">${S.xp}</div><div class="rs-label">Total XP</div></div>
       </div>
       <div class="results-btns">
         <button class="btn-r-pri" onclick="nav('topics',document.querySelector('[data-page=topics]'))">Back to Topics</button>
@@ -2730,7 +2726,7 @@ function renderPapers(){
 
 // ─── LEADERBOARD ────────────────────────
 function renderLeaderboard(){
-  const all=[...SEEDED_STUDENTS,{name:state.name,board:state.board,xp:state.xp,avatar:'#2563eb',isYou:true}].sort((a,b)=>b.xp-a.xp);
+  const all=[...SEEDED_STUDENTS,{name:S.name,board:S.board,xp:S.xp,avatar:'#2563eb',isYou:true}].sort((a,b)=>b.xp-a.xp);
   const medals=['🥇','🥈','🥉'];
   document.getElementById('lb-table').innerHTML=all.map((s,i)=>{
     const tier=getTier(s.xp);
@@ -2753,8 +2749,6 @@ function showToast(amount,label){
 }
 
 // ─── INIT ───────────────────────────────
-loadState();
-if(state.name&&state.board){checkStreak();saveState();launchApp();}
 
 
 // ── STATE ──
@@ -2763,11 +2757,11 @@ let selB='', curTopic='', dSubj='all', tSubj='all';
 let QE={topic:null,queue:[],mastered:[],streak:0,answered:false};
 let dark=false;
 
-function load(){
+function loadState(){
   const s=localStorage.getItem('rf4');if(s)S=JSON.parse(s);
   dark=localStorage.getItem('rf4_dark')==='1';applyDark();
 }
-function save(){localStorage.setItem('rf4',JSON.stringify(S))}
+function saveState(){localStorage.setItem('rf4',JSON.stringify(S))}
 
 // ── DARK MODE ──
 function applyDark(){
@@ -2798,12 +2792,12 @@ function closeDrop(){setTimeout(()=>document.getElementById('sr-drop').classList
 function filterT(){renderGrid('g-topics',0,tSubj,document.getElementById('t-srch').value)}
 
 // ── ONBOARDING ──
-function selBoard(el){document.querySelectorAll('.board-opt').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selB=el.dataset.board}
-function doOnboard(){
+function selectBoard(el){document.querySelectorAll('.board-opt').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selB=el.dataset.board}
+function completeOnboarding(){
   const nm=document.getElementById('ob-name').value.trim();
   if(!nm){alert('Please enter your name');return}
   if(!selB){alert('Please select your exam board');return}
-  S.name=nm;S.board=selB;checkStreak();save();launch();
+  S.name=nm;S.board=selB;checkStreak();saveState();launchApp();
 }
 function checkStreak(){
   const today=new Date().toDateString();
@@ -2993,7 +2987,7 @@ function showRes(){
   const {topic}=QE,tot=topic.quiz.length;
   const already=S.completed.includes(topic.id);
   const xp=already?0:topic.xp;
-  if(!already){S.xp+=xp;S.completed.push(topic.id);save();updateStats();renderGrid('g-dash',6,dSubj,'');renderGrid('g-topics',0,tSubj,'');renderLB();setTimeout(()=>showToast(xp,'Topic mastered!'),400)}
+  if(!already){S.xp+=xp;S.completed.push(topic.id);saveState();updateStats();renderGrid('g-dash',6,dSubj,'');renderGrid('g-topics',0,tSubj,'');renderLB();setTimeout(()=>showToast(xp,'Topic mastered!'),400)}
   document.getElementById('q-fill').style.width='100%';
   document.getElementById('quiz-body').innerHTML=`
     <div class="results">
@@ -3052,8 +3046,8 @@ function showToast(amt,lbl){
 }
 
 // ── INIT ──
-load();
-if(S.name&&S.board){checkStreak();save();launch();}
+loadState();
+if(S.name&&S.board){checkStreak();saveState();launchApp();}
 </script>
 </body>
 </html>
